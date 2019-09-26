@@ -1,0 +1,32 @@
+{
+  "name": "kdc-cms",
+  "version": "0.1.0",
+  "description": "Serverless Headless CMS",
+  "main": "index.js",
+  "scripts": {
+    "setup-ddb": "docker pull amazon/dynamodb-local",
+    "start-ddb": "docker run -d --rm --name dynamodb -p 8000:8000 amazon/dynamodb-local",
+    "ddb": "npm run start-ddb && npm run wait-ddb && npm run init-ddb",
+    "wait-ddb": "until nc -z localhost 8000; do sleep 1; done && echo \"DynamoDB started\"",
+    "stop-ddb": "docker stop dynamodb",
+    "init-ddb": "aws dynamodb create-table --table-name wallets-sandbox --attribute-definitions AttributeName=code,AttributeType=S --key-schema AttributeName=code,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://localhost:8000",
+    "uninit-ddb": "aws dynamodb delete-table --table-name wallets-sandbox --endpoint-url http://localhost:8000",
+    "setup-ddb-manager": "docker pull taydy/dynamodb-manager",
+    "start-ddb-manager": "docker run -t -p 8001:80 taydy/dynamodb-manager"
+  },
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

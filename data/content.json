@@ -1,0 +1,20 @@
+[
+  {
+    "pk": "blog",
+    "sk": "content",
+    "gs1pk": "content",
+    "gs1sk": "date",
+    "title": "string",
+    "author": "string",
+    "body": "text"
+  },
+  {
+    "pk": "news",
+    "sk": "content",
+    "gs1pk": "content",
+    "gs1sk": "date",
+    "title": "string",
+    "subtitle": "string",
+    "body": "text"
+  }
+]

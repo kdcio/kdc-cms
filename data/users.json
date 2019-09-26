@@ -1,0 +1,34 @@
+[
+  {
+    "pk": "ian@kdcsoftware.com",
+    "sk": "user",
+    "password": "1234",
+    "role": "admin",
+    "gs1pk": "user",
+    "gs1sk": "Ian Dela Cruz"
+  },
+  {
+    "pk": "happy.asilo@gmail.com",
+    "sk": "user",
+    "password": "5678",
+    "role": "editor",
+    "gs1pk": "user",
+    "gs1sk": "Happy Dela Cruz"
+  },
+  {
+    "pk": "ethan@kdcsoftware.com",
+    "sk": "user",
+    "password": "9012",
+    "role": "editor",
+    "gs1pk": "user",
+    "gs1sk": "Ethan Dela Cruz"
+  },
+  {
+    "pk": "kirsten@kdcsoftware.com",
+    "sk": "user",
+    "password": "3456",
+    "role": "editor",
+    "gs1pk": "user",
+    "gs1sk": "Kirsten Dela Cruz"
+  }
+]
