@@ -4,6 +4,7 @@
   "description": "Serverless Headless CMS",
   "main": "index.js",
   "scripts": {
+    "start": "PORT=1001 nodemon server.js",
     "setup-ddb": "docker pull amazon/dynamodb-local",
     "start-ddb": "docker run -d --rm --name dynamodb -p 8000:8000 amazon/dynamodb-local",
     "ddb": "npm run start-ddb && npm run wait-ddb && npm run init-ddb",
@@ -22,11 +23,20 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
-    "cz-conventional-changelog": "^3.0.2"
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.4.0",
+    "nodemon": "^1.19.2"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "@koa/router": "^8.0.1",
+    "install": "^0.13.0",
+    "koa": "^2.8.1",
+    "koa-response-time": "^2.1.0",
+    "npm": "^6.11.3"
   }
 }
