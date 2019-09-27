@@ -1,6 +1,6 @@
 [
   {
-    "pk": "ian@kdcsoftware.com",
+    "pk": "ian@mycompany.com",
     "sk": "user",
     "password": "1234",
     "role": "admin",
@@ -8,27 +8,27 @@
     "gs1sk": "Ian Dela Cruz"
   },
   {
-    "pk": "happy.asilo@gmail.com",
+    "pk": "happy@yourcompany.com",
     "sk": "user",
     "password": "5678",
     "role": "editor",
     "gs1pk": "user",
-    "gs1sk": "Happy Dela Cruz"
+    "gs1sk": "Happy Asilo"
   },
   {
-    "pk": "ethan@kdcsoftware.com",
+    "pk": "ethan@somecompany.com",
     "sk": "user",
     "password": "9012",
-    "role": "editor",
+    "role": "public",
     "gs1pk": "user",
-    "gs1sk": "Ethan Dela Cruz"
+    "gs1sk": "Ethan Hawkeye"
   },
   {
-    "pk": "kirsten@kdcsoftware.com",
+    "pk": "kirsten@ourcompany.com",
     "sk": "user",
     "password": "3456",
     "role": "editor",
-    "gs1pk": "user",
-    "gs1sk": "Kirsten Dela Cruz"
+    "gs1pk": "public",
+    "gs1sk": "Kirsten Dunst"
   }
 ]

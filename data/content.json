@@ -3,18 +3,24 @@
     "pk": "blog",
     "sk": "content",
     "gs1pk": "content",
-    "gs1sk": "date",
-    "title": "string",
-    "author": "string",
-    "body": "text"
+    "gs1sk": "Blog",
+    "date": "text",
+    "title": "text",
+    "author": "text",
+    "body": "long-text",
+    "slug": "text",
+    "sort-key": "date"
   },
   {
     "pk": "news",
     "sk": "content",
     "gs1pk": "content",
-    "gs1sk": "date",
-    "title": "string",
-    "subtitle": "string",
-    "body": "text"
+    "gs1sk": "News",
+    "date": "text",
+    "title": "text",
+    "subtitle": "text",
+    "body": "long-text",
+    "slug": "text",
+    "sort-key": "slug"
   }
 ]
