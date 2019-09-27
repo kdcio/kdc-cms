@@ -4,7 +4,7 @@ A simple headless CMS for serverless environment.
 
 ## Reason
 
-Learn something new - [koa](https://koajs.com/), [Next.js](https://nextjs.org/), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
+Learn something new - [Next.js](https://nextjs.org/), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
 
 ## Infrastructure
 
