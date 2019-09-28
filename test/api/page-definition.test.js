@@ -98,6 +98,15 @@ describe("Page Definition", function() {
     });
   });
 
+  describe("DELETE /api/page-definition/" + homePage.id, function() {
+    it("should delete", function(done) {
+      req
+        .delete("/api/page-definition/" + homePage.id)
+        .expect("Content-Type", /json/)
+        .expect(204, done);
+    });
+  });
+
   this.afterAll(async function() {
     await clearTable("page");
   });

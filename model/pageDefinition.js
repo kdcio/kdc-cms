@@ -76,6 +76,15 @@ class PageDefinition extends DynamoDB {
       .promise()
       .then(async () => Item.pk);
   }
+
+  async delete({ id }) {
+    const params = {
+      TableName: this.tableName,
+      Key: { pk: id, sk: "page" }
+    };
+
+    return this.docClient.delete(params).promise();
+  }
 }
 
 module.exports = new PageDefinition();
