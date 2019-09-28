@@ -1,5 +1,6 @@
 const request = require("supertest");
 const expect = require("chai").expect;
+const clearTable = require("../helper");
 
 const req = request("http://localhost:1001");
 const homePage = {
@@ -10,6 +11,10 @@ const homePage = {
 };
 
 describe("Page Definition", function() {
+  this.beforeAll(async function() {
+    await clearTable("page");
+  });
+
   describe("POST /api/page-definition", function() {
     it("it should create", function(done) {
       req
@@ -60,5 +65,9 @@ describe("Page Definition", function() {
           done();
         });
     });
+  });
+
+  this.afterAll(async function() {
+    await clearTable("page");
   });
 });
