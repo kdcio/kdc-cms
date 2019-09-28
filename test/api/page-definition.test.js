@@ -67,6 +67,37 @@ describe("Page Definition", function() {
     });
   });
 
+  describe("PUT /api/page-definition/" + homePage.id, function() {
+    it("it should update", function(done) {
+      req
+        .put("/api/page-definition/" + homePage.id)
+        .send({ intro: "text" })
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .expect(204, done);
+    });
+  });
+
+  describe("GET /api/page-definition/" + homePage.id, function() {
+    it("should update intro", function(done) {
+      req
+        .get("/api/page-definition/" + homePage.id)
+        .expect("Content-Type", /json/)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) throw err;
+          const { body } = res;
+          expect(body.pk).to.equal(homePage.id);
+          expect(body.sk).to.equal("page");
+          expect(body.gs1pk).to.equal("page");
+          expect(body.gs1sk).to.equal(homePage.name);
+          expect(body.title).to.equal("text");
+          expect(body.intro).to.equal("text");
+          done();
+        });
+    });
+  });
+
   this.afterAll(async function() {
     await clearTable("page");
   });
