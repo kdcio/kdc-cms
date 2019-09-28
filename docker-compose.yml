@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  dynamodb-manager:
+    image: taydy/dynamodb-manager
+    ports:
+      - "8080:80"
+    privileged: true
+    restart: always
+  dynamodb-local:
+    image: amazon/dynamodb-local
+    restart: always
+    ports:
+      - "8000:8000"
+    restart: always

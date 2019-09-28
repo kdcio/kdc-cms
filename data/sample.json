@@ -1,0 +1,47 @@
+[
+  {
+    "pk": "ian@mycompany.com",
+    "sk": "user",
+    "password": "somerandompw",
+    "role": "admin",
+    "gs1pk": "user",
+    "gs1sk": "Ian Dela Cruz"
+  },
+  {
+    "pk": "home",
+    "sk": "page",
+    "gs1pk": "page",
+    "gs1sk": "Home Page",
+    "title": "text",
+    "intro": "long-text"
+  },
+  {
+    "pk": "home",
+    "sk": "page#data",
+    "gs1pk": "page#data",
+    "gs1sk": "home",
+    "title": "KDC Software",
+    "intro": "We make your dreams into reality"
+  },
+  {
+    "pk": "blog",
+    "sk": "content",
+    "gs1pk": "content",
+    "gs1sk": "Blog",
+    "date": "text",
+    "title": "text",
+    "author": "text",
+    "body": "long-text",
+    "slug": "text",
+    "sort-key": "date"
+  },
+  {
+    "pk": "my-blog-post",
+    "sk": "content#blog",
+    "gs1pk": "content#blog",
+    "gs1sk": "Feb 1, 2019",
+    "title": "My first blog post",
+    "author": "Ian Dela Cruz",
+    "body": "Eu voluptate eu consectetur mollit duis eiusmod minim aute. Exercitation veniam velit et adipisicing. Pariatur cillum sit cupidatat veniam tempor. Cupidatat adipisicing nisi ex fugiat nisi cupidatat. Incididunt ullamco ullamco proident velit. Eu aliquip aliqua laboris velit tempor elit dolor culpa ipsum non excepteur sit quis. Elit Lorem deserunt amet quis duis incididunt nostrud reprehenderit sint id culpa."
+  }
+]

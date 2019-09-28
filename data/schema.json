@@ -17,7 +17,7 @@
       "AttributeType": "S"
     }
   ],
-  "TableName": "kdccms",
+  "TableName": "kdc-cms",
   "KeySchema": [
     {
       "AttributeName": "pk",
