@@ -16,7 +16,7 @@ describe("Page Definition", function() {
   });
 
   describe("POST /api/page-definition", function() {
-    it("it should create", function(done) {
+    it("should create", function(done) {
       req
         .post("/api/page-definition")
         .send(homePage)
@@ -33,7 +33,7 @@ describe("Page Definition", function() {
   });
 
   describe("GET /api/page-definition/" + homePage.id, function() {
-    it("responds with json", function(done) {
+    it("should get", function(done) {
       req
         .get("/api/page-definition/" + homePage.id)
         .expect("Content-Type", /json/)
@@ -53,7 +53,7 @@ describe("Page Definition", function() {
   });
 
   describe("GET /api/page-definition", function() {
-    it("responds with json", function(done) {
+    it("should list", function(done) {
       req
         .get("/api/page-definition")
         .expect("Content-Type", /json/)
