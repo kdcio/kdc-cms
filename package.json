@@ -37,11 +37,14 @@
     }
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
     "aws-sdk": "^2.537.0",
+    "bootstrap": "^4.3.1",
     "install": "^0.13.0",
     "next": "^9.0.6",
     "npm": "^6.11.3",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "reactstrap": "^8.0.1"
   }
 }
