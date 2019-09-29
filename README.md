@@ -11,6 +11,7 @@ A simple headless CMS for AWS serverless infrastructure.
 ## Infrastructure
 
 API Server --> API Gateway --> Lambda --> DynamoDB
+
 Web Server --> S3 --> Cloudfront
 
 ## DB Design
