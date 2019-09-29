@@ -1,3 +1,5 @@
 node_modules
-.next
 .serverless
+.nyc_output
+coverage
+.DS_Store

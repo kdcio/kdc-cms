@@ -1,0 +1,38 @@
+{
+  "name": "@kdc-cms/server",
+  "version": "0.1.0",
+  "description": "API for kdc-cms",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run ddb:start && npm run ddb:wait && nodemon dev.js",
+    "ddb:setup": "npm run ddb:start && npm run ddb:wait && npm run ddb:init",
+    "ddb:start": "docker-compose up -d",
+    "ddb:wait": "until nc -z localhost 8000; do sleep 1; done && echo \"DynamoDB started\"",
+    "ddb:init": "aws dynamodb create-table --cli-input-json file://data/schema.json --endpoint-url http://localhost:8000",
+    "ddb:stop": "docker-compose stop",
+    "test": "mocha --watch",
+    "coverage": "nyc mocha --exit"
+  },
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@koa/router": "^8.0.1",
+    "aws-sdk": "^2.538.0",
+    "koa": "^2.8.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.5.0",
+    "mocha": "^6.2.0",
+    "nodemon": "^1.19.2",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
+  }
+}

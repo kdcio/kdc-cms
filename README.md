@@ -4,11 +4,13 @@ A simple headless CMS for serverless environment.
 
 ## Reason
 
-Learn something new - [Next.js](https://nextjs.org/), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
+* Cheapest way to run headless CMS
+* Learn something new - [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
 
 ## Infrastructure
 
-Users --> API Gateway --> Lambda --> DynamoDB
+API Server --> API Gateway --> Lambda --> DynamoDB
+Web Server --> S3 --> Cloudfront
 
 ## DB Design
 
