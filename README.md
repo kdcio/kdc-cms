@@ -49,5 +49,4 @@ Web Server --> S3 --> Cloudfront
     * pk: ":slug"
     * sk: "content#:type"
 
-
 *Note that **slug** and **sort-key** are mandatory in Content Types.*
