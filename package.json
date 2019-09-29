@@ -5,7 +5,8 @@
   "scripts": {
     "web": "yarn workspace @kdc-cms/web start",
     "server": "yarn workspace @kdc-cms/server start",
-    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn web\""
+    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn web\"",
+    "test:server": "yarn workspace @kdc-cms/server test"
   },
   "author": {
     "name": "Ian Dela Cruz",
