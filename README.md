@@ -1,10 +1,11 @@
 # KDC CMS
 
-A simple headless CMS for serverless environment.
+A simple headless CMS for AWS serverless infrastructure.
 
 ## Reason
 
 * Cheapest way to run headless CMS
+* Boilerplate CMS for new projects
 * Learn something new - [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
 
 ## Infrastructure
