@@ -5,7 +5,7 @@ const clearTable = require("../helper");
 const req = request("http://localhost:1001");
 const blogs = {
   name: "Blogs",
-  id: "blogs",
+  type: "blogs",
   date: "text",
   title: "text",
   author: "text",
@@ -29,23 +29,23 @@ describe("Content Definition", function() {
         .expect(
           201,
           {
-            id: blogs.id
+            type: blogs.type
           },
           done
         );
     });
   });
 
-  describe("GET /api/content-definition/" + blogs.id, function() {
+  describe("GET /api/content-definition/" + blogs.type, function() {
     it("should get", function(done) {
       req
-        .get("/api/content-definition/" + blogs.id)
+        .get("/api/content-definition/" + blogs.type)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
           if (err) throw err;
           const { body } = res;
-          expect(body.pk).to.equal(blogs.id);
+          expect(body.pk).to.equal(blogs.type);
           expect(body.sk).to.equal("content");
           expect(body.gs1pk).to.equal("content");
           expect(body.gs1sk).to.equal(blogs.name);
@@ -75,10 +75,10 @@ describe("Content Definition", function() {
     });
   });
 
-  describe("PUT /api/content-definition/" + blogs.id, function() {
+  describe("PUT /api/content-definition/" + blogs.type, function() {
     it("it should update", function(done) {
       req
-        .put("/api/content-definition/" + blogs.id)
+        .put("/api/content-definition/" + blogs.type)
         .send({ body: "text" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
@@ -86,16 +86,16 @@ describe("Content Definition", function() {
     });
   });
 
-  describe("GET /api/content-definition/" + blogs.id, function() {
+  describe("GET /api/content-definition/" + blogs.type, function() {
     it("should update body", function(done) {
       req
-        .get("/api/content-definition/" + blogs.id)
+        .get("/api/content-definition/" + blogs.type)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
           if (err) throw err;
           const { body } = res;
-          expect(body.pk).to.equal(blogs.id);
+          expect(body.pk).to.equal(blogs.type);
           expect(body.sk).to.equal("content");
           expect(body.gs1pk).to.equal("content");
           expect(body.gs1sk).to.equal(blogs.name);
@@ -110,10 +110,10 @@ describe("Content Definition", function() {
     });
   });
 
-  describe("DELETE /api/content-definition/" + blogs.id, function() {
+  describe("DELETE /api/content-definition/" + blogs.type, function() {
     it("should delete", function(done) {
       req
-        .delete("/api/content-definition/" + blogs.id)
+        .delete("/api/content-definition/" + blogs.type)
         .expect("Content-Type", /json/)
         .expect(204, done);
     });

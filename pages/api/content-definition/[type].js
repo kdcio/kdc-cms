@@ -1,15 +1,15 @@
 const ContentDefinition = require("../../../model/contentDefinition");
 
 export default async (req, res) => {
-  const { id } = req.query;
+  const { type } = req.query;
   if (req.method === "PUT") {
-    await ContentDefinition.put({ id, attr: req.body });
+    await ContentDefinition.put({ type, attr: req.body });
     res.status(204).json({});
   } else if (req.method === "DELETE") {
-    await ContentDefinition.delete({ id });
+    await ContentDefinition.delete({ type });
     res.status(204).json({});
   } else {
-    const content = await ContentDefinition.get({ id });
+    const content = await ContentDefinition.get({ type });
     res.status(200).json(content);
   }
 };

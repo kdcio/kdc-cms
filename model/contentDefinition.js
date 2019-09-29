@@ -1,10 +1,10 @@
 const DynamoDB = require("./dynamodb");
 
 class ContentDefinition extends DynamoDB {
-  post({ name, id, ...attr }) {
+  post({ name, type, ...attr }) {
     const createdAt = new Date().valueOf();
     const Item = {
-      pk: id,
+      pk: type,
       sk: "content",
       gs1pk: "content",
       gs1sk: name,
@@ -23,10 +23,10 @@ class ContentDefinition extends DynamoDB {
       .then(async () => Item.pk);
   }
 
-  get({ id }) {
+  get({ type }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: "content" }
+      Key: { pk: type, sk: "content" }
     };
 
     return this.docClient
@@ -56,8 +56,8 @@ class ContentDefinition extends DynamoDB {
       .then(data => data);
   }
 
-  async put({ id, attr }) {
-    const content = await this.get({ id });
+  async put({ type, attr }) {
+    const content = await this.get({ type });
 
     const updatedAt = new Date().valueOf();
     const Item = {
@@ -77,10 +77,10 @@ class ContentDefinition extends DynamoDB {
       .then(async () => Item.pk);
   }
 
-  async delete({ id }) {
+  async delete({ type }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: "content" }
+      Key: { pk: type, sk: "content" }
     };
 
     return this.docClient.delete(params).promise();
