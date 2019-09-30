@@ -11,7 +11,10 @@
     "ddb:init": "aws dynamodb create-table --cli-input-json file://schema.json --endpoint-url http://localhost:8000",
     "ddb:stop": "docker-compose stop",
     "test": "mocha --watch",
-    "coverage": "nyc mocha --exit"
+    "coverage": "nyc mocha --exit",
+    "build": "mkdir -p build && cp -R lambda.js app.js package.json package-lock.json routes models build/ && cd build && npm install --production",
+    "cleanZip": "rm -fR kdc-cms-server.zip build VERSION",
+    "zip": "cd build && zip -r ../kdc-cms-server.zip *"
   },
   "author": {
     "name": "Ian Dela Cruz",
@@ -23,6 +26,7 @@
   "dependencies": {
     "@koa/router": "^8.0.1",
     "aws-sdk": "^2.538.0",
+    "aws-serverless-koa": "^1.0.1",
     "koa": "^2.8.2",
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2"
