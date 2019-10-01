@@ -12,7 +12,9 @@ class DynamoDB {
     this.docClient = new AWS.DynamoDB.DocumentClient({
       apiVersion: "2012-08-10"
     });
-    this.tableName = process.env.DYNAMODB_TABLE;
+    this.tableName = process.env.DYNAMODB_TABLE
+      ? process.env.DYNAMODB_TABLE
+      : "kdc-cms";
   }
 }
 

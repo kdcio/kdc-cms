@@ -4,7 +4,7 @@
   "description": "API for kdc-cms",
   "main": "index.js",
   "scripts": {
-    "start": "npm run ddb:start && npm run ddb:wait && DYNAMODB_TABLE=kdc-cms nodemon dev.js",
+    "start": "npm run ddb:start && npm run ddb:wait && nodemon dev.js",
     "ddb:setup": "npm run ddb:start && npm run ddb:wait && npm run ddb:init",
     "ddb:start": "docker-compose up -d",
     "ddb:wait": "until nc -z localhost 8000; do sleep 1; done && echo \"DynamoDB started\"",
