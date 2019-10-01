@@ -11,10 +11,10 @@ router.get("/", async (req, res) => {
   res.send(list.Items);
 });
 
-router.post("/create", async (req, res) => {
+router.post("/", async (req, res) => {
   const { body } = req;
   const email = await Users.create(body);
-  res.status(HttpStatus.OK);
+  res.status(HttpStatus.CREATED);
   res.send({ email });
 });
 
@@ -61,7 +61,6 @@ router.put("/:email/changePassword", async (req, res) => {
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
-    console.log(email, error);
     res.status(HttpStatus.UNAUTHORIZED);
     res.send();
   }
