@@ -1,5 +1,7 @@
 const AWS = require("aws-sdk");
+const faker = require("faker");
 const app = require("../app");
+const Users = require("../models/users");
 
 AWS.config.update({
   region: "ap-southeast-1",
@@ -48,4 +50,27 @@ const clearTable = async key => {
     });
 };
 
-module.exports = { app: app.listen(), clearTable };
+const user = {
+  email: faker.internet.email(),
+  name: faker.name.findName(),
+  password: faker.internet.password(),
+  role: "admin"
+};
+
+const createUser = async () => {
+  await Users.create(user);
+};
+
+const loginUser = async () => {
+  return await Users.authenticate(user);
+};
+
+const initUser = async () => {
+  await clearTable("user");
+  await createUser(user);
+  const { token } = await loginUser();
+  user.token = token;
+  return user;
+};
+
+module.exports = { app: app.listen(), clearTable, admin: initUser() };

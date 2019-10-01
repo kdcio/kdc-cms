@@ -1,6 +1,6 @@
 const request = require("supertest");
 const expect = require("chai").expect;
-const { app, clearTable } = require("./helper");
+const { app, clearTable, admin } = require("./helper");
 
 const req = request(app);
 const homePage = {
@@ -20,11 +20,14 @@ describe("Pages", function() {
   this.beforeAll(async function() {
     await clearTable("page");
     await clearTable("page#data");
+    const { token } = await admin;
+    this.token = token;
     // create page definition
     await req
       .post("/page-definition")
-      .send(homePageDef)
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + this.token)
+      .send(homePageDef)
       .expect("Content-Type", /json/)
       .expect(201, {
         id: homePage.id
@@ -35,8 +38,9 @@ describe("Pages", function() {
     it("should create", function(done) {
       req
         .post("/pages")
-        .send(homePage)
         .set("Accept", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+        .send(homePage)
         .expect("Content-Type", /json/)
         .expect(
           201,
@@ -52,6 +56,7 @@ describe("Pages", function() {
     it("should get", function(done) {
       req
         .get("/pages/" + homePage.id)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -72,6 +77,7 @@ describe("Pages", function() {
     it("should list", function(done) {
       req
         .get("/pages")
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -87,6 +93,7 @@ describe("Pages", function() {
     it("it should update", function(done) {
       req
         .put("/pages/" + homePage.id)
+        .set("Authorization", "Bearer " + this.token)
         .send({ intro: "Yes I'm updated!" })
         .set("Accept", "application/json")
         .expect(204, done);
@@ -97,6 +104,7 @@ describe("Pages", function() {
     it("should update intro", function(done) {
       req
         .get("/pages/" + homePage.id)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -115,7 +123,10 @@ describe("Pages", function() {
 
   describe("DELETE /pages/" + homePage.id, function() {
     it("should delete", function(done) {
-      req.delete("/pages/" + homePage.id).expect(204, done);
+      req
+        .delete("/pages/" + homePage.id)
+        .set("Authorization", "Bearer " + this.token)
+        .expect(204, done);
     });
   });
 

@@ -1,6 +1,6 @@
 const request = require("supertest");
 const expect = require("chai").expect;
-const { app, clearTable } = require("./helper");
+const { app, clearTable, admin } = require("./helper");
 
 const req = request(app);
 const blog = {
@@ -28,11 +28,14 @@ describe("Contents", function() {
   this.beforeAll(async function() {
     await clearTable("content");
     await clearTable("content#" + blogDef.type);
+    const { token } = await admin;
+    this.token = token;
     // create content definition
     await req
       .post("/content-definition")
-      .send(blogDef)
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + this.token)
+      .send(blogDef)
       .expect("Content-Type", /json/)
       .expect(201, {
         type: blogDef.type
@@ -43,8 +46,9 @@ describe("Contents", function() {
     it("it should create", function(done) {
       req
         .post("/contents/" + blogDef.type)
-        .send(blog)
         .set("Accept", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+        .send(blog)
         .expect("Content-Type", /json/)
         .expect(
           201,
@@ -60,6 +64,7 @@ describe("Contents", function() {
     it("should get", function(done) {
       req
         .get("/contents/" + blogDef.type + "/" + blog.slug)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -82,6 +87,7 @@ describe("Contents", function() {
     it("should list", function(done) {
       req
         .get("/contents/" + blogDef.type)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -97,6 +103,7 @@ describe("Contents", function() {
     it("it should update", function(done) {
       req
         .put("/contents/" + blogDef.type + "/" + blog.slug)
+        .set("Authorization", "Bearer " + this.token)
         .send({ title: "My Updated Post", author: "Happy Dela Cruz" })
         .set("Accept", "application/json")
         .expect(204, done);
@@ -107,6 +114,7 @@ describe("Contents", function() {
     it("should update body", function(done) {
       req
         .get("/contents/" + blogDef.type + "/" + blog.slug)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -130,6 +138,7 @@ describe("Contents", function() {
     it("should delete", function(done) {
       req
         .delete("/contents/" + blogDef.type + "/" + blog.slug)
+        .set("Authorization", "Bearer " + this.token)
         .expect(204, done);
     });
   });

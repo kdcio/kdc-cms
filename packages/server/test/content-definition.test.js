@@ -1,6 +1,6 @@
 const request = require("supertest");
 const expect = require("chai").expect;
-const { app, clearTable } = require("./helper");
+const { app, clearTable, admin } = require("./helper");
 
 const req = request(app);
 const blogs = {
@@ -17,6 +17,8 @@ const blogs = {
 describe("Content Definition", function() {
   this.beforeAll(async function() {
     await clearTable("content");
+    const { token } = await admin;
+    this.token = token;
   });
 
   describe("POST /content-definition", function() {
@@ -25,6 +27,7 @@ describe("Content Definition", function() {
         .post("/content-definition")
         .send(blogs)
         .set("Accept", "application/json")
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(
           201,
@@ -40,6 +43,7 @@ describe("Content Definition", function() {
     it("should get", function(done) {
       req
         .get("/content-definition/" + blogs.type)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -64,6 +68,7 @@ describe("Content Definition", function() {
     it("should list", function(done) {
       req
         .get("/content-definition")
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -79,6 +84,7 @@ describe("Content Definition", function() {
     it("it should update", function(done) {
       req
         .put("/content-definition/" + blogs.type)
+        .set("Authorization", "Bearer " + this.token)
         .send({ body: "text" })
         .set("Accept", "application/json")
         .expect(204, done);
@@ -89,6 +95,7 @@ describe("Content Definition", function() {
     it("should update body", function(done) {
       req
         .get("/content-definition/" + blogs.type)
+        .set("Authorization", "Bearer " + this.token)
         .expect("Content-Type", /json/)
         .expect(200)
         .end(function(err, res) {
@@ -111,7 +118,10 @@ describe("Content Definition", function() {
 
   describe("DELETE /content-definition/" + blogs.type, function() {
     it("should delete", function(done) {
-      req.delete("/content-definition/" + blogs.type).expect(204, done);
+      req
+        .delete("/content-definition/" + blogs.type)
+        .set("Authorization", "Bearer " + this.token)
+        .expect(204, done);
     });
   });
 
