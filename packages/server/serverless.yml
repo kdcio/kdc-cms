@@ -18,6 +18,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 package:
   individually: true
@@ -25,6 +30,10 @@ package:
 functions:
   cms:
     handler: lambda.handler
+    memorySize: 128
+    timeout: 5
+    environment:
+      NODE_ENV: production
     package:
       excludeDevDependencies: true
       exclude:
