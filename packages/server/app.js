@@ -4,6 +4,8 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const responseTime = require("response-time");
+const jwt = require("./helpers/jwt");
+const errorHandler = require("./helpers/error-handler");
 
 // Create a new Express application.
 const app = express();
@@ -31,9 +33,15 @@ if (process.env.NODE_ENV === "production") {
 // Enable CORS
 app.use(cors());
 
+// use JWT auth to secure the api
+app.use(jwt());
+
 // Import Routes
 const routes = require("./routes/index");
 
 app.use("/", routes);
+
+// global error handler
+app.use(errorHandler);
 
 module.exports = app;
