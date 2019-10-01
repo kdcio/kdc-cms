@@ -145,6 +145,23 @@ class Users extends DynamoDB {
 
     return this.docClient.delete(params).promise();
   }
+
+  async changePassword({ email, newPassword, oldPassword }) {
+    const params = {
+      TableName: this.tableName,
+      Key: { pk: email, sk: "user#pw" }
+    };
+
+    const data = await this.docClient.get(params).promise();
+    if (!data.Item) return Promise.reject({ code: "UserNotFound" });
+
+    const { Item: user } = data;
+    if (this.validPassword(oldPassword, user.salt, user.hash)) {
+      return this.createPassword({ email, password: newPassword });
+    }
+
+    return Promise.reject({ code: "PasswordInvalid" });
+  }
 }
 
 module.exports = new Users();

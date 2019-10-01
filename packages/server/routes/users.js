@@ -23,7 +23,9 @@ router.post("/authenticate", async (req, res, next) => {
     .then(user =>
       user
         ? res.json(user)
-        : res.status(400).json({ message: "Username or password is incorrect" })
+        : res
+            .status(HttpStatus.UNAUTHORIZED)
+            .json({ message: "Username and/or password is incorrect" })
     )
     .catch(err => next(err));
 });
@@ -48,6 +50,21 @@ router.get("/:email", async (req, res) => {
   const item = await Users.get({ email });
   res.status(HttpStatus.OK);
   res.send(item);
+});
+
+router.put("/:email/changePassword", async (req, res) => {
+  const { email } = req.params;
+  const { body } = req;
+
+  try {
+    await Users.changePassword({ email, ...body });
+    res.status(HttpStatus.NO_CONTENT);
+    res.send();
+  } catch (error) {
+    console.log(error);
+    res.status(HttpStatus.UNAUTHORIZED);
+    res.send();
+  }
 });
 
 module.exports = router;
