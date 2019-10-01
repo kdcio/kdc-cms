@@ -1,25 +1,14 @@
-const Router = require("@koa/router");
+const express = require("express");
 const pageDefinition = require("./pageDefinition");
 const pages = require("./pages");
 const contentDefinition = require("./contentDefinition");
 const contents = require("./contents");
 
-const router = new Router();
+const router = express.Router();
 
-router.use(
-  "/page-definition",
-  pageDefinition.routes(),
-  pageDefinition.allowedMethods()
-);
-
-router.use("/pages", pages.routes(), pages.allowedMethods());
-
-router.use(
-  "/content-definition",
-  contentDefinition.routes(),
-  contentDefinition.allowedMethods()
-);
-
-router.use("/contents", contents.routes(), contents.allowedMethods());
+router.use("/page-definition", pageDefinition);
+router.use("/pages", pages);
+router.use("/content-definition", contentDefinition);
+router.use("/contents", contents);
 
 module.exports = router;

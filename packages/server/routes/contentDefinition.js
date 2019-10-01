@@ -1,38 +1,42 @@
-const Router = require("@koa/router");
+const express = require("express");
+const HttpStatus = require("http-status-codes");
 const ContentDefinition = require("../models/contentDefinition");
 
-const router = new Router();
+const router = express.Router();
 
-router
-  .get("/", async ctx => {
-    const list = await ContentDefinition.list();
-    ctx.status = 200;
-    ctx.body = list.Items;
-  })
-  .post("/", async ctx => {
-    const { body } = ctx.request;
-    const type = await ContentDefinition.post(body);
-    ctx.status = 201;
-    ctx.body = { type };
-  })
-  .put("/:type", async ctx => {
-    const { type } = ctx.params;
-    const { body } = ctx.request;
-    await ContentDefinition.put({ type, attr: body });
-    ctx.status = 204;
-    ctx.body = {};
-  })
-  .del("/:type", async ctx => {
-    const { type } = ctx.params;
-    await ContentDefinition.delete({ type });
-    ctx.status = 204;
-    ctx.body = {};
-  })
-  .get("/:type", async ctx => {
-    const { type } = ctx.params;
-    const page = await ContentDefinition.get({ type });
-    ctx.status = 200;
-    ctx.body = page;
-  });
+router.get("/", async (req, res) => {
+  const list = await ContentDefinition.list();
+  res.status(HttpStatus.OK);
+  res.send(list.Items);
+});
+
+router.post("/", async (req, res) => {
+  const { body } = req;
+  const type = await ContentDefinition.post(body);
+  res.status(HttpStatus.CREATED);
+  res.send({ type });
+});
+
+router.put("/:type", async (req, res) => {
+  const { type } = req.params;
+  const { body } = req;
+  await ContentDefinition.put({ type, attr: body });
+  res.status(HttpStatus.NO_CONTENT);
+  res.send();
+});
+
+router.delete("/:type", async (req, res) => {
+  const { type } = req.params;
+  await ContentDefinition.delete({ type });
+  res.status(HttpStatus.NO_CONTENT);
+  res.send();
+});
+
+router.get("/:type", async (req, res) => {
+  const { type } = req.params;
+  const item = await ContentDefinition.get({ type });
+  res.status(HttpStatus.OK);
+  res.send(item);
+});
 
 module.exports = router;
