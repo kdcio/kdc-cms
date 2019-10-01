@@ -101,7 +101,49 @@ class Users extends DynamoDB {
   }
 
   list() {
-    return ["Melchor", "Gaspar", "Baltazar"];
+    const params = {
+      TableName: this.tableName,
+      IndexName: "GS1",
+      KeyConditionExpression: "gs1pk = :pk",
+      ExpressionAttributeValues: {
+        ":pk": "user"
+      }
+    };
+
+    return this.docClient
+      .query(params)
+      .promise()
+      .then(data => data);
+  }
+
+  async put({ email, attr }) {
+    const user = await this.get({ email });
+
+    const updatedAt = new Date().valueOf();
+    const Item = {
+      ...user,
+      ...attr,
+      updatedAt
+    };
+
+    const params = {
+      TableName: this.tableName,
+      Item
+    };
+
+    return this.docClient
+      .put(params)
+      .promise()
+      .then(async () => Item.pk);
+  }
+
+  async delete({ email }) {
+    const params = {
+      TableName: this.tableName,
+      Key: { pk: email, sk: "page" }
+    };
+
+    return this.docClient.delete(params).promise();
   }
 }
 
