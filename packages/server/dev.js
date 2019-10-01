@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 
 /**
+ * Initialize environment variables on dev
+ * In production, define these variables in lambda function.
+ * Do not save it in any file.
+ */
+process.env.NODE_ENV = "dev";
+process.env.JWT_SECRET = "1234567890";
+
+/**
  * Module dependencies.
  */
-
 const debug = require("debug")("kdc-cms:server");
 const http = require("http");
 const app = require("./app");

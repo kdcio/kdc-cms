@@ -1,3 +1,11 @@
+/**
+ * Initialize environment variables on dev
+ * In production, define these variables in lambda function.
+ * Do not save it in any file.
+ */
+process.env.NODE_ENV = "test";
+process.env.JWT_SECRET = "0987654321";
+
 const AWS = require("aws-sdk");
 const faker = require("faker");
 const app = require("../app");
