@@ -67,6 +67,8 @@ class Users extends DynamoDB {
     const Item = {
       pk: email,
       sk: "user#pw",
+      gs1pk: "user#pw",
+      gs1sk: email,
       hash,
       salt,
       createdAt
