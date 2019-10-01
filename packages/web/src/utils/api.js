@@ -1,5 +1,5 @@
 const api = (endpoint, { body, ...customConfig } = {}) => {
-  const token = window.localStorage.getItem("__kdc_cms_token__");
+  const token = localStorage.getItem("__kdc_cms_token__");
   const headers = { "content-type": "application/json" };
 
   if (token) {
@@ -19,9 +19,15 @@ const api = (endpoint, { body, ...customConfig } = {}) => {
     config.body = JSON.stringify(body);
   }
 
-  return window
-    .fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, config)
-    .then(r => r.json());
+  return fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, config).then(
+    async r => {
+      const json = await r.json();
+      if (r.status >= 200 && r.status <= 204) {
+        return json;
+      }
+      return Promise.reject(json);
+    }
+  );
 };
 
 export default api;

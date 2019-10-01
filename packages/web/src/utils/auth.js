@@ -4,7 +4,7 @@ const localStorageKey = "__kdc_cms_token__";
 
 const handleUserResponse = user => {
   const { token } = user;
-  window.localStorage.setItem(localStorageKey, token);
+  localStorage.setItem(localStorageKey, token);
   return user;
 };
 
@@ -33,12 +33,12 @@ const register = ({ email, password }) => {
 };
 
 function logout() {
-  window.localStorage.removeItem(localStorageKey);
+  localStorage.removeItem(localStorageKey);
   return Promise.resolve();
 }
 
 function getToken() {
-  return window.localStorage.getItem(localStorageKey);
+  return localStorage.getItem(localStorageKey);
 }
 
 export { login, register, logout, getToken, getUser };

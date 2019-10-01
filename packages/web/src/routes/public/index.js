@@ -1,10 +1,20 @@
 import React from "react";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Spinner,
+  Alert
+} from "reactstrap";
 import { useAuth } from "../../context/auth";
 import Layout from "../../components/layout";
+import useCallbackStatus from "../../utils/useCallbackStatus";
 
 export default () => {
   const { login } = useAuth();
+  const { isPending, isRejected, error, run } = useCallbackStatus();
   return (
     <Layout className="vh-100 d-flex justify-content-center flex-column text-center">
       <div>
@@ -14,10 +24,13 @@ export default () => {
           onSubmit={e => {
             e.preventDefault();
             const { email, password } = e.target.elements;
-            login({ email: email.value, password: password.value });
+            run(login({ email: email.value, password: password.value }));
           }}
         >
           <h3 className="h3 mb-3 font-weight-normal">Please sign in</h3>
+          {isRejected ? (
+            <Alert color="danger">{error ? error.message : null}</Alert>
+          ) : null}
           <FormGroup>
             <Label htmlFor="email" className="sr-only">
               Email
@@ -46,7 +59,7 @@ export default () => {
             </Label>
           </FormGroup>
           <Button size="lg" color="primary" block type="submit">
-            Sign in
+            Sign in {isPending ? <Spinner size="sm" /> : null}
           </Button>
           <p className="mt-5 mb-3 text-muted">&copy; 2019</p>
         </Form>
