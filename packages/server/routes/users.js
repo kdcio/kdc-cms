@@ -11,6 +11,13 @@ router.get("/", async (req, res) => {
   res.send(list);
 });
 
+router.post("/create", async (req, res) => {
+  const { body } = req;
+  const email = await Users.create(body);
+  res.status(HttpStatus.OK);
+  res.send({ email });
+});
+
 router.post("/authenticate", async (req, res, next) => {
   Users.authenticate(req.body)
     .then(user =>
