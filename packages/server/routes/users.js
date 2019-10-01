@@ -11,6 +11,12 @@ router.get("/", async (req, res) => {
   res.send(list.Items);
 });
 
+router.get("/me", async (req, res) => {
+  const { user } = req;
+  res.status(HttpStatus.OK);
+  res.send({ user });
+});
+
 router.post("/", async (req, res) => {
   const { body } = req;
   const email = await Users.create(body);
