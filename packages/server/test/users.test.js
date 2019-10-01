@@ -13,7 +13,6 @@ const user = {
 
 describe("Users", function() {
   this.beforeAll(async function() {
-    await clearTable("page");
     const { token } = await admin;
     this.token = token;
   });
@@ -172,6 +171,7 @@ describe("Users", function() {
   });
 
   this.afterAll(async function() {
-    await clearTable("page");
+    await clearTable("user");
+    await clearTable("user#pw");
   });
 });
