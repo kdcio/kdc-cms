@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const responseTime = require("response-time");
 const jwt = require("./helpers/jwt");
-const errorHandler = require("./helpers/error-handler");
+const errorHandler = require("./helpers/errorHandler");
 
 // Create a new Express application.
 const app = express();
