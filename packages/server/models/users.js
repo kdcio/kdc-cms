@@ -3,23 +3,14 @@ const crypto = require("crypto");
 const DynamoDB = require("./dynamodb");
 
 class Users extends DynamoDB {
-  async authenticate({ email, password }) {
-    const params = {
-      TableName: this.tableName,
-      Key: { pk: email, sk: "user#pw" }
-    };
-
-    const data = await this.docClient.get(params).promise();
-    if (!data.Item) return;
-
-    const { Item: user } = data;
-    if (this.validPassword(password, user.salt, user.hash)) {
-      const token = jwt.sign({ sub: user.pk }, process.env.JWT_SECRET);
-      return { email, token };
-    }
+  _validPassword(inputPassword, salt, hash) {
+    const inputHash = crypto
+      .pbkdf2Sync(inputPassword, salt, 1000, 64, `sha512`)
+      .toString(`hex`);
+    return inputHash === hash;
   }
 
-  setPassword(password) {
+  _setPassword(password) {
     // Creating a unique salt for a particular user
     const salt = crypto.randomBytes(16).toString("hex");
 
@@ -32,11 +23,20 @@ class Users extends DynamoDB {
     return { hash, salt };
   }
 
-  validPassword(inputPassword, salt, hash) {
-    const inputHash = crypto
-      .pbkdf2Sync(inputPassword, salt, 1000, 64, `sha512`)
-      .toString(`hex`);
-    return inputHash === hash;
+  async authenticate({ email, password }) {
+    const params = {
+      TableName: this.tableName,
+      Key: { pk: email, sk: "user#pw" }
+    };
+
+    const data = await this.docClient.get(params).promise();
+    if (!data.Item) return;
+
+    const { Item: user } = data;
+    if (this._validPassword(password, user.salt, user.hash)) {
+      const token = jwt.sign({ sub: user.pk }, process.env.JWT_SECRET);
+      return { email, token };
+    }
   }
 
   async create({ email, name, password, ...attr }) {
@@ -63,7 +63,7 @@ class Users extends DynamoDB {
 
   async createPassword({ email, password }) {
     const createdAt = new Date().valueOf();
-    const { hash, salt } = this.setPassword(password);
+    const { hash, salt } = this._setPassword(password);
     const Item = {
       pk: email,
       sk: "user#pw",
@@ -156,7 +156,7 @@ class Users extends DynamoDB {
     if (!data.Item) return Promise.reject({ code: "UserNotFound" });
 
     const { Item: user } = data;
-    if (this.validPassword(oldPassword, user.salt, user.hash)) {
+    if (this._validPassword(oldPassword, user.salt, user.hash)) {
       return this.createPassword({ email, password: newPassword });
     }
 
