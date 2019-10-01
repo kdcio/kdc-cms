@@ -61,7 +61,7 @@ router.put("/:email/changePassword", async (req, res) => {
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
-    console.log(error);
+    console.log(email, error);
     res.status(HttpStatus.UNAUTHORIZED);
     res.send();
   }
