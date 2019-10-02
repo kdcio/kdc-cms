@@ -11,6 +11,14 @@ router.get('/', async (req, res) => {
   res.send(list.Items);
 });
 
+/**
+ * Issue: what happens if user is deleted or change roles?
+ * I explicitly didn't check the db to reduce cost.
+ * Possible solutions:
+ * 1. Implement refresh token
+ * 2. express-jwt-permissions?
+ * 3. https://auth0.com/blog/blacklist-json-web-token-api-keys/
+ */
 router.get('/me', async (req, res) => {
   const { user } = req;
   res.status(HttpStatus.OK);
