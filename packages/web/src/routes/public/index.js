@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Form,
   FormGroup,
@@ -9,17 +9,17 @@ import {
   Row,
   Col,
   Card,
-  CardBody
-} from "reactstrap";
-import { useAuth } from "../../context/auth";
-import Layout from "../../components/layoutPublic";
-import useBodyClass from "../../components/bodyClass";
-import useCallbackStatus from "../../utils/useCallbackStatus";
+  CardBody,
+} from 'reactstrap';
+import { useAuth } from '../../context/auth';
+import Layout from '../../components/layoutPublic';
+import useBodyClass from '../../components/bodyClass';
+import useCallbackStatus from '../../utils/useCallbackStatus';
 
-export default () => {
+const Login = () => {
   const { login } = useAuth();
   const { isPending, isRejected, error, run } = useCallbackStatus();
-  useBodyClass("bg-gradient-primary");
+  useBodyClass('bg-gradient-primary');
   return (
     <Layout>
       <Row className="justify-content-md-center">
@@ -32,18 +32,14 @@ export default () => {
                 </div>
                 <Form
                   className="user"
-                  onSubmit={e => {
+                  onSubmit={(e) => {
                     e.preventDefault();
                     const { email, password } = e.target.elements;
-                    run(
-                      login({ email: email.value, password: password.value })
-                    );
+                    run(login({ email: email.value, password: password.value }));
                   }}
                 >
                   {isRejected ? (
-                    <p className="text-danger">
-                      {error ? error.message : null}
-                    </p>
+                    <p className="text-danger">{error ? error.message : null}</p>
                   ) : null}
                   <FormGroup>
                     <Label htmlFor="email" className="sr-only">
@@ -72,18 +68,13 @@ export default () => {
                       className="form-control-user"
                     />
                   </FormGroup>
-                  <Button
-                    color="primary"
-                    block
-                    type="submit"
-                    className="btn-user"
-                  >
+                  <Button color="primary" block type="submit" className="btn-user">
                     Login {isPending ? <Spinner size="sm" /> : null}
                   </Button>
                 </Form>
                 <hr />
                 <div className="text-center">
-                  Powered by{" "}
+                  Powered by{' '}
                   <a
                     className="small"
                     href="https://github.com/ianpogi5/kdc-cms"
@@ -101,3 +92,5 @@ export default () => {
     </Layout>
   );
 };
+
+export default Login;

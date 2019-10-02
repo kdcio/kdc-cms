@@ -1,4 +1,4 @@
-import { getUser } from "./auth";
+import { getUser } from './auth';
 
 const bootstrapAppData = async () => {
   const data = await getUser();
@@ -8,4 +8,4 @@ const bootstrapAppData = async () => {
   return data;
 };
 
-export { bootstrapAppData };
+export default bootstrapAppData;

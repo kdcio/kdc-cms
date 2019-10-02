@@ -1,13 +1,16 @@
-import React from "react";
-import { AuthProvider } from "./auth";
-import { UserProvider } from "./user";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { AuthProvider } from './auth';
+import { UserProvider } from './user';
 
-const AppProviders = ({ children }) => {
-  return (
-    <AuthProvider>
-      <UserProvider>{children}</UserProvider>
-    </AuthProvider>
-  );
+const AppProviders = ({ children }) => (
+  <AuthProvider>
+    <UserProvider>{children}</UserProvider>
+  </AuthProvider>
+);
+
+AppProviders.propTypes = {
+  children: PropTypes.object,
 };
 
 export default AppProviders;

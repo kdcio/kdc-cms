@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./scss/admin.scss";
-import App from "./App";
-import AppProviders from "./context/app";
-import * as serviceWorker from "./serviceWorker";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './scss/admin.scss';
+import App from './App';
+import AppProviders from './context/app';
+import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <AppProviders>
     <App />
   </AppProviders>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

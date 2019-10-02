@@ -1,10 +1,15 @@
-import React from "react";
-import { useUser } from "./context/user";
-import FullPageSpinner from "./components/fullPageSpinner";
+import React from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faAngleLeft, faAngleRight, faBars } from '@fortawesome/free-solid-svg-icons';
+import { useUser } from './context/user';
+import { SideBarToggleProvider } from './context/sideBar';
+import FullPageSpinner from './components/fullPageSpinner';
 
-const loadPrivateApp = () => import("./routes/private");
+const loadPrivateApp = () => import('./routes/private');
 const PrivateApp = React.lazy(loadPrivateApp);
-const PublicApp = React.lazy(() => import("./routes/public"));
+const PublicApp = React.lazy(() => import('./routes/public'));
+
+library.add(faAngleLeft, faAngleRight, faBars);
 
 function App() {
   const user = useUser();
@@ -13,7 +18,13 @@ function App() {
   }, []);
   return (
     <React.Suspense fallback={<FullPageSpinner />}>
-      {user ? <PrivateApp /> : <PublicApp />}
+      {user ? (
+        <SideBarToggleProvider>
+          <PrivateApp />
+        </SideBarToggleProvider>
+      ) : (
+        <PublicApp />
+      )}
     </React.Suspense>
   );
 }

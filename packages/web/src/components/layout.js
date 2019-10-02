@@ -1,9 +1,10 @@
-import React from "react";
-import { Container } from "reactstrap";
-import SideBar from "./sideBar";
-import TopBar from "./topBar";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Container } from 'reactstrap';
+import SideBar from './sideBar';
+import TopBar from './topBar';
 
-export default props => (
+const Layout = (props) => (
   <div id="wrapper">
     <SideBar />
     <div id="content-wrapper" className="d-flex flex-column">
@@ -14,3 +15,11 @@ export default props => (
     </div>
   </div>
 );
+
+Layout.propTypes = {
+  title: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  children: PropTypes.object.isRequired,
+};
+
+export default Layout;
