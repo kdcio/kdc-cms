@@ -10,6 +10,8 @@
     "ddb:wait": "until nc -z localhost 8000; do sleep 1; done && echo \"DynamoDB started\"",
     "ddb:init": "aws dynamodb create-table --cli-input-json file://schema.json --endpoint-url http://localhost:8000",
     "ddb:stop": "docker-compose stop",
+    "firstUser": "node helpers/firstUser.js",
+    "setup": "npm run ddb:setup && npm run firstUser",
     "test": "mocha --watch",
     "coverage": "nyc mocha --exit",
     "build": "mkdir -p build && cp -R lambda.js app.js package.json package-lock.json routes models build/ && cd build && npm install --production",
@@ -44,6 +46,7 @@
     "mocha": "^6.2.0",
     "nodemon": "^1.19.2",
     "nyc": "^14.1.1",
+    "readline-sync": "^1.4.10",
     "supertest": "^4.0.2"
   }
 }
