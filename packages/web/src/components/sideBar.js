@@ -12,12 +12,15 @@ const SideBar = () => {
   return (
     <ul className={sbClass} id="accordionSidebar">
       <a className="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div className="sidebar-brand-icon rotate-n-15">
+          <FontAwesomeIcon icon="keyboard" />
+        </div>
         <div className="sidebar-brand-text mx-3">KDC CMS</div>
       </a>
       <hr className="sidebar-divider my-0" />
       <li className="nav-item active">
         <a className="nav-link" href="index.html">
-          <i className="fas fa-fw fa-tachometer-alt"></i>
+          <FontAwesomeIcon icon="tachometer-alt" />
           <span>Dashboard</span>
         </a>
       </li>
@@ -25,13 +28,13 @@ const SideBar = () => {
       <div className="sidebar-heading">Content</div>
       <li className="nav-item">
         <a className="nav-link" href="charts.html">
-          <i className="fas fa-fw fa-chart-area"></i>
+          <FontAwesomeIcon icon="file" />
           <span>Pages</span>
         </a>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="charts.html">
-          <i className="fas fa-fw fa-chart-area"></i>
+          <FontAwesomeIcon icon="folder" />
           <span>Blogs</span>
         </a>
       </li>
@@ -39,13 +42,13 @@ const SideBar = () => {
       <div className="sidebar-heading">Content Types</div>
       <li className="nav-item">
         <a className="nav-link" href="charts.html">
-          <i className="fas fa-fw fa-chart-area"></i>
+          <FontAwesomeIcon icon="wrench" />
           <span>Pages</span>
         </a>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="charts.html">
-          <i className="fas fa-fw fa-chart-area"></i>
+          <FontAwesomeIcon icon="cog" />
           <span>Content</span>
         </a>
       </li>

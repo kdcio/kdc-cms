@@ -113,7 +113,7 @@
     letter-spacing: 0.05rem;
     z-index: 1;
 
-    .sidebar-brand-icon i {
+    .sidebar-brand-icon svg {
       font-size: 2rem;
     }
     .sidebar-brand-text {
@@ -162,16 +162,17 @@
         text-align: left;
         padding: 1rem;
         width: $sidebar-base-width;
-        i {
+        svg {
           font-size: 0.85rem;
           margin-right: 0.25rem;
+          width: 1.25rem;
         }
         span {
           font-size: 0.85rem;
           display: inline;
         }
         // Accordion Arrow Icon
-        &[data-toggle="collapse"] {
+        &[data-toggle='collapse'] {
           &::after {
             width: 1rem;
             text-align: center;
@@ -179,17 +180,17 @@
             vertical-align: 0;
             border: 0;
             font-weight: 900;
-            content: "\f107";
-            font-family: "Font Awesome 5 Free";
+            content: '\f107';
+            font-family: 'Font Awesome 5 Free';
           }
           &.collapsed::after {
-            content: "\f105";
+            content: '\f105';
           }
         }
       }
     }
     .sidebar-brand {
-      .sidebar-brand-icon i {
+      .sidebar-brand-icon svg {
         font-size: 2rem;
       }
       .sidebar-brand-text {
@@ -238,16 +239,16 @@
             font-size: 0.65rem;
             display: block;
           }
-          i {
+          svg {
             margin-right: 0;
           }
-          &[data-toggle="collapse"]::after {
+          &[data-toggle='collapse']::after {
             display: none;
           }
         }
       }
       .sidebar-brand {
-        .sidebar-brand-icon i {
+        .sidebar-brand-icon svg {
           font-size: 2rem;
         }
         .sidebar-brand-text {
@@ -277,26 +278,26 @@
   .nav-item {
     .nav-link {
       color: $gray-600;
-      i {
+      svg {
         color: $gray-400;
       }
       &:active,
       &:focus,
       &:hover {
         color: $gray-700;
-        i {
+        svg {
           color: $gray-700;
         }
       }
       // Accordion
-      &[data-toggle="collapse"]::after {
+      &[data-toggle='collapse']::after {
         color: $gray-500;
       }
     }
     &.active {
       .nav-link {
         color: $gray-700;
-        i {
+        svg {
           color: $gray-700;
         }
       }
@@ -328,26 +329,26 @@
   .nav-item {
     .nav-link {
       color: fade-out($white, 0.2);
-      i {
+      svg {
         color: fade-out($white, 0.7);
       }
       &:active,
       &:focus,
       &:hover {
         color: $white;
-        i {
+        svg {
           color: $white;
         }
       }
       // Accordion
-      &[data-toggle="collapse"]::after {
+      &[data-toggle='collapse']::after {
         color: fade-out($white, 0.5);
       }
     }
     &.active {
       .nav-link {
         color: $white;
-        i {
+        svg {
           color: $white;
         }
       }

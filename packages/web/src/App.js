@@ -1,6 +1,16 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faAngleLeft, faAngleRight, faBars } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleLeft,
+  faAngleRight,
+  faBars,
+  faKeyboard,
+  faTachometerAlt,
+  faFile,
+  faFolder,
+  faCog,
+  faWrench,
+} from '@fortawesome/free-solid-svg-icons';
 import { useUser } from './context/user';
 import { SideBarToggleProvider } from './context/sideBar';
 import FullPageSpinner from './components/fullPageSpinner';
@@ -9,7 +19,17 @@ const loadPrivateApp = () => import('./routes/private');
 const PrivateApp = React.lazy(loadPrivateApp);
 const PublicApp = React.lazy(() => import('./routes/public'));
 
-library.add(faAngleLeft, faAngleRight, faBars);
+library.add(
+  faAngleLeft,
+  faAngleRight,
+  faBars,
+  faKeyboard,
+  faTachometerAlt,
+  faFile,
+  faFolder,
+  faCog,
+  faWrench
+);
 
 function App() {
   const user = useUser();
