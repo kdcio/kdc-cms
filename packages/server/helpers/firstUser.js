@@ -16,6 +16,7 @@ Users.list()
     let name = null;
     let email = null;
     let password = null;
+    const role = 'admin';
 
     while (TRUE) {
       name = readline.question('Your name: ');
@@ -51,7 +52,7 @@ Users.list()
       console.log('Password does not match');
     }
 
-    return Users.create({ email, password, name })
+    return Users.create({ email, password, name, role })
       .then(() => {
         console.log('User created');
       })
