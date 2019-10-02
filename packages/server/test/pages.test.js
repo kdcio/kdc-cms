@@ -1,47 +1,48 @@
-const request = require("supertest");
-const expect = require("chai").expect;
-const { app, clearTable, admin } = require("./helper");
+/* eslint-disable func-names */
+const request = require('supertest');
+const { expect } = require('chai');
+const { app, clearTable, admin } = require('./helper');
 
 const req = request(app);
 const homePage = {
-  id: "home",
-  title: "My Company",
-  intro: "Your wish is my command"
+  id: 'home',
+  title: 'My Company',
+  intro: 'Your wish is my command'
 };
 
 const homePageDef = {
-  name: "Home Page",
-  id: "home",
-  title: "text",
-  intro: "long-text"
+  name: 'Home Page',
+  id: 'home',
+  title: 'text',
+  intro: 'long-text'
 };
 
-describe("Pages", function() {
-  this.beforeAll(async function() {
-    await clearTable("page");
-    await clearTable("page#data");
+describe('Pages', function() {
+  before(async function() {
+    await clearTable('page');
+    await clearTable('page#data');
     const { token } = await admin;
     this.token = token;
     // create page definition
     await req
-      .post("/page-definition")
-      .set("Accept", "application/json")
-      .set("Authorization", "Bearer " + this.token)
+      .post('/page-definition')
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${this.token}`)
       .send(homePageDef)
-      .expect("Content-Type", /json/)
+      .expect('Content-Type', /json/)
       .expect(201, {
         id: homePage.id
       });
   });
 
-  describe("POST /pages", function() {
-    it("should create", function(done) {
+  describe('POST /pages', function() {
+    it('should create', function(done) {
       req
-        .post("/pages")
-        .set("Accept", "application/json")
-        .set("Authorization", "Bearer " + this.token)
+        .post('/pages')
+        .set('Accept', 'application/json')
+        .set('Authorization', `Bearer ${this.token}`)
         .send(homePage)
-        .expect("Content-Type", /json/)
+        .expect('Content-Type', /json/)
         .expect(
           201,
           {
@@ -52,19 +53,19 @@ describe("Pages", function() {
     });
   });
 
-  describe("GET /pages/" + homePage.id, function() {
-    it("should get", function(done) {
+  describe(`GET /pages/:id`, function() {
+    it('should get', function(done) {
       req
-        .get("/pages/" + homePage.id)
-        .set("Authorization", "Bearer " + this.token)
-        .expect("Content-Type", /json/)
+        .get(`/pages/${homePage.id}`)
+        .set('Authorization', `Bearer ${this.token}`)
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
-          expect(err).to.be.null;
+          expect(err).to.be.equal(null);
           const { body } = res;
           expect(body.pk).to.equal(homePage.id);
-          expect(body.sk).to.equal("page#data");
-          expect(body.gs1pk).to.equal("page#data");
+          expect(body.sk).to.equal('page#data');
+          expect(body.gs1pk).to.equal('page#data');
           expect(body.gs1sk).to.equal(homePageDef.name);
           expect(body.title).to.equal(homePage.title);
           expect(body.intro).to.equal(homePage.intro);
@@ -73,15 +74,15 @@ describe("Pages", function() {
     });
   });
 
-  describe("GET /pages", function() {
-    it("should list", function(done) {
+  describe('GET /pages', function() {
+    it('should list', function(done) {
       req
-        .get("/pages")
-        .set("Authorization", "Bearer " + this.token)
-        .expect("Content-Type", /json/)
+        .get('/pages')
+        .set('Authorization', `Bearer ${this.token}`)
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
-          expect(err).to.be.null;
+          expect(err).to.be.equal(null);
           const { body } = res;
           expect(body.length).to.equal(1);
           done();
@@ -89,30 +90,30 @@ describe("Pages", function() {
     });
   });
 
-  describe("PUT /pages/" + homePage.id, function() {
-    it("it should update", function(done) {
+  describe(`PUT /pages/:id`, function() {
+    it('it should update', function(done) {
       req
-        .put("/pages/" + homePage.id)
-        .set("Authorization", "Bearer " + this.token)
+        .put(`/pages/${homePage.id}`)
+        .set('Authorization', `Bearer ${this.token}`)
         .send({ intro: "Yes I'm updated!" })
-        .set("Accept", "application/json")
+        .set('Accept', 'application/json')
         .expect(204, done);
     });
   });
 
-  describe("GET /pages/" + homePage.id, function() {
-    it("should update intro", function(done) {
+  describe(`GET /pages/:id`, function() {
+    it('should update intro', function(done) {
       req
-        .get("/pages/" + homePage.id)
-        .set("Authorization", "Bearer " + this.token)
-        .expect("Content-Type", /json/)
+        .get(`/pages/${homePage.id}`)
+        .set('Authorization', `Bearer ${this.token}`)
+        .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
-          expect(err).to.be.null;
+          expect(err).to.be.equal(null);
           const { body } = res;
           expect(body.pk).to.equal(homePage.id);
-          expect(body.sk).to.equal("page#data");
-          expect(body.gs1pk).to.equal("page#data");
+          expect(body.sk).to.equal('page#data');
+          expect(body.gs1pk).to.equal('page#data');
           expect(body.gs1sk).to.equal(homePageDef.name);
           expect(body.title).to.equal(homePage.title);
           expect(body.intro).to.equal("Yes I'm updated!");
@@ -121,17 +122,17 @@ describe("Pages", function() {
     });
   });
 
-  describe("DELETE /pages/" + homePage.id, function() {
-    it("should delete", function(done) {
+  describe(`DELETE /pages/:id`, function() {
+    it('should delete', function(done) {
       req
-        .delete("/pages/" + homePage.id)
-        .set("Authorization", "Bearer " + this.token)
+        .delete(`/pages/${homePage.id}`)
+        .set('Authorization', `Bearer ${this.token}`)
         .expect(204, done);
     });
   });
 
-  this.afterAll(async function() {
-    await clearTable("page");
-    await clearTable("page#data");
+  after(async function() {
+    await clearTable('page');
+    await clearTable('page#data');
   });
 });

@@ -1,12 +1,12 @@
-const DynamoDB = require("./dynamodb");
+const DynamoDB = require('./dynamodb');
 
 class PageDefinition extends DynamoDB {
   post({ name, id, ...attr }) {
     const createdAt = new Date().valueOf();
     const Item = {
       pk: id,
-      sk: "page",
-      gs1pk: "page",
+      sk: 'page',
+      gs1pk: 'page',
       gs1sk: name,
       ...attr,
       createdAt
@@ -26,7 +26,7 @@ class PageDefinition extends DynamoDB {
   get({ id }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: "page" }
+      Key: { pk: id, sk: 'page' }
     };
 
     return this.docClient
@@ -34,7 +34,7 @@ class PageDefinition extends DynamoDB {
       .promise()
       .then(data => {
         if (!data.Item) {
-          return Promise.reject({ code: "PageNotFound" });
+          return Promise.reject(new Error({ code: 'PageNotFound' }));
         }
         return data.Item;
       });
@@ -43,10 +43,10 @@ class PageDefinition extends DynamoDB {
   list() {
     const params = {
       TableName: this.tableName,
-      IndexName: "GS1",
-      KeyConditionExpression: "gs1pk = :pk",
+      IndexName: 'GS1',
+      KeyConditionExpression: 'gs1pk = :pk',
       ExpressionAttributeValues: {
-        ":pk": "page"
+        ':pk': 'page'
       }
     };
 
@@ -80,7 +80,7 @@ class PageDefinition extends DynamoDB {
   async delete({ id }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: "page" }
+      Key: { pk: id, sk: 'page' }
     };
 
     return this.docClient.delete(params).promise();

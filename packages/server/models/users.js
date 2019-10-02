@@ -1,50 +1,32 @@
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const DynamoDB = require("./dynamodb");
+/* eslint-disable no-underscore-dangle */
+const jwt = require('jsonwebtoken');
+const { isValidPassword, encryptPassword } = require('../helpers/encrypt');
+const DynamoDB = require('./dynamodb');
 
 class Users extends DynamoDB {
-  _validPassword(inputPassword, salt, hash) {
-    const inputHash = crypto
-      .pbkdf2Sync(inputPassword, salt, 1000, 64, `sha512`)
-      .toString(`hex`);
-    return inputHash === hash;
-  }
-
-  _setPassword(password) {
-    // Creating a unique salt for a particular user
-    const salt = crypto.randomBytes(16).toString("hex");
-
-    // Hashing user's salt and password with 1000 iterations,
-    // 64 length and sha512 digest
-    const hash = crypto
-      .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
-      .toString(`hex`);
-
-    return { hash, salt };
-  }
-
   async authenticate({ email, password }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: "user#pw" }
+      Key: { pk: email, sk: 'user#pw' }
     };
 
     const data = await this.docClient.get(params).promise();
-    if (!data.Item) return;
+    if (!data.Item) return null;
 
     const { Item: user } = data;
-    if (this._validPassword(password, user.salt, user.hash)) {
+    if (isValidPassword(password, user.salt, user.hash)) {
       const token = jwt.sign({ sub: user.pk }, process.env.JWT_SECRET);
       return { email, token };
     }
+    return null;
   }
 
   async create({ email, name, password, ...attr }) {
     const createdAt = new Date().valueOf();
     const Item = {
       pk: email,
-      sk: "user",
-      gs1pk: "user",
+      sk: 'user',
+      gs1pk: 'user',
       gs1sk: name,
       ...attr,
       createdAt
@@ -63,11 +45,11 @@ class Users extends DynamoDB {
 
   async createPassword({ email, password }) {
     const createdAt = new Date().valueOf();
-    const { hash, salt } = this._setPassword(password);
+    const { hash, salt } = encryptPassword(password);
     const Item = {
       pk: email,
-      sk: "user#pw",
-      gs1pk: "user#pw",
+      sk: 'user#pw',
+      gs1pk: 'user#pw',
       gs1sk: email,
       hash,
       salt,
@@ -88,7 +70,7 @@ class Users extends DynamoDB {
   get({ email }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: "user" }
+      Key: { pk: email, sk: 'user' }
     };
 
     return this.docClient
@@ -96,7 +78,7 @@ class Users extends DynamoDB {
       .promise()
       .then(data => {
         if (!data.Item) {
-          return Promise.reject({ code: "UserNotFound" });
+          return Promise.reject(new Error({ code: 'UserNotFound' }));
         }
         return data.Item;
       });
@@ -105,10 +87,10 @@ class Users extends DynamoDB {
   list() {
     const params = {
       TableName: this.tableName,
-      IndexName: "GS1",
-      KeyConditionExpression: "gs1pk = :pk",
+      IndexName: 'GS1',
+      KeyConditionExpression: 'gs1pk = :pk',
       ExpressionAttributeValues: {
-        ":pk": "user"
+        ':pk': 'user'
       }
     };
 
@@ -142,7 +124,7 @@ class Users extends DynamoDB {
   async delete({ email }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: "page" }
+      Key: { pk: email, sk: 'page' }
     };
 
     return this.docClient.delete(params).promise();
@@ -151,18 +133,18 @@ class Users extends DynamoDB {
   async changePassword({ email, newPassword, oldPassword }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: "user#pw" }
+      Key: { pk: email, sk: 'user#pw' }
     };
 
     const data = await this.docClient.get(params).promise();
-    if (!data.Item) return Promise.reject({ code: "UserNotFound" });
+    if (!data.Item) return Promise.reject(new Error({ code: 'UserNotFound' }));
 
     const { Item: user } = data;
-    if (this._validPassword(oldPassword, user.salt, user.hash)) {
+    if (isValidPassword(oldPassword, user.salt, user.hash)) {
       return this.createPassword({ email, password: newPassword });
     }
 
-    return Promise.reject({ code: "PasswordInvalid" });
+    return Promise.reject(new Error({ code: 'PasswordInvalid' }));
   }
 }
 

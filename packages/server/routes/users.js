@@ -1,42 +1,42 @@
-const express = require("express");
-const HttpStatus = require("http-status-codes");
-const Users = require("../models/users");
+const express = require('express');
+const HttpStatus = require('http-status-codes');
+const Users = require('../models/users');
 
 const router = express.Router();
 
 // this should be protected
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   const list = await Users.list();
   res.status(HttpStatus.OK);
   res.send(list.Items);
 });
 
-router.get("/me", async (req, res) => {
+router.get('/me', async (req, res) => {
   const { user } = req;
   res.status(HttpStatus.OK);
   res.send({ user });
 });
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   const { body } = req;
   const email = await Users.create(body);
   res.status(HttpStatus.CREATED);
   res.send({ email });
 });
 
-router.post("/authenticate", async (req, res, next) => {
+router.post('/authenticate', async (req, res, next) => {
   Users.authenticate(req.body)
     .then(user =>
       user
         ? res.json(user)
         : res
             .status(HttpStatus.UNAUTHORIZED)
-            .json({ message: "Username and/or password is incorrect" })
+            .json({ message: 'Username and/or password is incorrect' })
     )
     .catch(err => next(err));
 });
 
-router.put("/:email", async (req, res) => {
+router.put('/:email', async (req, res) => {
   const { email } = req.params;
   const { body } = req;
   await Users.put({ email, attr: body });
@@ -44,21 +44,21 @@ router.put("/:email", async (req, res) => {
   res.send();
 });
 
-router.delete("/:email", async (req, res) => {
+router.delete('/:email', async (req, res) => {
   const { email } = req.params;
   await Users.delete({ email });
   res.status(HttpStatus.NO_CONTENT);
   res.send();
 });
 
-router.get("/:email", async (req, res) => {
+router.get('/:email', async (req, res) => {
   const { email } = req.params;
   const item = await Users.get({ email });
   res.status(HttpStatus.OK);
   res.send(item);
 });
 
-router.put("/:email/changePassword", async (req, res) => {
+router.put('/:email/changePassword', async (req, res) => {
   const { email } = req.params;
   const { body } = req;
 

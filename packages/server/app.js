@@ -1,11 +1,11 @@
-const express = require("express");
-const helmet = require("helmet");
-const logger = require("morgan");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const responseTime = require("response-time");
-const jwt = require("./helpers/jwt");
-const errorHandler = require("./helpers/errorHandler");
+const express = require('express');
+const helmet = require('helmet');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const responseTime = require('response-time');
+const jwt = require('./helpers/jwt');
+const errorHandler = require('./helpers/errorHandler');
 
 // Create a new Express application.
 const app = express();
@@ -16,18 +16,18 @@ app.use(responseTime());
 app.use(helmet());
 
 // don't show the log when it is test
-if (process.env.NODE_ENV === "production") {
-  app.use(logger("combined")); // 'combined' outputs the Apache style LOGs
-} else if (process.env.NODE_ENV === "dev") {
-  app.use(logger("dev"));
+if (process.env.NODE_ENV === 'production') {
+  app.use(logger('combined')); // 'combined' outputs the Apache style LOGs
+} else if (process.env.NODE_ENV === 'dev') {
+  app.use(logger('dev'));
 }
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Setup session
-if (process.env.NODE_ENV === "production") {
-  app.set("trust proxy", 1);
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
 }
 
 // Enable CORS
@@ -37,9 +37,9 @@ app.use(cors());
 app.use(jwt());
 
 // Import Routes
-const routes = require("./routes/index");
+const routes = require('./routes/index');
 
-app.use("/", routes);
+app.use('/', routes);
 
 // global error handler
 app.use(errorHandler);

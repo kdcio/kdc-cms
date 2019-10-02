@@ -1,21 +1,21 @@
-const DynamoDB = require("./dynamodb");
-const ContentDefinition = require("./contentDefinition");
+const DynamoDB = require('./dynamodb');
+const ContentDefinition = require('./contentDefinition');
 
 class Contents extends DynamoDB {
   async post({ slug, type, ...attr }) {
     const definition = await ContentDefinition.get({ type });
     const createdAt = new Date().valueOf();
-    const gs1sk = attr[definition["sort-key"]];
-    delete attr[definition["sort-key"]];
+    const gs1sk = attr[definition['sort-key']];
 
     const Item = {
       pk: slug,
-      sk: "content#" + type,
-      gs1pk: "content#" + type,
+      sk: `content#${type}`,
+      gs1pk: `content#${type}`,
       gs1sk,
       ...attr,
       createdAt
     };
+    delete Item[definition['sort-key']];
 
     const params = {
       TableName: this.tableName,
@@ -31,7 +31,7 @@ class Contents extends DynamoDB {
   get({ type, slug }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: slug, sk: "content#" + type }
+      Key: { pk: slug, sk: `content#${type}` }
     };
 
     return this.docClient
@@ -39,7 +39,7 @@ class Contents extends DynamoDB {
       .promise()
       .then(data => {
         if (!data.Item) {
-          return Promise.reject({ code: "ContentNotFound" });
+          return Promise.reject(new Error({ code: 'ContentNotFound' }));
         }
         return data.Item;
       });
@@ -48,10 +48,10 @@ class Contents extends DynamoDB {
   list(type) {
     const params = {
       TableName: this.tableName,
-      IndexName: "GS1",
-      KeyConditionExpression: "gs1pk = :pk",
+      IndexName: 'GS1',
+      KeyConditionExpression: 'gs1pk = :pk',
       ExpressionAttributeValues: {
-        ":pk": "content#" + type
+        ':pk': `content#${type}`
       }
     };
 
@@ -85,7 +85,7 @@ class Contents extends DynamoDB {
   async delete({ type, slug }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: slug, sk: "content#" + type }
+      Key: { pk: slug, sk: `content#${type}` }
     };
 
     return this.docClient.delete(params).promise();

@@ -1,20 +1,18 @@
-const AWS = require("aws-sdk");
+const AWS = require('aws-sdk');
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   AWS.config.update({
-    region: "ap-southeast-1",
-    endpoint: "http://localhost:8000/"
+    region: 'ap-southeast-1',
+    endpoint: 'http://localhost:8103/'
   });
 }
 
 class DynamoDB {
   constructor() {
     this.docClient = new AWS.DynamoDB.DocumentClient({
-      apiVersion: "2012-08-10"
+      apiVersion: '2012-08-10'
     });
-    this.tableName = process.env.DYNAMODB_TABLE
-      ? process.env.DYNAMODB_TABLE
-      : "kdc-cms";
+    this.tableName = process.env.DYNAMODB_TABLE ? process.env.DYNAMODB_TABLE : 'kdc-cms';
   }
 }
 

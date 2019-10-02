@@ -1,26 +1,27 @@
-#!/usr/bin/env node
+/* eslint-disable no-console */
 
 /**
  * Initialize environment variables on dev
  * In production, define these variables in lambda function.
  * Do not save it in any file.
  */
-process.env.NODE_ENV = "dev";
-process.env.JWT_SECRET = "1234567890";
+process.env.NODE_ENV = 'dev';
+process.env.JWT_SECRET = '1234567890';
 
 /**
  * Module dependencies.
  */
-const debug = require("debug")("kdc-cms:server");
-const http = require("http");
-const app = require("./app");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const debug = require('debug')('kdc-cms:server');
+const http = require('http');
+const app = require('./app');
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = process.env.PORT || "3000";
-app.set("port", port);
+const port = process.env.PORT || '3000';
+app.set('port', port);
 
 /**
  * Create HTTP server.
@@ -33,19 +34,19 @@ const server = http.createServer(app);
  */
 
 const onError = error => {
-  if (error.syscall !== "listen") {
+  if (error.syscall !== 'listen') {
     throw error;
   }
 
-  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case "EACCES":
+    case 'EACCES':
       console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case "EADDRINUSE":
+    case 'EADDRINUSE':
       console.error(`${bind} is already in use`);
       process.exit(1);
       break;
@@ -60,7 +61,7 @@ const onError = error => {
 
 const onListening = () => {
   const addr = server.address();
-  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
 };
 
@@ -69,5 +70,5 @@ const onListening = () => {
  */
 
 server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+server.on('error', onError);
+server.on('listening', onListening);
