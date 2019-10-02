@@ -7,7 +7,8 @@ class Users extends DynamoDB {
   async authenticate({ email, password }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'user' }
+      Key: { pk: email, sk: 'user' },
+      AttributesToGet: ['pk', 'gs1sk', 'role', 'hash', 'salt']
     };
 
     const data = await this.docClient.get(params).promise();
@@ -16,7 +17,7 @@ class Users extends DynamoDB {
     const { Item: user } = data;
     if (isValidPassword(password, user.salt, user.hash)) {
       const token = jwt.sign({ sub: user.pk }, process.env.JWT_SECRET);
-      return { email, token };
+      return { email, token, name: user.gs1sk, role: user.role };
     }
     return null;
   }

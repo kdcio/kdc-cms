@@ -79,6 +79,8 @@ describe('Users', function() {
           const { body } = res;
           expect(body.email).to.equal(user.email);
           expect(body.token).to.not.be.equal(undefined);
+          expect(body.name).to.equal(user.name);
+          expect(body.role).to.equal(user.role);
           done();
         });
     });
