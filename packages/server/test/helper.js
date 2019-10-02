@@ -77,7 +77,6 @@ const loginUser = async () => {
 
 const initUser = async () => {
   await clearTable('user');
-  await clearTable('user#pw');
   await createUser(user);
   const { token } = await loginUser();
   user.token = token;

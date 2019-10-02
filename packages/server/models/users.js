@@ -7,7 +7,7 @@ class Users extends DynamoDB {
   async authenticate({ email, password }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'user#pw' }
+      Key: { pk: email, sk: 'user' }
     };
 
     const data = await this.docClient.get(params).promise();
@@ -23,34 +23,13 @@ class Users extends DynamoDB {
 
   async create({ email, name, password, ...attr }) {
     const createdAt = new Date().valueOf();
+    const { hash, salt } = encryptPassword(password);
     const Item = {
       pk: email,
       sk: 'user',
       gs1pk: 'user',
       gs1sk: name,
       ...attr,
-      createdAt
-    };
-
-    const params = {
-      TableName: this.tableName,
-      Item
-    };
-
-    return this.docClient
-      .put(params)
-      .promise()
-      .then(() => this.createPassword({ email, password }));
-  }
-
-  async createPassword({ email, password }) {
-    const createdAt = new Date().valueOf();
-    const { hash, salt } = encryptPassword(password);
-    const Item = {
-      pk: email,
-      sk: 'user#pw',
-      gs1pk: 'user#pw',
-      gs1sk: email,
       hash,
       salt,
       createdAt
@@ -133,7 +112,7 @@ class Users extends DynamoDB {
   async changePassword({ email, newPassword, oldPassword }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'user#pw' }
+      Key: { pk: email, sk: 'user' }
     };
 
     const data = await this.docClient.get(params).promise();
@@ -141,7 +120,8 @@ class Users extends DynamoDB {
 
     const { Item: user } = data;
     if (isValidPassword(oldPassword, user.salt, user.hash)) {
-      return this.createPassword({ email, password: newPassword });
+      const { hash, salt } = encryptPassword(newPassword);
+      return this.put({ email, hash, salt });
     }
 
     return Promise.reject(new Error({ code: 'PasswordInvalid' }));

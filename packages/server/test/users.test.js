@@ -176,6 +176,5 @@ describe('Users', function() {
 
   after(async function() {
     await clearTable('user');
-    await clearTable('user#pw');
   });
 });
