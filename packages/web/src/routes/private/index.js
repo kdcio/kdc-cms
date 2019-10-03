@@ -1,10 +1,13 @@
 import React from 'react';
-import Layout from '../../components/layout';
+import { Router } from '@reach/router';
+import Dashboard from './dashboard';
+import Error404 from './404';
 
-const dashboard = () => (
-  <Layout title="Dashboard">
-    <p>Some content</p>
-  </Layout>
+const Public = () => (
+  <Router>
+    <Dashboard path="/" />
+    <Error404 path="error" />
+  </Router>
 );
 
-export default dashboard;
+export default Public;
