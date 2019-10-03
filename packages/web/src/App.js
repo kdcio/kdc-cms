@@ -10,6 +10,8 @@ import {
   faFolder,
   faCog,
   faWrench,
+  faUser,
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './context/auth';
 import { SideBarToggleProvider } from './context/sideBar';
@@ -28,7 +30,9 @@ library.add(
   faFile,
   faFolder,
   faCog,
-  faWrench
+  faWrench,
+  faUser,
+  faSignOutAlt
 );
 
 function App() {
