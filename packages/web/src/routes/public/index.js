@@ -5,7 +5,7 @@ import {
   Label,
   Input,
   Button,
-  Spinner,
+  // Spinner,
   Row,
   Col,
   Card,
@@ -14,12 +14,12 @@ import {
 import { useAuth } from '../../context/auth';
 import Layout from '../../components/layoutPublic';
 import useBodyClass from '../../components/bodyClass';
-import useCallbackStatus from '../../utils/useCallbackStatus';
 
 const Login = () => {
+  const [error, setError] = React.useState(null);
   const { login } = useAuth();
-  const { isPending, isRejected, error, run } = useCallbackStatus();
   useBodyClass('bg-gradient-primary');
+
   return (
     <Layout>
       <Row className="justify-content-md-center">
@@ -32,15 +32,16 @@ const Login = () => {
                 </div>
                 <Form
                   className="user"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const { email, password } = e.target.elements;
-                    run(login({ email: email.value, password: password.value }));
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    const { email, password } = event.target.elements;
+
+                    login({ email: email.value, password: password.value }).catch((e) => {
+                      setError(e);
+                    });
                   }}
                 >
-                  {isRejected ? (
-                    <p className="text-danger">{error ? error.message : null}</p>
-                  ) : null}
+                  {error ? <p className="text-danger">{error ? error.message : null}</p> : null}
                   <FormGroup>
                     <Label htmlFor="email" className="sr-only">
                       Email address
@@ -69,7 +70,8 @@ const Login = () => {
                     />
                   </FormGroup>
                   <Button color="primary" block type="submit" className="btn-user">
-                    Login {isPending ? <Spinner size="sm" /> : null}
+                    Login
+                    {/* {isPending ? <Spinner size="sm" /> : null} */}
                   </Button>
                 </Form>
                 <hr />

@@ -11,7 +11,7 @@ import {
   faCog,
   faWrench,
 } from '@fortawesome/free-solid-svg-icons';
-import { useUser } from './context/user';
+import { useAuth } from './context/auth';
 import { SideBarToggleProvider } from './context/sideBar';
 import FullPageSpinner from './components/fullPageSpinner';
 
@@ -32,7 +32,7 @@ library.add(
 );
 
 function App() {
-  const user = useUser();
+  const { user } = useAuth();
   React.useEffect(() => {
     loadPrivateApp();
   }, []);

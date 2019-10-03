@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSideBar } from '../context/sideBar';
+import { useAuth } from '../context/auth';
 
 const TopBar = (props) => {
   const { ToggleSideBar } = useSideBar();
+  const { user } = useAuth();
+  console.log(user);
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">

@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './scss/admin.scss';
 import App from './App';
-import AppProviders from './context/app';
+import { AuthProvider } from './context/auth';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <AppProviders>
+  <AuthProvider>
     <App />
-  </AppProviders>,
-  document.getElementById('root'),
+  </AuthProvider>,
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

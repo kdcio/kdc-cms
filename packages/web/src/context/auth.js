@@ -1,60 +1,85 @@
 import React from 'react';
 import { useAsync } from 'react-async';
-import bootstrapAppData from '../utils/bootstrap';
+import api from '../utils/api';
 import FullPageSpinner from '../components/fullPageSpinner';
-import * as authClient from '../utils/auth';
+
+const TOKEN_KEY = '__kdc_cms_token__';
+const USER_KEY = '__kdc_cms_user__';
 
 const AuthContext = React.createContext();
 
+const useAuth = () => React.useContext(AuthContext);
+
+const initUser = () => {
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  if (!token) return Promise.resolve(null);
+  return api('users/me');
+};
+
 const AuthProvider = (props) => {
-  const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
-  const { data = { user: null }, error, isRejected, isPending, isSettled, reload } = useAsync({
-    promiseFn: bootstrapAppData,
-  });
+  const [loading, setLoading] = React.useState(true);
+  const [user, setUser] = React.useState(null);
+  const { data, isLoading } = useAsync({ promiseFn: initUser });
+
+  const login = async ({ email, password }) => {
+    let resp = {};
+    try {
+      resp = await api('users/authenticate', { body: { email, password } });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+
+    const { token, ...userData } = resp;
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+      const userText = JSON.stringify(userData);
+      localStorage.setItem(USER_KEY, userText);
+      setUser(userText);
+      return Promise.resolve();
+    }
+
+    return Promise.reject(new Error({ message: 'Invalid data' }));
+  };
+
+  const logout = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    setUser(null);
+    return Promise.resolve();
+  };
+
+  const getToken = () => localStorage.getItem(TOKEN_KEY);
+  const getUser = () => {
+    const userText = localStorage.getItem(USER_KEY);
+    return JSON.parse(userText);
+  };
 
   React.useLayoutEffect(() => {
-    if (isSettled) {
-      setFirstAttemptFinished(true);
+    if (!isLoading) {
+      setLoading(false);
+      if (data && data.user) {
+        setUser(getUser());
+      }
     }
-  }, [isSettled]);
+  }, [isLoading, data]);
 
-  if (!firstAttemptFinished) {
-    if (isPending) {
-      return <FullPageSpinner />;
-    }
-    if (isRejected) {
-      return (
-        <div css={{ color: 'red' }}>
-          <p>Uh oh... There&apos;s a problem. Try refreshing the app.</p>
-          <pre>{error.message}</pre>
-        </div>
-      );
-    }
+  if (loading) {
+    return <FullPageSpinner />;
   }
-
-  const login = (form) => authClient.login(form).then(reload);
-  const register = (form) => authClient.register(form).then(reload);
-  const logout = () => authClient.logout().then(reload);
 
   return (
     <AuthContext.Provider
       value={{
-        data,
+        user,
         login,
         logout,
-        register,
+        getToken,
+        getUser,
       }}
       {...props}
     />
   );
-};
-
-const useAuth = () => {
-  const context = React.useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within a AuthProvider');
-  }
-  return context;
 };
 
 export { AuthProvider, useAuth };
