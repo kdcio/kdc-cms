@@ -5,7 +5,7 @@ import {
   Label,
   Input,
   Button,
-  // Spinner,
+  Spinner,
   Row,
   Col,
   Card,
@@ -17,6 +17,7 @@ import useBodyClass from '../../components/bodyClass';
 
 const Login = () => {
   const [error, setError] = React.useState(null);
+  const [isLoggingIn, setIsLoggingIn] = React.useState(false);
   const { login } = useAuth();
   useBodyClass('bg-gradient-primary');
 
@@ -34,9 +35,11 @@ const Login = () => {
                   className="user"
                   onSubmit={(event) => {
                     event.preventDefault();
+                    setIsLoggingIn(true);
                     const { email, password } = event.target.elements;
 
                     login({ email: email.value, password: password.value }).catch((e) => {
+                      setIsLoggingIn(false);
                       setError(e);
                     });
                   }}
@@ -69,9 +72,14 @@ const Login = () => {
                       className="form-control-user"
                     />
                   </FormGroup>
-                  <Button color="primary" block type="submit" className="btn-user">
-                    Login
-                    {/* {isPending ? <Spinner size="sm" /> : null} */}
+                  <Button
+                    color="primary"
+                    block
+                    type="submit"
+                    className="btn-user"
+                    disabled={isLoggingIn}
+                  >
+                    Login {isLoggingIn ? <Spinner size="sm" /> : null}
                   </Button>
                 </Form>
                 <hr />
