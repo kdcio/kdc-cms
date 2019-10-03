@@ -9,3 +9,4 @@ build
 *.gz
 *.tgz
 .vscode
+.dbdata

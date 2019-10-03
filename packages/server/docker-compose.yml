@@ -9,6 +9,9 @@ services:
     restart: always
   dynamodb-local:
     image: amazon/dynamodb-local
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
+    volumes:
+     - .dbdata:/home/dynamodblocal/data
     restart: always
     ports:
       - "8103:8000"
