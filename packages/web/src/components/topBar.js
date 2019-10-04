@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Nav, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { navigate } from '@reach/router';
 import { useSideBar } from '../context/sideBar';
 import { useAuth } from '../context/auth';
 
@@ -35,6 +36,7 @@ const TopBar = (props) => {
               onClick={(e) => {
                 e.preventDefault();
                 logout();
+                navigate('/');
               }}
             >
               <FontAwesomeIcon icon="sign-out-alt" className="fa-sm fa-fw mr-2 text-gray-400" />
