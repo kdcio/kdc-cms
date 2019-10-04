@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from '@reach/router';
 import { useSideBar } from '../context/sideBar';
 
 const SideBar = () => {
@@ -11,46 +12,46 @@ const SideBar = () => {
 
   return (
     <ul className={sbClass} id="accordionSidebar">
-      <a className="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+      <Link className="sidebar-brand d-flex align-items-center justify-content-center" to="/">
         <div className="sidebar-brand-icon rotate-n-15">
           <FontAwesomeIcon icon="keyboard" />
         </div>
         <div className="sidebar-brand-text mx-3">KDC CMS</div>
-      </a>
+      </Link>
       <hr className="sidebar-divider my-0" />
       <li className="nav-item active">
-        <a className="nav-link" href="index.html">
+        <Link className="nav-link" to="/">
           <FontAwesomeIcon icon="tachometer-alt" />
           <span>Dashboard</span>
-        </a>
+        </Link>
       </li>
       <hr className="sidebar-divider" />
       <div className="sidebar-heading">Content</div>
       <li className="nav-item">
-        <a className="nav-link" href="charts.html">
+        <Link className="nav-link" to="/pages">
           <FontAwesomeIcon icon="file" />
           <span>Pages</span>
-        </a>
+        </Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="charts.html">
+        <Link className="nav-link" to="/contents/blogs">
           <FontAwesomeIcon icon="folder" />
           <span>Blogs</span>
-        </a>
+        </Link>
       </li>
       <hr className="sidebar-divider" />
-      <div className="sidebar-heading">Content Types</div>
+      <div className="sidebar-heading">Define</div>
       <li className="nav-item">
-        <a className="nav-link" href="charts.html">
+        <Link className="nav-link" to="/define/pages">
           <FontAwesomeIcon icon="wrench" />
           <span>Pages</span>
-        </a>
+        </Link>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="charts.html">
+        <Link className="nav-link" to="/define/types">
           <FontAwesomeIcon icon="cog" />
           <span>Content</span>
-        </a>
+        </Link>
       </li>
       <hr className="sidebar-divider d-none d-md-block" />
 
