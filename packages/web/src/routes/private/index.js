@@ -6,7 +6,7 @@ import Error404 from './404';
 const Public = () => (
   <Router>
     <Dashboard path="/" />
-    <Error404 path="error" />
+    <Error404 default />
   </Router>
 );
 
