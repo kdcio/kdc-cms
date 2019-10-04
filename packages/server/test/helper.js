@@ -5,12 +5,14 @@
  */
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = '0987654321';
+process.env.DYNAMODB_TABLE = 'kdc-cms-test';
 
 const AWS = require('aws-sdk');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const faker = require('faker');
 const app = require('../app');
 const Users = require('../models/users');
+const schema = require('../schema.json');
 
 AWS.config.update({
   region: 'ap-southeast-1',
@@ -20,11 +22,20 @@ AWS.config.update({
 const docClient = new AWS.DynamoDB.DocumentClient({
   apiVersion: '2012-08-10'
 });
-const tableName = 'kdc-cms';
+
+const createTable = () => {
+  return new Promise(resolve => {
+    const dynamodb = new AWS.DynamoDB();
+    schema.TableName = process.env.DYNAMODB_TABLE;
+    dynamodb.createTable(schema, () => {
+      resolve();
+    });
+  });
+};
 
 const deleteItem = async item => {
   const params = {
-    TableName: tableName,
+    TableName: process.env.DYNAMODB_TABLE,
     Key: {
       pk: item.pk,
       sk: item.sk
@@ -38,7 +49,7 @@ const deleteItem = async item => {
 // it's since it's test. do not do this in production
 const clearTable = async key => {
   const params = {
-    TableName: tableName,
+    TableName: process.env.DYNAMODB_TABLE,
     IndexName: 'GS1',
     KeyConditionExpression: 'gs1pk = :pk',
     ExpressionAttributeValues: {
@@ -76,6 +87,7 @@ const loginUser = async () => {
 };
 
 const initUser = async () => {
+  await createTable();
   await clearTable('user');
   await createUser(user);
   const { token } = await loginUser();
