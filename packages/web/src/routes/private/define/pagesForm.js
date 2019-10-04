@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
 import slugify from 'slugify';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
@@ -11,12 +11,27 @@ const PagesForm = () => {
   const { register, handleSubmit } = useForm();
   const [size, setSize] = useState(1);
   const onSubmit = ({ name, description, field, type }) => {
-    const body = { name, description, id: slugify(name, { lower: true }) };
+    const body = {
+      name: name.trim(),
+      id: slugify(name, { lower: true }),
+      fields: [],
+      fieldCount: 0,
+    };
+
+    if (description.trim() !== '') {
+      body.description = description.trim();
+    }
+
     field.forEach((v, k) => {
-      body[v] = type[k];
+      if (v.trim() === '') return;
+      body.fields.push({
+        name: v.trim(),
+        type: type[k],
+      });
+      body.fieldCount += 1;
     });
 
-    api('page-definition', { body });
+    api('page-definition', { body }).then(() => navigate('/define/pages'));
   };
 
   return (
