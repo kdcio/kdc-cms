@@ -3,6 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAngleLeft,
   faAngleRight,
+  faAngleUp,
   faBars,
   faKeyboard,
   faTachometerAlt,
@@ -24,6 +25,7 @@ const PublicApp = React.lazy(() => import('./routes/public'));
 library.add(
   faAngleLeft,
   faAngleRight,
+  faAngleUp,
   faBars,
   faKeyboard,
   faTachometerAlt,

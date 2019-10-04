@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Container } from 'reactstrap';
 import SideBar from './sideBar';
 import TopBar from './topBar';
+import ScrollTop from './scrollTop';
 
 const Layout = (props) => (
   <div id="wrapper">
@@ -32,13 +33,14 @@ const Layout = (props) => (
         </div>
       </footer>
     </div>
+    <ScrollTop />
   </div>
 );
 
 Layout.propTypes = {
   title: PropTypes.string.isRequired,
   className: PropTypes.string,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.array.isRequired,
 };
 
 export default Layout;
