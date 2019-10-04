@@ -55,12 +55,11 @@ a {
   &:hover {
     background: $gray-800;
   }
+  &.show {
+    transition: opacity 0.5s;
+    opacity: 1 !important;
+  }
   svg {
     font-weight: 800;
   }
-}
-.show {
-  transition: opacity 0.5s;
-  opacity: 1 !important;
-  background: fade-in($gray-800, 0.5);
 }
