@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { navigate } from '@reach/router';
+import { Link } from '@reach/router';
 import useForm from 'react-hook-form';
 import slugify from 'slugify';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
@@ -23,9 +23,9 @@ const PagesForm = () => {
     <Card>
       <CardHeader className="d-flex justify-content-between">
         <h3 className="m-0">Add Page</h3>
-        <Button className="btn btn-sm btn-danger" onClick={() => navigate(-1)}>
+        <Link className="btn btn-sm btn-danger" to="../">
           Cancel
-        </Button>
+        </Link>
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
