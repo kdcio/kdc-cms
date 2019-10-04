@@ -1,6 +1,15 @@
 const DynamoDB = require('./dynamodb');
+const remap = require('../helpers/remap');
 
 class PageDefinition extends DynamoDB {
+  constructor() {
+    super();
+    this.fieldMap = {
+      pk: 'id',
+      gs1sk: 'name'
+    };
+  }
+
   post({ name, id, ...attr }) {
     const createdAt = new Date().valueOf();
     const Item = {
@@ -23,20 +32,19 @@ class PageDefinition extends DynamoDB {
       .then(async () => Item.pk);
   }
 
-  get({ id }) {
+  get({ id }, opts = {}) {
     const params = {
       TableName: this.tableName,
       Key: { pk: id, sk: 'page' }
     };
+    const { raw } = opts;
 
     return this.docClient
       .get(params)
       .promise()
       .then(data => {
-        if (!data.Item) {
-          return Promise.reject(new Error({ code: 'PageNotFound' }));
-        }
-        return data.Item;
+        if (raw) return data.Item;
+        return remap(data.Item, this.fieldMap);
       });
   }
 
@@ -47,22 +55,25 @@ class PageDefinition extends DynamoDB {
       KeyConditionExpression: 'gs1pk = :pk',
       ExpressionAttributeValues: {
         ':pk': 'page'
-      }
+      },
+      ProjectionExpression: 'pk, gs1sk, description, fieldCount, createdAt, updatedAt'
     };
 
     return this.docClient
       .query(params)
       .promise()
-      .then(data => data);
+      .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
   async put({ id, attr }) {
-    const page = await this.get({ id });
+    const page = await this.get({ id }, { raw: true });
+    const { name, ...otherAttr } = attr;
 
     const updatedAt = new Date().valueOf();
     const Item = {
       ...page,
-      ...attr,
+      ...otherAttr,
+      gs1sk: name || page.gs1sk,
       updatedAt
     };
 

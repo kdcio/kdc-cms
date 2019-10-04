@@ -1,16 +1,32 @@
 const DynamoDB = require('./dynamodb');
+const remap = require('../helpers/remap');
 const PageDefinition = require('./pageDefinition');
 
 class Pages extends DynamoDB {
+  constructor() {
+    super();
+    this.fieldMap = {
+      pk: 'id',
+      gs1sk: 'name'
+    };
+  }
+
   async post({ id, ...attr }) {
     const definition = await PageDefinition.get({ id });
+    const validAttr = {};
+    definition.fields.forEach(f => {
+      if (attr[f.name]) {
+        validAttr[f.name] = attr[f.name];
+      }
+    });
+
     const createdAt = new Date().valueOf();
     const Item = {
       pk: id,
       sk: 'page#data',
       gs1pk: 'page#data',
-      gs1sk: definition.gs1sk,
-      ...attr,
+      gs1sk: definition.name,
+      ...validAttr,
       createdAt
     };
 
@@ -25,20 +41,19 @@ class Pages extends DynamoDB {
       .then(async () => Item.pk);
   }
 
-  get({ id }) {
+  get({ id }, opts = {}) {
     const params = {
       TableName: this.tableName,
       Key: { pk: id, sk: 'page#data' }
     };
+    const { raw } = opts;
 
     return this.docClient
       .get(params)
       .promise()
       .then(data => {
-        if (!data.Item) {
-          return Promise.reject(new Error({ code: 'PageNotFound' }));
-        }
-        return data.Item;
+        if (raw) return data.Item;
+        return remap(data.Item, this.fieldMap);
       });
   }
 
@@ -49,17 +64,18 @@ class Pages extends DynamoDB {
       KeyConditionExpression: 'gs1pk = :pk',
       ExpressionAttributeValues: {
         ':pk': 'page#data'
-      }
+      },
+      ProjectionExpression: 'pk, gs1sk, createdAt, updatedAt'
     };
 
     return this.docClient
       .query(params)
       .promise()
-      .then(data => data);
+      .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
   async put({ id, attr }) {
-    const page = await this.get({ id });
+    const page = await this.get({ id }, { raw: true });
 
     const updatedAt = new Date().valueOf();
     const Item = {

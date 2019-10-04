@@ -7,8 +7,17 @@ const req = request(app);
 const homePage = {
   name: 'Home Page',
   id: 'home',
-  title: 'text',
-  intro: 'long-text'
+  fieldCount: 2,
+  fields: [
+    {
+      name: 'title',
+      type: 'text'
+    },
+    {
+      name: 'intro',
+      type: 'long-text'
+    }
+  ]
 };
 
 describe('Page Definition', function() {
@@ -46,12 +55,16 @@ describe('Page Definition', function() {
         .end(function(err, res) {
           expect(err).to.be.equal(null);
           const { body } = res;
-          expect(body.pk).to.equal(homePage.id);
-          expect(body.sk).to.equal('page');
-          expect(body.gs1pk).to.equal('page');
-          expect(body.gs1sk).to.equal(homePage.name);
-          expect(body.title).to.equal('text');
-          expect(body.intro).to.equal('long-text');
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(homePage.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.name).to.equal(homePage.name);
+          expect(body.fieldCount).to.equal(2);
+          expect(body.fields[0].name).to.equal('title');
+          expect(body.fields[0].type).to.equal('text');
+          expect(body.fields[1].name).to.equal('intro');
+          expect(body.fields[1].type).to.equal('long-text');
           done();
         });
     });
@@ -68,6 +81,12 @@ describe('Page Definition', function() {
           expect(err).to.be.equal(null);
           const { body } = res;
           expect(body.length).to.equal(1);
+          expect(body[0].id).to.equal(homePage.id);
+          expect(body[0].sk).to.equal(undefined);
+          expect(body[0].gs1pk).to.equal(undefined);
+          expect(body[0].name).to.equal(homePage.name);
+          expect(body[0].title).to.equal(undefined);
+          expect(body[0].intro).to.equal(undefined);
           done();
         });
     });
@@ -79,13 +98,13 @@ describe('Page Definition', function() {
         .put(`/page-definition/${homePage.id}`)
         .set('Authorization', `Bearer ${this.token}`)
         .set('Accept', 'application/json')
-        .send({ intro: 'text' })
+        .send({ name: 'New home page' })
         .expect(204, done);
     });
   });
 
   describe(`GET /page-definition/:id`, function() {
-    it('should update intro', function(done) {
+    it('should update name', function(done) {
       req
         .get(`/page-definition/${homePage.id}`)
         .set('Authorization', `Bearer ${this.token}`)
@@ -94,12 +113,16 @@ describe('Page Definition', function() {
         .end(function(err, res) {
           expect(err).to.be.equal(null);
           const { body } = res;
-          expect(body.pk).to.equal(homePage.id);
-          expect(body.sk).to.equal('page');
-          expect(body.gs1pk).to.equal('page');
-          expect(body.gs1sk).to.equal(homePage.name);
-          expect(body.title).to.equal('text');
-          expect(body.intro).to.equal('text');
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(homePage.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.name).to.equal('New home page');
+          expect(body.fieldCount).to.equal(2);
+          expect(body.fields[0].name).to.equal('title');
+          expect(body.fields[0].type).to.equal('text');
+          expect(body.fields[1].name).to.equal('intro');
+          expect(body.fields[1].type).to.equal('long-text');
           done();
         });
     });

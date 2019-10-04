@@ -7,14 +7,24 @@ const req = request(app);
 const homePage = {
   id: 'home',
   title: 'My Company',
-  intro: 'Your wish is my command'
+  intro: 'Your wish is my command',
+  summary: 'this should not be added'
 };
 
 const homePageDef = {
   name: 'Home Page',
   id: 'home',
-  title: 'text',
-  intro: 'long-text'
+  fieldCount: 2,
+  fields: [
+    {
+      name: 'title',
+      type: 'text'
+    },
+    {
+      name: 'intro',
+      type: 'long-text'
+    }
+  ]
 };
 
 describe('Pages', function() {
@@ -63,12 +73,14 @@ describe('Pages', function() {
         .end(function(err, res) {
           expect(err).to.be.equal(null);
           const { body } = res;
-          expect(body.pk).to.equal(homePage.id);
-          expect(body.sk).to.equal('page#data');
-          expect(body.gs1pk).to.equal('page#data');
-          expect(body.gs1sk).to.equal(homePageDef.name);
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(homePage.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.gs1sk).to.equal(undefined);
           expect(body.title).to.equal(homePage.title);
           expect(body.intro).to.equal(homePage.intro);
+          expect(body.summary).to.equal(undefined);
           done();
         });
     });
@@ -111,12 +123,14 @@ describe('Pages', function() {
         .end(function(err, res) {
           expect(err).to.be.equal(null);
           const { body } = res;
-          expect(body.pk).to.equal(homePage.id);
-          expect(body.sk).to.equal('page#data');
-          expect(body.gs1pk).to.equal('page#data');
-          expect(body.gs1sk).to.equal(homePageDef.name);
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(homePage.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.gs1sk).to.equal(undefined);
           expect(body.title).to.equal(homePage.title);
           expect(body.intro).to.equal("Yes I'm updated!");
+          expect(body.summary).to.equal(undefined);
           done();
         });
     });

@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const list = await PageDefinition.list();
   res.status(HttpStatus.OK);
-  res.send(list.Items);
+  res.send(list);
 });
 
 router.post('/', async (req, res) => {
