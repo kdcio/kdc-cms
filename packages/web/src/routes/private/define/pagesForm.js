@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
 import slugify from 'slugify';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
 
-const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k + 1);
+const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
-const PagesForm = () => {
+const PagesForm = ({ id }) => {
   const { register, handleSubmit } = useForm();
   const [size, setSize] = useState(1);
+  const [initialValues, setInitialValues] = useState({});
   const onSubmit = ({ name, description, field, type }) => {
     const body = {
       name: name.trim(),
-      id: slugify(name, { lower: true }),
+      id: id || slugify(name, { lower: true }),
       fields: [],
       fieldCount: 0,
     };
@@ -31,14 +33,27 @@ const PagesForm = () => {
       body.fieldCount += 1;
     });
 
-    api('page-definition', { body }).then(() => navigate('/define/pages'));
+    if (id) {
+      api(`page-definition/${id}`, { body, method: 'PUT' }).then(() => navigate('/define/pages'));
+    } else {
+      api('page-definition', { body }).then(() => navigate('/define/pages'));
+    }
   };
+
+  useEffect(() => {
+    if (!id) return;
+
+    api(`page-definition/${id}`).then((data) => {
+      setInitialValues(data);
+      setSize(data.fieldCount);
+    });
+  }, [id]);
 
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between">
-        <h3 className="m-0">Add Page</h3>
-        <Link className="btn btn-sm btn-danger" to="../">
+        <h3 className="m-0">{id ? 'Edit Page' : 'Add Page'}</h3>
+        <Link className="btn btn-sm btn-danger" to="/define/pages">
           Cancel
         </Link>
       </CardHeader>
@@ -47,11 +62,21 @@ const PagesForm = () => {
           <FormGroup row>
             <Label sm={2}>Page Name</Label>
             <Col sm={4}>
-              <Input type="text" name="name" innerRef={register} />
+              <Input
+                type="text"
+                name="name"
+                innerRef={register}
+                defaultValue={initialValues.name}
+              />
             </Col>
             <Label sm={2}>Description</Label>
             <Col sm={4}>
-              <Input type="text" name="description" innerRef={register} />
+              <Input
+                type="text"
+                name="description"
+                innerRef={register}
+                defaultValue={initialValues.description}
+              />
             </Col>
           </FormGroup>
           <hr />
@@ -60,11 +85,29 @@ const PagesForm = () => {
             <FormGroup key={number} row>
               <Label sm={2}>Field Name</Label>
               <Col sm={6}>
-                <Input type="text" name={`field[${number}]`} innerRef={register} />
+                <Input
+                  type="text"
+                  name={`field[${number}]`}
+                  innerRef={register}
+                  defaultValue={
+                    initialValues && initialValues.fields && initialValues.fields[number]
+                      ? initialValues.fields[number].name
+                      : ''
+                  }
+                />
               </Col>
               <Label sm={2}>Field Type</Label>
               <Col sm={2}>
-                <Input type="select" name={`type[${number}]`} innerRef={register}>
+                <Input
+                  type="select"
+                  name={`type[${number}]`}
+                  innerRef={register}
+                  defaultValue={
+                    initialValues && initialValues.fields && initialValues.fields[number]
+                      ? initialValues.fields[number].type
+                      : ''
+                  }
+                >
                   <option value="text">Text</option>
                   <option value="long-text">Long Text</option>
                 </Input>
@@ -96,6 +139,10 @@ const PagesForm = () => {
       </CardBody>
     </Card>
   );
+};
+
+PagesForm.propTypes = {
+  id: PropTypes.string,
 };
 
 export default PagesForm;

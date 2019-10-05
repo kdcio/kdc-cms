@@ -8,6 +8,7 @@ const Pages = () => (
   <Layout title="Define Pages">
     <Router>
       <PagesForm path="add" />
+      <PagesForm path="edit/:id" />
       <PagesList path="/" />
     </Router>
   </Layout>
