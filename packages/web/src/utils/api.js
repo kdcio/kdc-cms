@@ -20,7 +20,11 @@ const api = (endpoint, { body, ...customConfig } = {}) => {
   }
 
   return fetch(`${process.env.REACT_APP_API_URL}/${endpoint}`, config).then(async (r) => {
-    const json = await r.json();
+    let json = '';
+    const contentType = r.headers.get('content-type');
+    if (contentType && contentType.indexOf('application/json') !== -1) {
+      json = await r.json();
+    }
     if (r.status >= 200 && r.status <= 204) {
       return json;
     }
