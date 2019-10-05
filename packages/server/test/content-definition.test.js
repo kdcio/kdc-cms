@@ -6,13 +6,24 @@ const { app, clearTable, admin } = require('./helper');
 const req = request(app);
 const blogs = {
   name: 'Blogs',
-  type: 'blogs',
-  date: 'text',
-  title: 'text',
-  author: 'text',
-  body: 'long-text',
+  id: 'blogs',
+  fieldCount: 3,
+  fields: [
+    {
+      name: 'title',
+      type: 'text'
+    },
+    {
+      name: 'date',
+      type: 'text'
+    },
+    {
+      name: 'body',
+      type: 'long-text'
+    }
+  ],
   slug: 'text',
-  'sort-key': 'date'
+  sortKey: 'date'
 };
 
 describe('Content Definition', function() {
@@ -33,33 +44,36 @@ describe('Content Definition', function() {
         .expect(
           201,
           {
-            type: blogs.type
+            id: blogs.id
           },
           done
         );
     });
   });
 
-  describe(`GET /content-definition/:type`, function() {
+  describe(`GET /content-definition/:id`, function() {
     it('should get', function(done) {
       req
-        .get(`/content-definition/${blogs.type}`)
+        .get(`/content-definition/${blogs.id}`)
         .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
           expect(err).to.be.equal(null);
           const { body } = res;
-          expect(body.pk).to.equal(blogs.type);
-          expect(body.sk).to.equal('content');
-          expect(body.gs1pk).to.equal('content');
-          expect(body.gs1sk).to.equal(blogs.name);
-          expect(body.date).to.equal('text');
-          expect(body.title).to.equal('text');
-          expect(body.body).to.equal('long-text');
-          expect(body.author).to.equal('text');
-          expect(body.slug).to.equal('text');
-          expect(body['sort-key']).to.equal('date');
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(blogs.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.name).to.equal(blogs.name);
+          expect(body.fields[0].name).to.equal('title');
+          expect(body.fields[0].type).to.equal('text');
+          expect(body.fields[1].name).to.equal('date');
+          expect(body.fields[1].type).to.equal('text');
+          expect(body.fields[2].name).to.equal('body');
+          expect(body.fields[2].type).to.equal('long-text');
+          expect(body.sortKey).to.equal('date');
+          expect(body.fieldCount).to.equal(3);
           done();
         });
     });
@@ -81,46 +95,48 @@ describe('Content Definition', function() {
     });
   });
 
-  describe(`PUT /content-definition/:type`, function() {
+  describe(`PUT /content-definition/:id`, function() {
     it('it should update', function(done) {
       req
-        .put(`/content-definition/${blogs.type}`)
+        .put(`/content-definition/${blogs.id}`)
         .set('Authorization', `Bearer ${this.token}`)
-        .send({ body: 'text' })
+        .send({ sortKey: 'title' })
         .set('Accept', 'application/json')
         .expect(204, done);
     });
   });
 
-  describe(`GET /content-definition/:type`, function() {
+  describe(`GET /content-definition/:id`, function() {
     it('should update body', function(done) {
       req
-        .get(`/content-definition/${blogs.type}`)
+        .get(`/content-definition/${blogs.id}`)
         .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
           expect(err).to.be.equal(null);
           const { body } = res;
-          expect(body.pk).to.equal(blogs.type);
-          expect(body.sk).to.equal('content');
-          expect(body.gs1pk).to.equal('content');
-          expect(body.gs1sk).to.equal(blogs.name);
-          expect(body.date).to.equal('text');
-          expect(body.title).to.equal('text');
-          expect(body.body).to.equal('text');
-          expect(body.author).to.equal('text');
-          expect(body.slug).to.equal('text');
-          expect(body['sort-key']).to.equal('date');
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(blogs.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.name).to.equal(blogs.name);
+          expect(body.fields[0].name).to.equal('title');
+          expect(body.fields[0].type).to.equal('text');
+          expect(body.fields[1].name).to.equal('date');
+          expect(body.fields[1].type).to.equal('text');
+          expect(body.fields[2].name).to.equal('body');
+          expect(body.fields[2].type).to.equal('long-text');
+          expect(body.sortKey).to.equal('title');
           done();
         });
     });
   });
 
-  describe(`DELETE /content-definition/:type`, function() {
+  describe(`DELETE /content-definition/:id`, function() {
     it('should delete', function(done) {
       req
-        .delete(`/content-definition/${blogs.type}`)
+        .delete(`/content-definition/${blogs.id}`)
         .set('Authorization', `Bearer ${this.token}`)
         .expect(204, done);
     });

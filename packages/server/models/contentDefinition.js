@@ -1,10 +1,19 @@
 const DynamoDB = require('./dynamodb');
+const remap = require('../helpers/remap');
 
 class ContentDefinition extends DynamoDB {
-  post({ name, type, ...attr }) {
+  constructor() {
+    super();
+    this.fieldMap = {
+      pk: 'id',
+      gs1sk: 'name'
+    };
+  }
+
+  post({ name, id, ...attr }) {
     const createdAt = new Date().valueOf();
     const Item = {
-      pk: type,
+      pk: id,
       sk: 'content',
       gs1pk: 'content',
       gs1sk: name,
@@ -23,20 +32,19 @@ class ContentDefinition extends DynamoDB {
       .then(async () => Item.pk);
   }
 
-  get({ type }) {
+  get({ id }, opts = {}) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: type, sk: 'content' }
+      Key: { pk: id, sk: 'content' }
     };
+    const { raw } = opts;
 
     return this.docClient
       .get(params)
       .promise()
       .then(data => {
-        if (!data.Item) {
-          return Promise.reject(new Error({ code: 'ContentNotFound' }));
-        }
-        return data.Item;
+        if (raw) return data.Item;
+        return remap(data.Item, this.fieldMap);
       });
   }
 
@@ -47,22 +55,25 @@ class ContentDefinition extends DynamoDB {
       KeyConditionExpression: 'gs1pk = :pk',
       ExpressionAttributeValues: {
         ':pk': 'content'
-      }
+      },
+      ProjectionExpression: 'pk, gs1sk, description, fieldCount, createdAt, updatedAt'
     };
 
     return this.docClient
       .query(params)
       .promise()
-      .then(data => data);
+      .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
-  async put({ type, attr }) {
-    const content = await this.get({ type });
+  async put({ id, attr }) {
+    const content = await this.get({ id }, { raw: true });
+    const { name, ...otherAttr } = attr;
 
     const updatedAt = new Date().valueOf();
     const Item = {
       ...content,
-      ...attr,
+      ...otherAttr,
+      gs1sk: name || content.gs1sk,
       updatedAt
     };
 
@@ -77,10 +88,10 @@ class ContentDefinition extends DynamoDB {
       .then(async () => Item.pk);
   }
 
-  async delete({ type }) {
+  async delete({ id }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: type, sk: 'content' }
+      Key: { pk: id, sk: 'content' }
     };
 
     return this.docClient.delete(params).promise();

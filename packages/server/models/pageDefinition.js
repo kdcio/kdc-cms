@@ -65,6 +65,9 @@ class PageDefinition extends DynamoDB {
       .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
+  /**
+   * TODO: if fields are updated, corresponding page#data should also be updated.
+   */
   async put({ id, attr }) {
     const page = await this.get({ id }, { raw: true });
     const { name, ...otherAttr } = attr;
