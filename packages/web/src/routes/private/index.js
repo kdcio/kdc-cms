@@ -3,7 +3,7 @@ import { Router } from '@reach/router';
 import Dashboard from './dashboard';
 import DefinePages from './define/pages';
 import DefineTypes from './define/types';
-import Pages from './pages';
+import Pages from './pages/index';
 import Contents from './contents';
 import Error404 from './404';
 
