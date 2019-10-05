@@ -26,7 +26,7 @@ class Pages extends DynamoDB {
       sk: 'page#data',
       gs1pk: 'page#data',
       gs1sk: definition.name,
-      fields: attr.fields,
+      fields: definition.fields,
       ...validAttr,
       createdAt
     };
