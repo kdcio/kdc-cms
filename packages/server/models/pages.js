@@ -26,6 +26,7 @@ class Pages extends DynamoDB {
       sk: 'page#data',
       gs1pk: 'page#data',
       gs1sk: definition.name,
+      fields: attr.fields,
       ...validAttr,
       createdAt
     };
@@ -52,6 +53,10 @@ class Pages extends DynamoDB {
       .get(params)
       .promise()
       .then(data => {
+        if (!data.Item) {
+          return Promise.reject(new Error({ code: 'PageNotFound', message: 'Page not found' }));
+        }
+
         if (raw) return data.Item;
         return remap(data.Item, this.fieldMap);
       });
@@ -74,7 +79,7 @@ class Pages extends DynamoDB {
       .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
-  async put({ id, attr }) {
+  async put({ id, fields, attr }) {
     const page = await this.get({ id }, { raw: true });
 
     const updatedAt = new Date().valueOf();
@@ -83,6 +88,11 @@ class Pages extends DynamoDB {
       ...attr,
       updatedAt
     };
+
+    if (fields) {
+      Item.fields = fields;
+      /** TODO: remove attributes not in fields */
+    }
 
     const params = {
       TableName: this.tableName,

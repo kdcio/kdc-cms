@@ -43,6 +43,28 @@ describe('Page Definition', function() {
           done
         );
     });
+    it('should also create page#data', function(done) {
+      req
+        .get(`/pages/${homePage.id}`)
+        .set('Accept', 'application/json')
+        .set('Authorization', `Bearer ${this.token}`)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          expect(err).to.be.equal(null);
+          const { body } = res;
+          expect(body.pk).to.equal(undefined);
+          expect(body.id).to.equal(homePage.id);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.name).to.equal(homePage.name);
+          expect(body.fields[0].name).to.equal('title');
+          expect(body.fields[0].type).to.equal('text');
+          expect(body.fields[1].name).to.equal('intro');
+          expect(body.fields[1].type).to.equal('long-text');
+          done();
+        });
+    });
   });
 
   describe(`GET /page-definition/:id`, function() {
