@@ -1,6 +1,9 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-alert */
+/* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 import { Link } from '@reach/router';
-import { Card, CardBody, CardHeader, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Table, Button } from 'reactstrap';
 import moment from 'moment';
 import api from '../../../utils/api';
 
@@ -15,12 +18,28 @@ const formatDate = (page) => {
 };
 
 const PagesList = () => {
+  const [refresh, setRefresh] = useState(true);
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    const fetchList = async () => api('page-definition').then((data) => setList(data));
+    const fetchList = () => {
+      api('page-definition').then((data) => {
+        setList(data);
+        setRefresh(false);
+      });
+    };
+
     fetchList();
-  }, []);
+  }, [refresh]);
+
+  const deletePage = (id) => {
+    const r = confirm(
+      'Are you sure you want to delete this page?\nAll data associated with this page will also be deleted.\n\nTHIS CANNOT BE UNDONE!'
+    );
+    if (r === true) {
+      api(`page-definition/${id}`, { method: 'DELETE' }).then(() => setRefresh(true));
+    }
+  };
 
   return (
     <Card>
@@ -54,9 +73,14 @@ const PagesList = () => {
                   <Link to={`edit/${page.id}`} className="btn btn-sm btn-secondary mr-2">
                     Edit
                   </Link>
-                  <Link to={`delete/${page.id}`} className="btn btn-sm btn-danger">
+                  <Button
+                    type="button"
+                    size="sm"
+                    color="danger"
+                    onClick={() => deletePage(page.id)}
+                  >
                     Delete
-                  </Link>
+                  </Button>
                 </td>
               </tr>
             ))}
