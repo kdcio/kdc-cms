@@ -18,28 +18,26 @@ const formatDate = (page) => {
 };
 
 const PagesList = () => {
-  const [refresh, setRefresh] = useState(true);
   const [list, setList] = useState([]);
 
-  useEffect(() => {
-    const fetchList = () => {
-      api('page-definition').then((data) => {
-        setList(data);
-        setRefresh(false);
-      });
-    };
-
-    fetchList();
-  }, [refresh]);
+  const fetchList = () => {
+    api('page-definition').then((data) => {
+      setList(data);
+    });
+  };
 
   const deletePage = (id) => {
     const r = confirm(
       'Are you sure you want to delete this page?\nAll data associated with this page will also be deleted.\n\nTHIS CANNOT BE UNDONE!'
     );
     if (r === true) {
-      api(`page-definition/${id}`, { method: 'DELETE' }).then(() => setRefresh(true));
+      api(`page-definition/${id}`, { method: 'DELETE' }).then(fetchList);
     }
   };
+
+  useEffect(() => {
+    fetchList();
+  }, []);
 
   return (
     <Card>
