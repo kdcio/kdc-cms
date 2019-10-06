@@ -1,9 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@reach/router';
+import { useContentTypeList } from '../context/contentTypeList';
 import { useSideBar } from '../context/sideBar';
 
 const SideBar = () => {
+  const { typeList } = useContentTypeList();
   const { sideBarOpen, ToggleSideBar } = useSideBar();
   let sbClass = 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion';
   if (!sideBarOpen) {
@@ -33,12 +35,15 @@ const SideBar = () => {
           <span>Pages</span>
         </Link>
       </li>
-      <li className="nav-item">
-        <Link className="nav-link" to="/contents/blogs">
-          <FontAwesomeIcon icon="folder" />
-          <span>Blogs</span>
-        </Link>
-      </li>
+      {typeList.map((t) => (
+        <li className="nav-item" key={t.id}>
+          <Link className="nav-link" to="/contents/blogs">
+            <FontAwesomeIcon icon="folder" />
+            <span>{t.name}</span>
+          </Link>
+        </li>
+      ))}
+
       <hr className="sidebar-divider" />
       <div className="sidebar-heading">Define</div>
       <li className="nav-item">

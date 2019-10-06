@@ -1,10 +1,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 /* eslint-disable no-restricted-globals */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from '@reach/router';
 import { Card, CardBody, CardHeader, Table, Button } from 'reactstrap';
 import moment from 'moment';
+import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
 
 const formatDate = ({ createdAt, updatedAt }) => {
@@ -18,13 +19,7 @@ const formatDate = ({ createdAt, updatedAt }) => {
 };
 
 const TypesList = () => {
-  const [list, setList] = useState([]);
-
-  const fetchList = () => {
-    api('content-definition').then((data) => {
-      setList(data);
-    });
-  };
+  const { typeList, fetchList } = useContentTypeList();
 
   const deletePage = (type) => {
     const r = confirm(
@@ -37,6 +32,7 @@ const TypesList = () => {
 
   useEffect(() => {
     fetchList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -60,7 +56,7 @@ const TypesList = () => {
             </tr>
           </thead>
           <tbody>
-            {list.map((type) => (
+            {typeList.map((type) => (
               <tr key={type.id}>
                 <th scope="row">{type.id}</th>
                 <td>{type.name}</td>

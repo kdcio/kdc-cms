@@ -16,6 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './context/auth';
 import { SideBarToggleProvider } from './context/sideBar';
+import { ContentTypeListProvider } from './context/contentTypeList';
 import FullPageSpinner from './components/fullPageSpinner';
 
 const loadPrivateApp = () => import('./routes/private');
@@ -45,9 +46,11 @@ function App() {
   return (
     <React.Suspense fallback={<FullPageSpinner />}>
       {user ? (
-        <SideBarToggleProvider>
-          <PrivateApp />
-        </SideBarToggleProvider>
+        <ContentTypeListProvider>
+          <SideBarToggleProvider>
+            <PrivateApp />
+          </SideBarToggleProvider>
+        </ContentTypeListProvider>
       ) : (
         <PublicApp />
       )}
