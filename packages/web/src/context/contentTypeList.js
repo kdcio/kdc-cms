@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
+import find from 'lodash.find';
 import api from '../utils/api';
 
 const ContentTypeListContext = createContext();
@@ -8,6 +9,8 @@ export const useContentTypeList = () => useContext(ContentTypeListContext);
 
 export const ContentTypeListProvider = ({ children }) => {
   const [typeList, setTypeList] = useState([]);
+
+  const getType = (id) => find(typeList, { id });
 
   const fetchList = () => {
     api('content-definition').then((data) => {
@@ -20,7 +23,7 @@ export const ContentTypeListProvider = ({ children }) => {
   }, []);
 
   return (
-    <ContentTypeListContext.Provider value={{ typeList, setTypeList, fetchList }}>
+    <ContentTypeListContext.Provider value={{ typeList, setTypeList, fetchList, getType }}>
       {children}
     </ContentTypeListContext.Provider>
   );

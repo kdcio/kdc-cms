@@ -37,7 +37,7 @@ const SideBar = () => {
       </li>
       {typeList.map((t) => (
         <li className="nav-item" key={t.id}>
-          <Link className="nav-link" to="/contents/blogs">
+          <Link className="nav-link" to={`/contents/${t.id}`}>
             <FontAwesomeIcon icon="folder" />
             <span>{t.name}</span>
           </Link>
