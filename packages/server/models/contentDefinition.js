@@ -56,7 +56,10 @@ class ContentDefinition extends DynamoDB {
       ExpressionAttributeValues: {
         ':pk': 'content'
       },
-      ProjectionExpression: 'pk, gs1sk, description, fieldCount, createdAt, updatedAt'
+      ExpressionAttributeNames: {
+        '#fields': 'fields'
+      },
+      ProjectionExpression: 'pk, gs1sk, description, fieldCount, #fields, createdAt, updatedAt'
     };
 
     return this.docClient
