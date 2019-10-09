@@ -1,6 +1,12 @@
 {
   "plugins": ["prettier", "react-hooks"],
-  "extends": ["eslint:recommended", "prettier", "plugin:react/recommended", "airbnb-base"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:cypress/recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "airbnb-base"
+  ],
   "env": {
     "es6": true
   },
