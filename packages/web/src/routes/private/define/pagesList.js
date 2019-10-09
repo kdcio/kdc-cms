@@ -43,7 +43,7 @@ const PagesList = () => {
     <Card>
       <CardHeader className="d-flex justify-content-between">
         <h3 className="m-0">List</h3>
-        <Link to="add" className="btn btn-sm btn-primary">
+        <Link id="addBtn" to="add" className="btn btn-sm btn-primary">
           Add Page
         </Link>
       </CardHeader>

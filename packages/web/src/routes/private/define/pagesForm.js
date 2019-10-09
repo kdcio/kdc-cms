@@ -58,7 +58,7 @@ const PagesForm = ({ id }) => {
         </Link>
       </CardHeader>
       <CardBody>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form id="pageForm" onSubmit={handleSubmit(onSubmit)}>
           <FormGroup row>
             <Label sm={2}>Page Name</Label>
             <Col sm={4}>

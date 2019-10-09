@@ -23,7 +23,9 @@ const TopBar = (props) => {
       >
         <FontAwesomeIcon icon="bars" />
       </button>
-      <h3 className="mr-auto ml-md-3 my-2 my-md-0 mw-100">{props.title}</h3>
+      <h3 id="topBarTitle" className="mr-auto ml-md-3 my-2 my-md-0 mw-100">
+        {props.title}
+      </h3>
       <Nav className="ml-auto" navbar>
         <div className="topbar-divider d-none d-sm-block"></div>
         <UncontrolledDropdown nav inNavbar>

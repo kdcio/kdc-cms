@@ -33,5 +33,10 @@
   "parserOptions": {
     "sourceType": "module",
     "allowImportExportEverywhere": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
