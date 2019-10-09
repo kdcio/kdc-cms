@@ -46,8 +46,8 @@ describe('Pages', () => {
     cy.get('#topBarTitle').should('contain', 'Dashboard');
     cy.get(':nth-child(6) > .nav-link > span').click();
     cy.location('pathname').should('eq', '/pages');
-    cy.get('tbody > tr > th').should('contain', 'home-page');
-    cy.get('tbody > tr > :nth-child(2)').should('contain', 'Home');
+    cy.get('tbody > tr > th').should('have.text', 'home-page');
+    cy.get('tbody > tr > :nth-child(2)').should('have.text', 'Home');
     cy.get('.text-center > .btn').click();
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type('KDC CMS');
     cy.get(':nth-child(2) > .col-sm-10 > .form-control').type('Headless CMS for Serverless');

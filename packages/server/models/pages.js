@@ -79,7 +79,7 @@ class Pages extends DynamoDB {
       .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
-  async put({ id, fields, attr }) {
+  async put({ id, name, fields, attr }) {
     const page = await this.get({ id }, { raw: true });
 
     const updatedAt = new Date().valueOf();
@@ -88,6 +88,10 @@ class Pages extends DynamoDB {
       ...attr,
       updatedAt
     };
+
+    if (name) {
+      Item.gs1sk = name;
+    }
 
     if (fields) {
       Item.fields = fields;

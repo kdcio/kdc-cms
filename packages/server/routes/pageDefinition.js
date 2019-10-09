@@ -35,9 +35,9 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { body } = req;
   try {
-    const { fields } = body;
+    const { name, fields } = body;
     await PageDefinition.put({ id, attr: body });
-    await Pages.put({ id, fields });
+    await Pages.put({ id, name, fields });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
