@@ -1,4 +1,14 @@
 describe('Pages', () => {
+  before(() => {
+    cy.task('clearDb', 'page');
+    cy.task('clearDb', 'page#data');
+  });
+
+  after(() => {
+    cy.task('clearDb', 'page');
+    cy.task('clearDb', 'page#data');
+  });
+
   beforeEach(() => {
     cy.login('ian@pogi.com', 'test');
   });
