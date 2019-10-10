@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 const request = require('supertest');
 const { expect } = require('chai');
-const { app, clearTable, admin } = require('./helper');
+const { app, clearDb, admin } = require('./helper');
 
 const req = request(app);
 const homePage = {
@@ -22,7 +22,7 @@ const homePage = {
 
 describe('Page Definition', function() {
   before(async function() {
-    await clearTable('page');
+    await clearDb('page');
     const { token } = await admin;
     this.token = token;
   });
@@ -160,6 +160,6 @@ describe('Page Definition', function() {
   });
 
   after(async function() {
-    await clearTable('page');
+    await clearDb('page');
   });
 });

@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 const request = require('supertest');
 const { expect } = require('chai');
-const { app, clearTable, admin } = require('./helper');
+const { app, clearDb, admin } = require('./helper');
 
 const req = request(app);
 const blog = {
@@ -37,8 +37,8 @@ const blogDef = {
 
 describe('Contents', function() {
   before(async function() {
-    await clearTable('content');
-    await clearTable(`content#${blogDef.id}`);
+    await clearDb('content');
+    await clearDb(`content#${blogDef.id}`);
     const { token } = await admin;
     this.token = token;
     // create content definition
@@ -157,7 +157,7 @@ describe('Contents', function() {
   });
 
   after(async function() {
-    await clearTable('content');
-    await clearTable(`content#${blogDef.id}`);
+    await clearDb('content');
+    await clearDb(`content#${blogDef.id}`);
   });
 });

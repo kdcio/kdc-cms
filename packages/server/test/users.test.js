@@ -2,7 +2,7 @@
 const request = require('supertest');
 const faker = require('faker');
 const { expect } = require('chai');
-const { app, clearTable, admin } = require('./helper');
+const { app, clearDb, admin } = require('./helper');
 
 const req = request(app);
 const user = {
@@ -177,6 +177,6 @@ describe('Users', function() {
   });
 
   after(async function() {
-    await clearTable('user');
+    await clearDb('user');
   });
 });
