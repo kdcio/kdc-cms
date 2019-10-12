@@ -84,7 +84,8 @@ class Contents extends DynamoDB {
       ExpressionAttributeNames: {
         '#Name': 'Name'
       },
-      ProjectionExpression: 'pk, gs1sk, #Name, createdAt, updatedAt, sortKeyUsed'
+      ProjectionExpression: 'pk, gs1sk, #Name, createdAt, updatedAt, sortKeyUsed',
+      ScanIndexForward: false
     };
 
     return this.docClient
