@@ -39,6 +39,7 @@ const ContentsList = ({ id }) => {
 
   useEffect(() => {
     fetchList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (!type) return null;
