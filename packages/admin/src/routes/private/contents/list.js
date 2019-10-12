@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
-import { Card, CardBody, CardHeader, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Table, Button } from 'reactstrap';
 import moment from 'moment';
 import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
@@ -24,13 +24,20 @@ const ContentsList = ({ id }) => {
   const [list, setList] = useState([]);
   const type = getType(id);
 
-  useEffect(() => {
-    const fetchList = () => {
-      api(`contents/${id}`).then((data) => {
-        setList(data);
-      });
-    };
+  const fetchList = () => {
+    api(`contents/${id}`).then((data) => {
+      setList(data);
+    });
+  };
 
+  const deleteContent = (slug) => {
+    const r = confirm('Are you sure you want to delete this content?\n\nTHIS CANNOT BE UNDONE!');
+    if (r === true) {
+      api(`contents/${id}/${slug}`, { method: 'DELETE' }).then(fetchList);
+    }
+  };
+
+  useEffect(() => {
     fetchList();
   }, [id]);
 
@@ -54,7 +61,6 @@ const ContentsList = ({ id }) => {
         <Table hover striped responsive>
           <thead>
             <tr>
-              <th>Slug</th>
               {columns.map((f) => (
                 <th key={f} className="text-capitalize">
                   {f}
@@ -67,15 +73,22 @@ const ContentsList = ({ id }) => {
           <tbody>
             {list.map((content) => (
               <tr key={content.slug}>
-                <th scope="row">{content.id}</th>
                 {columns.map((f) => (
                   <th key={f}>{content[f]}</th>
                 ))}
                 <td>{formatDate(content)}</td>
                 <td className="text-center">
-                  <Link to={`edit/${content.slug}`} className="btn btn-sm btn-secondary mr-2">
+                  <Link to={`edit/${content.Slug}`} className="btn btn-sm btn-secondary mr-2">
                     Edit
                   </Link>
+                  <Button
+                    type="button"
+                    size="sm"
+                    color="danger"
+                    onClick={() => deleteContent(content.Slug)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}

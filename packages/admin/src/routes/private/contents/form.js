@@ -9,22 +9,19 @@ import api from '../../../utils/api';
 
 const ContentsForm = ({ id, slug }) => {
   const { getType } = useContentTypeList();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [initialValues, setInitialValues] = useState({});
   const type = getType(id);
 
   const onSubmit = (data) => {
     const body = {};
     const { fields } = type;
-    let slugField = null; // use first field as basis for slug
 
     fields.forEach((v) => {
       if (data[v.name].trim() === '') return;
       body[v.name] = data[v.name].trim();
-      if (!slugField) slugField = v.name;
     });
 
-    body.slug = slugify(data[slugField], { lower: true });
     if (id && slug) {
       api(`contents/${id}/${slug}`, { body, method: 'PUT' }).then(() => {
         navigate(`/contents/${id}`);
@@ -63,6 +60,14 @@ const ContentsForm = ({ id, slug }) => {
             name={f.name}
             innerRef={register}
             defaultValue={initialValues[f.name]}
+            onChange={(e) => {
+              if (f.name !== 'Name') return;
+              const Name = e.target.value;
+              if (Name && Name.length > 0) {
+                const Slug = slugify(Name, { lower: true });
+                setValue('Slug', Slug);
+              }
+            }}
           />
         )}
       </Col>
