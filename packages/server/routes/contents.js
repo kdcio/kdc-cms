@@ -20,9 +20,9 @@ router.post('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { body } = req;
-    const slug = await Contents.post({ id, ...body });
+    const Slug = await Contents.post({ id, ...body });
     res.status(HttpStatus.CREATED);
-    res.send({ slug });
+    res.send({ Slug });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR);
     res.send(error);

@@ -5,34 +5,36 @@ const { app, clearDb, admin } = require('./helper');
 
 const req = request(app);
 const blog = {
-  id: 'blogs',
-  date: new Date().toJSON().slice(0, 10),
-  title: 'My First Post',
-  body:
+  Date: new Date().toJSON().slice(0, 10),
+  Name: 'My First Post',
+  Body:
     'Aute consequat aute aliquip proident sint pariatur mollit adipisicing aliquip eiusmod commodo nulla amet. Laborum occaecat excepteur cillum consectetur et dolore elit exercitation officia enim id anim consectetur ipsum. Do consectetur proident amet reprehenderit sint qui eu. Deserunt ipsum consectetur deserunt sunt non. Laborum commodo ullamco proident commodo amet.',
-  slug: 'my-first-post'
+  Slug: 'my-first-post'
 };
 
 const blogDef = {
   name: 'Blogs',
   id: 'blogs',
-  fieldCount: 3,
+  fieldCount: 4,
   fields: [
     {
-      name: 'title',
+      name: 'Name',
       type: 'text'
     },
     {
-      name: 'date',
+      name: 'Slug',
       type: 'text'
     },
     {
-      name: 'body',
+      name: 'Date',
+      type: 'text'
+    },
+    {
+      name: 'Body',
       type: 'long-text'
     }
   ],
-  slug: 'text',
-  sortKey: 'date'
+  sortKey: 'Date'
 };
 
 describe('Contents', function() {
@@ -64,7 +66,7 @@ describe('Contents', function() {
         .expect(
           201,
           {
-            slug: blog.slug
+            Slug: blog.Slug
           },
           done
         );
@@ -74,7 +76,7 @@ describe('Contents', function() {
   describe(`GET /contents/:id/:slug`, function() {
     it('should get', function(done) {
       req
-        .get(`/contents/${blogDef.id}/${blog.slug}`)
+        .get(`/contents/${blogDef.id}/${blog.Slug}`)
         .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
@@ -85,11 +87,12 @@ describe('Contents', function() {
           expect(body.sk).to.equal(undefined);
           expect(body.gs1pk).to.equal(undefined);
           expect(body.gs1sk).to.equal(undefined);
-          expect(body.slug).to.equal(blog.slug);
-          expect(body.date).to.equal(blog.date);
-          expect(body.title).to.equal(blog.title);
-          expect(body.body).to.equal(blog.body);
+          expect(body.Name).to.equal(blog.Name);
+          expect(body.Slug).to.equal(blog.Slug);
+          expect(body.Date).to.equal(blog.Date);
+          expect(body.Body).to.equal(blog.Body);
           expect(body.createdAt).to.be.above(0);
+          blog.createdAt = body.createdAt;
           done();
         });
     });
@@ -106,6 +109,11 @@ describe('Contents', function() {
           expect(err).to.be.equal(null);
           const { body } = res;
           expect(body.length).to.equal(1);
+          expect(body[0].Name).to.equal(blog.Name);
+          expect(body[0].Slug).to.equal(blog.Slug);
+          expect(body[0].Date).to.equal(blog.Date);
+          expect(body[0].Body).to.equal(undefined);
+          expect(body[0].createdAt).to.equal(blog.createdAt);
           done();
         });
     });
@@ -114,18 +122,16 @@ describe('Contents', function() {
   describe(`PUT /contents/:id/:slug`, function() {
     it('it should update', function(done) {
       req
-        .put(`/contents/${blogDef.id}/${blog.slug}`)
+        .put(`/contents/${blogDef.id}/${blog.Slug}`)
         .set('Authorization', `Bearer ${this.token}`)
-        .send({ title: 'My Updated Post' })
+        .send({ title: 'My Updated Post', Body: 'Updated body' })
         .set('Accept', 'application/json')
         .expect(204, done);
     });
-  });
 
-  describe(`GET /contents/:id/:slug`, function() {
-    it('should update body', function(done) {
+    it('should get update date', function(done) {
       req
-        .get(`/contents/${blogDef.id}/${blog.slug}`)
+        .get(`/contents/${blogDef.id}/${blog.Slug}`)
         .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
@@ -136,11 +142,52 @@ describe('Contents', function() {
           expect(body.sk).to.equal(undefined);
           expect(body.gs1pk).to.equal(undefined);
           expect(body.gs1sk).to.equal(undefined);
-          expect(body.slug).to.equal(blog.slug);
-          expect(body.date).to.equal(blog.date);
-          expect(body.title).to.equal('My Updated Post');
-          expect(body.body).to.equal(blog.body);
-          expect(body.createdAt).to.be.above(0);
+          expect(body.Name).to.equal(blog.Name);
+          expect(body.Slug).to.equal(blog.Slug);
+          expect(body.Date).to.equal(blog.Date);
+          expect(body.title).to.equal(undefined);
+          expect(body.Body).to.equal('Updated body');
+          expect(body.createdAt).to.equal(blog.createdAt);
+          expect(body.updatedAt).to.be.above(0);
+          done();
+        });
+    });
+
+    it('it should delete old document and create a new one', function(done) {
+      req
+        .put(`/contents/${blogDef.id}/${blog.Slug}`)
+        .set('Authorization', `Bearer ${this.token}`)
+        .send({ Name: 'My Updated Post', Slug: 'my-updated-post' })
+        .set('Accept', 'application/json')
+        .expect(204, done);
+    });
+
+    it('should NOT get old slug', function(done) {
+      req
+        .get(`/contents/${blogDef.id}/${blog.Slug}`)
+        .set('Authorization', `Bearer ${this.token}`)
+        .expect('Content-Type', /json/)
+        .expect(404, done);
+    });
+
+    it('should get new document', function(done) {
+      req
+        .get(`/contents/${blogDef.id}/my-updated-post`)
+        .set('Authorization', `Bearer ${this.token}`)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+          expect(err).to.be.equal(null);
+          const { body } = res;
+          expect(body.pk).to.equal(undefined);
+          expect(body.sk).to.equal(undefined);
+          expect(body.gs1pk).to.equal(undefined);
+          expect(body.gs1sk).to.equal(undefined);
+          expect(body.Name).to.equal('My Updated Post');
+          expect(body.Slug).to.equal('my-updated-post');
+          expect(body.Date).to.equal(blog.Date);
+          expect(body.Body).to.equal('Updated body');
+          expect(body.createdAt).to.equal(blog.createdAt);
           expect(body.updatedAt).to.be.above(0);
           done();
         });
@@ -150,7 +197,7 @@ describe('Contents', function() {
   describe(`DELETE /contents/:id/:slug`, function() {
     it('should delete', function(done) {
       req
-        .delete(`/contents/${blogDef.id}/${blog.slug}`)
+        .delete(`/contents/${blogDef.id}/my-updated-post`)
         .set('Authorization', `Bearer ${this.token}`)
         .expect(204, done);
     });

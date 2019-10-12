@@ -6,11 +6,11 @@ class Contents extends DynamoDB {
   constructor() {
     super();
     this.fieldMap = {
-      pk: 'slug'
+      pk: 'Slug'
     };
   }
 
-  async post({ slug, id, ...attr }) {
+  async post({ Slug, id, ...attr }) {
     const definition = await ContentDefinition.get({ id });
     const validAttr = {};
     definition.fields.forEach(f => {
@@ -18,17 +18,22 @@ class Contents extends DynamoDB {
         validAttr[f.name] = attr[f.name];
       }
     });
+    if (attr.createdAt) {
+      validAttr.createdAt = attr.createdAt;
+    }
+    if (attr.updatedAt) {
+      validAttr.updatedAt = attr.updatedAt;
+    }
 
     const createdAt = new Date().valueOf();
     const Item = {
-      pk: slug,
+      pk: Slug,
       sk: `content#${id}`,
       gs1pk: `content#${id}`,
       gs1sk: validAttr[definition.sortKey],
       sortKeyUsed: definition.sortKey,
-      fields: definition.fields,
-      ...validAttr,
-      createdAt
+      createdAt,
+      ...validAttr
     };
 
     const params = {
@@ -76,7 +81,10 @@ class Contents extends DynamoDB {
       ExpressionAttributeValues: {
         ':pk': `content#${id}`
       },
-      ProjectionExpression: 'pk, gs1sk, createdAt, updatedAt, sortKeyUsed'
+      ExpressionAttributeNames: {
+        '#Name': 'Name'
+      },
+      ProjectionExpression: 'pk, gs1sk, #Name, createdAt, updatedAt, sortKeyUsed'
     };
 
     return this.docClient
@@ -93,16 +101,33 @@ class Contents extends DynamoDB {
   }
 
   async put({ id, slug, attr }) {
-    const content = await this.get({ id, slug });
-    delete content.slug;
-    delete content[content.sortKeyUsed];
-
     const updatedAt = new Date().valueOf();
+    const current = await this.get({ id, slug });
+    if (attr.Slug && slug !== attr.Slug) {
+      await this.delete({ id, slug });
+      return this.post({
+        id,
+        ...current,
+        ...attr,
+        updatedAt
+      });
+    }
+
+    delete current[current.sortKeyUsed];
+
+    const definition = await ContentDefinition.get({ id });
+    const validAttr = {};
+    definition.fields.forEach(f => {
+      if (attr[f.name]) {
+        validAttr[f.name] = attr[f.name];
+      }
+    });
+
     const Item = {
       pk: slug,
       sk: `content#${id}`,
-      ...content,
-      ...attr,
+      ...current,
+      ...validAttr,
       updatedAt
     };
 
@@ -114,7 +139,8 @@ class Contents extends DynamoDB {
     return this.docClient
       .put(params)
       .promise()
-      .then(async () => Item.pk);
+      .then(async () => Item.pk)
+      .catch(e => console.log(e));
   }
 
   async delete({ id, slug }) {
