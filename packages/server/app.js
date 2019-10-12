@@ -32,6 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Enable CORS
 app.use(cors());
+app.options('*', cors());
 
 // use JWT auth to secure the api
 app.use(jwt());
