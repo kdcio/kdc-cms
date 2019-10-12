@@ -141,8 +141,7 @@ class Contents extends DynamoDB {
     return this.docClient
       .put(params)
       .promise()
-      .then(async () => Item.pk)
-      .catch(e => console.log(e));
+      .then(async () => Item.pk);
   }
 
   async delete({ id, slug }) {
