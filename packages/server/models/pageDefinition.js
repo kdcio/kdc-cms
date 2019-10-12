@@ -23,7 +23,8 @@ class PageDefinition extends DynamoDB {
 
     const params = {
       TableName: this.tableName,
-      Item
+      Item,
+      ConditionExpression: 'attribute_not_exists(pk)'
     };
 
     return this.docClient

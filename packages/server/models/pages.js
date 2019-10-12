@@ -28,7 +28,8 @@ class Pages extends DynamoDB {
       gs1sk: definition.name,
       fields: definition.fields,
       ...validAttr,
-      createdAt
+      createdAt,
+      ConditionExpression: 'attribute_not_exists(pk)'
     };
 
     const params = {
