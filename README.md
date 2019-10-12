@@ -52,3 +52,9 @@ Web Server --> S3 --> Cloudfront
     * sk: "content#:type"
 
 *Note that **slug** and **sort-key** are mandatory in Content Types.*
+
+## Local Development
+
+### Notes
+
+* SAM local development is too slow because it needs to rebuild on every code change and running ```sam local start-api``` server response is like a simulation of lambda cold start on every request. Also deployment has too many steps compared to [serverless](https://www.npmjs.com/package/serverless).
