@@ -1,0 +1,20 @@
+{
+  "name": "kdc-cms-setup",
+  "version": "0.1.0",
+  "description": "Setup for KDC CMS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "inquirer": "^7.0.0",
+    "kdc-cms-utils": "0.1.0"
+  }
+}

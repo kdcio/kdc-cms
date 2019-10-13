@@ -6,7 +6,7 @@
     "admin": "yarn workspace @kdc-cms/admin start",
     "server": "yarn workspace @kdc-cms/server start",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn admin\"",
-    "setup": "yarn server:setup",
+    "setup": "yarn workspace kdc-cms-setup start",
     "server:setup": "yarn workspace @kdc-cms/server ddb:init",
     "server:ddb:stop": "yarn workspace @kdc-cms/server ddb:stop",
     "server:test": "yarn workspace @kdc-cms/server test",

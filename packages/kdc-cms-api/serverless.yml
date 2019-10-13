@@ -34,6 +34,8 @@ functions:
     timeout: 5
     environment:
       NODE_ENV: production
+      JWT_SECRET: Tosn3221as(SEjsd)
+      DYNAMODB_TABLE: ${self:provider.environment.DYNAMODB_TABLE}
     package:
       excludeDevDependencies: true
       exclude:

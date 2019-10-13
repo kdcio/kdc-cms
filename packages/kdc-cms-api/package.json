@@ -1,5 +1,5 @@
 {
-  "name": "@kdc-cms/server",
+  "name": "kdc-cms-api",
   "version": "0.1.0",
   "description": "API for kdc-cms",
   "main": "index.js",
