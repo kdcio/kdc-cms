@@ -15,6 +15,7 @@
   "private": true,
   "dependencies": {
     "inquirer": "^7.0.0",
-    "kdc-cms-utils": "0.1.0"
+    "kdc-cms-utils": "0.1.0",
+    "lodash.indexof": "^4.0.5"
   }
 }
