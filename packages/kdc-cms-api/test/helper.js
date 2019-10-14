@@ -7,23 +7,13 @@ process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = '0987654321';
 process.env.DYNAMODB_TABLE = 'kdc-cms-test';
 
-const AWS = require('aws-sdk');
+const { createTable } = require('kdc-cms-utils');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const faker = require('faker');
-const clearDb = require('../helpers/clearDb');
+const { clearDb } = require('kdc-cms-utils');
+const Users = require('kdc-cms-models/models/users');
 const app = require('../app');
-const Users = require('../models/users');
 const schema = require('../schema.json');
-
-const createTable = () => {
-  return new Promise(resolve => {
-    const dynamodb = new AWS.DynamoDB();
-    schema.TableName = process.env.DYNAMODB_TABLE;
-    dynamodb.createTable(schema, () => {
-      resolve();
-    });
-  });
-};
 
 const user = {
   email: faker.internet.email(),
@@ -42,7 +32,7 @@ const loginUser = async () => {
 };
 
 const initUser = async () => {
-  await createTable();
+  await createTable(schema);
   await clearDb('user');
   await createUser(user);
   const { token } = await loginUser();

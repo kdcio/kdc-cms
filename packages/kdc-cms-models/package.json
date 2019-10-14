@@ -1,7 +1,7 @@
 {
-  "name": "kdc-cms-utils",
+  "name": "kdc-cms-models",
   "version": "0.1.0",
-  "description": "Utils for KDC CMS",
+  "description": "Models for KDC CMS",
   "main": "index.js",
   "author": {
     "name": "Ian Dela Cruz",

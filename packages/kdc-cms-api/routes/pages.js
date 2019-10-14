@@ -1,6 +1,6 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
-const Pages = require('../models/pages');
+const Pages = require('kdc-cms-models/models/pages');
 
 const router = express.Router();
 

@@ -1,40 +1,30 @@
-const DynamoDB = require('./dynamodb');
-const remap = require('../helpers/remap');
-const PageDefinition = require('./pageDefinition');
+const DynamoDB = require("./dynamodb");
+const remap = require("../utils/remap");
 
-class Pages extends DynamoDB {
+class PageDefinition extends DynamoDB {
   constructor() {
     super();
     this.fieldMap = {
-      pk: 'id',
-      gs1sk: 'name'
+      pk: "id",
+      gs1sk: "name"
     };
   }
 
-  async post({ id, ...attr }) {
-    const definition = await PageDefinition.get({ id });
-    const validAttr = {};
-    definition.fields.forEach(f => {
-      if (attr[f.name]) {
-        validAttr[f.name] = attr[f.name];
-      }
-    });
-
+  post({ name, id, ...attr }) {
     const createdAt = new Date().valueOf();
     const Item = {
       pk: id,
-      sk: 'page#data',
-      gs1pk: 'page#data',
-      gs1sk: definition.name,
-      fields: definition.fields,
-      ...validAttr,
-      createdAt,
-      ConditionExpression: 'attribute_not_exists(pk)'
+      sk: "page",
+      gs1pk: "page",
+      gs1sk: name,
+      ...attr,
+      createdAt
     };
 
     const params = {
       TableName: this.tableName,
-      Item
+      Item,
+      ConditionExpression: "attribute_not_exists(pk)"
     };
 
     return this.docClient
@@ -46,7 +36,7 @@ class Pages extends DynamoDB {
   get({ id }, opts = {}) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: 'page#data' }
+      Key: { pk: id, sk: "page" }
     };
     const { raw } = opts;
 
@@ -54,10 +44,6 @@ class Pages extends DynamoDB {
       .get(params)
       .promise()
       .then(data => {
-        if (!data.Item) {
-          return Promise.reject(new Error({ code: 'PageNotFound', message: 'Page not found' }));
-        }
-
         if (raw) return data.Item;
         return remap(data.Item, this.fieldMap);
       });
@@ -66,12 +52,13 @@ class Pages extends DynamoDB {
   list() {
     const params = {
       TableName: this.tableName,
-      IndexName: 'GS1',
-      KeyConditionExpression: 'gs1pk = :pk',
+      IndexName: "GS1",
+      KeyConditionExpression: "gs1pk = :pk",
       ExpressionAttributeValues: {
-        ':pk': 'page#data'
+        ":pk": "page"
       },
-      ProjectionExpression: 'pk, gs1sk, createdAt, updatedAt'
+      ProjectionExpression:
+        "pk, gs1sk, description, fieldCount, createdAt, updatedAt"
     };
 
     return this.docClient
@@ -80,24 +67,20 @@ class Pages extends DynamoDB {
       .then(data => data.Items.map(i => remap(i, this.fieldMap)));
   }
 
-  async put({ id, name, fields, attr }) {
+  /**
+   * TODO: if fields are updated, corresponding page#data should also be updated.
+   */
+  async put({ id, attr }) {
     const page = await this.get({ id }, { raw: true });
+    const { name, ...otherAttr } = attr;
 
     const updatedAt = new Date().valueOf();
     const Item = {
       ...page,
-      ...attr,
+      ...otherAttr,
+      gs1sk: name || page.gs1sk,
       updatedAt
     };
-
-    if (name) {
-      Item.gs1sk = name;
-    }
-
-    if (fields) {
-      Item.fields = fields;
-      /** TODO: remove attributes not in fields */
-    }
 
     const params = {
       TableName: this.tableName,
@@ -113,11 +96,11 @@ class Pages extends DynamoDB {
   async delete({ id }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: 'page#data' }
+      Key: { pk: id, sk: "page" }
     };
 
     return this.docClient.delete(params).promise();
   }
 }
 
-module.exports = new Pages();
+module.exports = new PageDefinition();

@@ -1,12 +1,12 @@
-const DynamoDB = require('./dynamodb');
-const remap = require('../helpers/remap');
-const ContentDefinition = require('./contentDefinition');
+const DynamoDB = require("./dynamodb");
+const remap = require("../utils/remap");
+const ContentDefinition = require("./contentDefinition");
 
 class Contents extends DynamoDB {
   constructor() {
     super();
     this.fieldMap = {
-      pk: 'Slug'
+      pk: "Slug"
     };
   }
 
@@ -39,7 +39,7 @@ class Contents extends DynamoDB {
     const params = {
       TableName: this.tableName,
       Item,
-      ConditionExpression: 'attribute_not_exists(pk)'
+      ConditionExpression: "attribute_not_exists(pk)"
     };
 
     return this.docClient
@@ -61,7 +61,7 @@ class Contents extends DynamoDB {
       .then(data => {
         if (!data.Item) {
           return Promise.reject(
-            new Error({ code: 'ContentNotFound', message: 'Content not found' })
+            new Error({ code: "ContentNotFound", message: "Content not found" })
           );
         }
 
@@ -77,15 +77,16 @@ class Contents extends DynamoDB {
   list(id) {
     const params = {
       TableName: this.tableName,
-      IndexName: 'GS1',
-      KeyConditionExpression: 'gs1pk = :pk',
+      IndexName: "GS1",
+      KeyConditionExpression: "gs1pk = :pk",
       ExpressionAttributeValues: {
-        ':pk': `content#${id}`
+        ":pk": `content#${id}`
       },
       ExpressionAttributeNames: {
-        '#Name': 'Name'
+        "#Name": "Name"
       },
-      ProjectionExpression: 'pk, gs1sk, #Name, createdAt, updatedAt, sortKeyUsed',
+      ProjectionExpression:
+        "pk, gs1sk, #Name, createdAt, updatedAt, sortKeyUsed",
       ScanIndexForward: false
     };
 

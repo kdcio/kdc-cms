@@ -1,12 +1,12 @@
-const DynamoDB = require('./dynamodb');
-const remap = require('../helpers/remap');
+const DynamoDB = require("./dynamodb");
+const remap = require("../utils/remap");
 
 class ContentDefinition extends DynamoDB {
   constructor() {
     super();
     this.fieldMap = {
-      pk: 'id',
-      gs1sk: 'name'
+      pk: "id",
+      gs1sk: "name"
     };
   }
 
@@ -14,8 +14,8 @@ class ContentDefinition extends DynamoDB {
     const createdAt = new Date().valueOf();
     const Item = {
       pk: id,
-      sk: 'content',
-      gs1pk: 'content',
+      sk: "content",
+      gs1pk: "content",
       gs1sk: name,
       ...attr,
       createdAt
@@ -24,7 +24,7 @@ class ContentDefinition extends DynamoDB {
     const params = {
       TableName: this.tableName,
       Item,
-      ConditionExpression: 'attribute_not_exists(pk)'
+      ConditionExpression: "attribute_not_exists(pk)"
     };
 
     return this.docClient
@@ -36,7 +36,7 @@ class ContentDefinition extends DynamoDB {
   get({ id }, opts = {}) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: 'content' }
+      Key: { pk: id, sk: "content" }
     };
     const { raw } = opts;
 
@@ -52,15 +52,16 @@ class ContentDefinition extends DynamoDB {
   list() {
     const params = {
       TableName: this.tableName,
-      IndexName: 'GS1',
-      KeyConditionExpression: 'gs1pk = :pk',
+      IndexName: "GS1",
+      KeyConditionExpression: "gs1pk = :pk",
       ExpressionAttributeValues: {
-        ':pk': 'content'
+        ":pk": "content"
       },
       ExpressionAttributeNames: {
-        '#fields': 'fields'
+        "#fields": "fields"
       },
-      ProjectionExpression: 'pk, gs1sk, description, fieldCount, #fields, createdAt, updatedAt'
+      ProjectionExpression:
+        "pk, gs1sk, description, fieldCount, #fields, createdAt, updatedAt"
     };
 
     return this.docClient
@@ -95,7 +96,7 @@ class ContentDefinition extends DynamoDB {
   async delete({ id }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: id, sk: 'content' }
+      Key: { pk: id, sk: "content" }
     };
 
     return this.docClient.delete(params).promise();

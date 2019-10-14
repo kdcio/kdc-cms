@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run ddb:start && npm run ddb:wait && PORT=8101 NODE_ENV=dev nodemon dev.js",
+    "start:local": "nodemon --exec \"sls offline start\" -e \"models/*.js,helpers/*.js,routes/*.js,app.js,lambda.js\"",
     "ddb:setup": "npm run ddb:start && npm run ddb:wait && npm run ddb:init",
     "ddb:start": "docker-compose up -d",
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
@@ -27,7 +28,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "aws-sdk": "^2.538.0",
     "aws-serverless-express": "^3.3.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -36,6 +36,8 @@
     "helmet": "^3.21.1",
     "http-status-codes": "^1.3.2",
     "jsonwebtoken": "^8.5.1",
+    "kdc-cms-models": "0.1.0",
+    "kdc-cms-utils": "0.1.0",
     "morgan": "^1.9.1",
     "response-time": "^2.3.2"
   },
@@ -54,6 +56,9 @@
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "readline-sync": "^1.4.10",
+    "serverless-offline": "^5.12.0",
+    "serverless-plugin-monorepo": "^0.8.0",
+    "serverless-stage-manager": "^1.0.5",
     "supertest": "^4.0.2"
   }
 }

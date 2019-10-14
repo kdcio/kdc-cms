@@ -1,13 +1,27 @@
-service: kdc-cms-server
+service: kdc-cms-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
+
+plugins:
+  - serverless-plugin-monorepo
+  - serverless-offline
+  - serverless-stage-manager
+
+custom:
+  stages:
+    - local
+    - dev
+    - staging
+    - prod
 
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: dev
+  stage: ${opt:stage}
+  region: ${opt:region}
+  profile: ${opt:profile}
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: ${file(../../resources/database/serverless.yml):provider.environment.DYNAMODB_TABLE}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -24,11 +38,9 @@ provider:
         - dynamodb:Scan
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
-package:
-  individually: true
-
 functions:
   cms:
+    name: ${self:service}-${self:provider.stage}
     handler: lambda.handler
     memorySize: 128
     timeout: 5
@@ -53,37 +65,17 @@ functions:
           cors: true
 
 resources:
-  Resources:
-    DynamoDbTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
-        AttributeDefinitions:
-          - AttributeName: "pk"
-            AttributeType: "S"
-          - AttributeName: "sk"
-            AttributeType: "S"
-          - AttributeName: "gs1pk"
-            AttributeType: "S"
-          - AttributeName: "gs1sk"
-            AttributeType: "S"
-        KeySchema:
-          - AttributeName: "pk"
-            KeyType: "HASH"
-          - AttributeName: "sk"
-            KeyType: "RANGE"
-        GlobalSecondaryIndexes:
-          - IndexName: "GS1"
-            KeySchema:
-              - AttributeName: "gs1pk"
-                KeyType: "HASH"
-              - AttributeName: "gs1sk"
-                KeyType: "RANGE"
-            Projection:
-              ProjectionType: "ALL"
-            ProvisionedThroughput:
-              ReadCapacityUnits: 3
-              WriteCapacityUnits: 3
-        ProvisionedThroughput:
-          ReadCapacityUnits: 3
-          WriteCapacityUnits: 3
+  Outputs:
+    ApiGatewayRestApiId:
+      Value:
+        Ref: ApiGatewayRestApi
+      Export:
+        Name: ${self:provider.stage}-ApiGatewayRestApiId
+
+    ApiGatewayRestApiRootResourceId:
+      Value:
+        Fn::GetAtt:
+          - ApiGatewayRestApi
+          - RootResourceId
+      Export:
+        Name: ${self:provider.stage}-ApiGatewayRestApiRootResourceId

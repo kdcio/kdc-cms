@@ -1,14 +1,14 @@
 /* eslint-disable no-underscore-dangle */
-const jwt = require('jsonwebtoken');
-const { isValidPassword, encryptPassword } = require('../helpers/encrypt');
-const DynamoDB = require('./dynamodb');
+const jwt = require("jsonwebtoken");
+const { isValidPassword, encryptPassword } = require("kdc-cms-utils").encrypt;
+const DynamoDB = require("./dynamodb");
 
 class Users extends DynamoDB {
   async authenticate({ email, password }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'user' },
-      AttributesToGet: ['pk', 'gs1sk', 'role', 'hash', 'salt']
+      Key: { pk: email, sk: "user" },
+      AttributesToGet: ["pk", "gs1sk", "role", "hash", "salt"]
     };
 
     const data = await this.docClient.get(params).promise();
@@ -27,8 +27,8 @@ class Users extends DynamoDB {
     const { hash, salt } = encryptPassword(password);
     const Item = {
       pk: email,
-      sk: 'user',
-      gs1pk: 'user',
+      sk: "user",
+      gs1pk: "user",
       gs1sk: name,
       ...attr,
       hash,
@@ -39,7 +39,7 @@ class Users extends DynamoDB {
     const params = {
       TableName: this.tableName,
       Item,
-      ConditionExpression: 'attribute_not_exists(pk)'
+      ConditionExpression: "attribute_not_exists(pk)"
     };
 
     return this.docClient
@@ -51,7 +51,7 @@ class Users extends DynamoDB {
   get({ email }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'user' }
+      Key: { pk: email, sk: "user" }
     };
 
     return this.docClient
@@ -59,7 +59,7 @@ class Users extends DynamoDB {
       .promise()
       .then(data => {
         if (!data.Item) {
-          return Promise.reject(new Error({ code: 'UserNotFound' }));
+          return Promise.reject(new Error({ code: "UserNotFound" }));
         }
         return data.Item;
       });
@@ -68,10 +68,10 @@ class Users extends DynamoDB {
   list() {
     const params = {
       TableName: this.tableName,
-      IndexName: 'GS1',
-      KeyConditionExpression: 'gs1pk = :pk',
+      IndexName: "GS1",
+      KeyConditionExpression: "gs1pk = :pk",
       ExpressionAttributeValues: {
-        ':pk': 'user'
+        ":pk": "user"
       }
     };
 
@@ -105,7 +105,7 @@ class Users extends DynamoDB {
   async delete({ email }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'page' }
+      Key: { pk: email, sk: "page" }
     };
 
     return this.docClient.delete(params).promise();
@@ -114,11 +114,11 @@ class Users extends DynamoDB {
   async changePassword({ email, newPassword, oldPassword }) {
     const params = {
       TableName: this.tableName,
-      Key: { pk: email, sk: 'user' }
+      Key: { pk: email, sk: "user" }
     };
 
     const data = await this.docClient.get(params).promise();
-    if (!data.Item) return Promise.reject(new Error({ code: 'UserNotFound' }));
+    if (!data.Item) return Promise.reject(new Error({ code: "UserNotFound" }));
 
     const { Item: user } = data;
     if (isValidPassword(oldPassword, user.salt, user.hash)) {
@@ -126,7 +126,7 @@ class Users extends DynamoDB {
       return this.put({ email, hash, salt });
     }
 
-    return Promise.reject(new Error({ code: 'PasswordInvalid' }));
+    return Promise.reject(new Error({ code: "PasswordInvalid" }));
   }
 }
 
