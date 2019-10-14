@@ -1,0 +1,37 @@
+service: kdc-cms-database
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+plugins:
+  - serverless-stage-manager
+
+custom:
+  stages:
+    - local
+    - dev
+    - staging
+    - prod
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage}
+  region: ${file(../../setup.${self:provider.stage}.yml):REGION}
+  profile: ${file(../../setup.${self:provider.stage}.yml):PROFILE}
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+
+resources:
+  Resources:
+    DynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties: ${file(./schema.yml)}
+
+Outputs:
+  TableArn:
+    Value:
+      Fn::GetAtt:
+        - DynamoDbTable
+        - Arn
+    Export:
+      Name: ${self:provider.stage}-TableArn
