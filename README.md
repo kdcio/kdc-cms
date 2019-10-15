@@ -4,57 +4,83 @@ A simple headless CMS for AWS serverless infrastructure.
 
 ## Reason
 
-* Cheapest way to run headless CMS
+* Cheapest way to run CMS for small to medium websites. Might even cost you nothing if you stay within [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
 * Boilerplate CMS for new projects
-* Learn something new - [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
+* Learn something new - [monorepo](https://en.wikipedia.org/wiki/Monorepo), [serverless](https://serverless.com), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
 
-## Infrastructure
+## Installation
 
-API Server --> API Gateway --> Lambda --> DynamoDB
+* Clone this repository
+* Install [aws-cli](https://docs.aws.amazon.com/en_pv/cli/latest/userguide/cli-chap-install.html) and [create a profile](https://docs.aws.amazon.com/en_pv/cli/latest/userguide/cli-chap-configure.html).
+  
+  ```bash
+  aws configure --profile kdc
+  ```
 
-Web Server --> S3 --> Cloudfront
+  As a safety precaution, I usually set my default credentials as a fake account like so:
 
-## DB Design
+  ```credentials
+  [default]
+  aws_access_key_id=fake
+  aws_secret_access_key=fake
 
-![DB Design](docs/img/db-design.png)
+  [kdc]
+  aws_access_key_id=xxxxxxx
+  aws_secret_access_key=xxxxxxxx
+  ```
 
-### Access Patters
+* Install serverless binary
+  
+  ```bash
+  sudo npm i -g serverless
+  ```
 
-* Users
-  * List sorted by name (/api/users)
-    * gs1pk: "user"
-  * Login, update, get user (/api/users/:email):
-    * pk: "email"
-    * sk: "user"
-* Page Definition
-  * List sorted by name (/api/page-definition)
-    * gs1pk: "page"
-  * Get or update page (/api/page-definition/:id)
-    * pk: ":page-id"
-    * sk: "page"
-* Page Data
-  * List sorted by name (/api/pages)
-    * gs1pk: "page#data"
-  * Get or update page data (/api/pages/:id)
-    * pk: ":id"
-    * sk: "page#data"
-* Content Definition
-  * List sorted by name (/api/content-definition)
-    * gs1pk: "content"
-  * Get or update content type: (/api/content-definition/:type)
-    * pk: ":type"
-    * sk: "content"
-* Content Data
-  * List sorted as defined by sort-key attribute (/api/contents/:type)
-    * gs1pk: "content#:type"
-  * Get or update content data (/api/contents/:type/:slug)
-    * pk: ":slug"
-    * sk: "content#:type"
+* Install project dependencies.
 
-*Note that **slug** and **sort-key** are mandatory in Content Types.*
+  ```bash
+  cd kdc-cms
+  yarn install
+  ```
 
 ## Local Development
 
-### Notes
+* Install [docker](https://docs.docker.com/install/) for running [dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) and [dynamodb-manager](https://hub.docker.com/r/taydy/dynamodb-manager/) on your machine.
 
-* SAM local development is too slow because it needs to rebuild on every code change and running ```sam local start-api``` server response is like a simulation of lambda cold start on every request. Also deployment has too many steps compared to [serverless](https://www.npmjs.com/package/serverless).
+* Setup database and create initial user.
+  
+  ```bash
+  yarn setup:local
+  ```
+
+* yarn start
+* Browser will open KDC CMS at [http://localhost:8100](http://localhost:8100).
+* API endpoint is [http://localhost:8101](http://localhost:8101)
+* [Dynamodb manager](https://hub.docker.com/r/taydy/dynamodb-manager/) is [http://localhost:8102](http://localhost:8102)
+* [Dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) endpoint is [http://localhost:8103](http://localhost:8103)
+
+## Deployment to AWS
+
+KDC CMS can be deployed in different stages. Example is `dev` and `prod`. Each stage will have different resources. Don't worry it will not cost you anything as one of the advantages of serverless is pay as you use. There will be no idle servers that you need to pay for.
+
+Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` to denote different stages of your app.
+
+* Create dynamodb table and create initial user.
+
+  ```bash
+  yarn setup:$stage
+  ```
+
+* Run the command below.
+
+  ```bash
+  yarn deploy $stage
+  ```
+
+* You can also deploy individual package:
+  
+  ```bash
+  yarn deploy:api $stage
+  yarn deploy:admin $stage
+  ```
+
+
