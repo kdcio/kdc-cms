@@ -49,7 +49,7 @@ A simple headless CMS for AWS serverless infrastructure.
 * Setup database and create initial user.
 
   ```bash
-  yarn setup:local
+  yarn setup local
   ```
 
 * Start API and CMS
@@ -72,7 +72,7 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
 * Create dynamodb table and create initial user.
 
   ```bash
-  yarn setup:$stage
+  yarn setup $stage
   ```
 
 * Run the command below.
