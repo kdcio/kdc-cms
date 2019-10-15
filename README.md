@@ -83,4 +83,10 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
   yarn deploy:admin $stage
   ```
 
+## Other
 
+* [Software Design](docs/DESIGN.md)
+
+## License
+
+[MIT](LICENSE)
