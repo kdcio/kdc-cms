@@ -13,11 +13,6 @@ const createFile = async ctx => {
     const filename = path.resolve(rootDir, `config.${stage}.yml`);
 
     try {
-      // delete file if it exists
-      fs.unlinkSync(filename);
-    } catch (e) {}
-
-    try {
       fs.appendFileSync(filename, `REGION: ${region}\n`, "utf8");
       fs.appendFileSync(filename, `PROFILE: ${profile}\n`, "utf8");
     } catch (err) {
@@ -31,10 +26,6 @@ const createFile = async ctx => {
       let filename = "";
       if (!aws) {
         filename = path.resolve(rootDir, `config.local.yml`);
-        try {
-          // delete file if it exists
-          fs.unlinkSync(filename);
-        } catch (e) {}
       } else {
         filename = path.resolve(rootDir, `config.${stage}.yml`);
       }
