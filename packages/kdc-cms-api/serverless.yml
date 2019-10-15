@@ -9,7 +9,6 @@ plugins:
 
 custom:
   stages:
-    - local
     - dev
     - staging
     - prod
@@ -18,10 +17,10 @@ provider:
   name: aws
   runtime: nodejs10.x
   stage: ${opt:stage}
-  region: ${opt:region}
-  profile: ${opt:profile}
+  region: ${file(../../config.${self:provider.stage}.yml):REGION, 'localhost'}
+  profile: ${file(../../config.${self:provider.stage}.yml):PROFILE, 'default'}
   environment:
-    DYNAMODB_TABLE: ${file(../../resources/database/serverless.yml):provider.environment.DYNAMODB_TABLE}
+    DYNAMODB_TABLE: "${file(../../resources/database/serverless.yml):service}-${self:provider.stage}"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -45,8 +44,8 @@ functions:
     memorySize: 128
     timeout: 5
     environment:
-      NODE_ENV: production
-      JWT_SECRET: Tosn3221as(SEjsd)
+      NODE_ENV: ${self:provider.stage}
+      JWT_SECRET: ${file(../../config.${self:provider.stage}.yml):JWT_SECRET}
       DYNAMODB_TABLE: ${self:provider.environment.DYNAMODB_TABLE}
     package:
       excludeDevDependencies: true

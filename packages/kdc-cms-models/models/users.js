@@ -58,9 +58,6 @@ class Users extends DynamoDB {
       .get(params)
       .promise()
       .then(data => {
-        if (!data.Item) {
-          return Promise.reject(new Error({ code: "UserNotFound" }));
-        }
         return data.Item;
       });
   }

@@ -1,6 +1,6 @@
-process.env.DYNAMODB_TABLE = 'kdc-cms';
+process.env.DYNAMODB_TABLE = 'kdc-cms-database-local';
 
-const clearDb = require('../../../server/helpers/clearDb');
+const { clearDb } = require('kdc-cms-utils');
 
 module.exports = (on) => {
   on('task', {

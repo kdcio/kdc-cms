@@ -5,13 +5,13 @@
   "scripts": {
     "start:admin": "yarn workspace kdc-cms-admin start",
     "start:api": "yarn workspace kdc-cms-api start",
-    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn admin\"",
+    "start:ddb": "yarn workspace kdc-cms-resource-database ddb:start",
+    "start": "yarn start:ddb && concurrently --kill-others-on-fail \"yarn start:api\"  \"yarn start:admin\"",
     "setup": "./scripts/setup.sh",
     "delete": "./scripts/delete.sh",
-    "server:ddb:stop": "yarn workspace @kdc-cms/server ddb:stop",
-    "server:test": "yarn workspace @kdc-cms/server test",
-    "server:coverage": "yarn workspace @kdc-cms/server coverage",
-    "coverage": "yarn server:coverage"
+    "stop:ddb": "yarn workspace kdc-cms-resource-database ddb:stop",
+    "test:admin": "yarn workspace kdc-cms-admin cypress",
+    "test:api": "yarn workspace kdc-cms-api test"
   },
   "author": {
     "name": "Ian Dela Cruz",

@@ -2,6 +2,6 @@
   "baseUrl": "http://localhost:8100",
   "env": {
     "email": "ian@pogi.com",
-    "password": "test"
+    "password": "test12"
   }
 }

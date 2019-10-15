@@ -7,6 +7,10 @@ const contents = require('./contents');
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.status(200);
+  res.send({ message: 'Welcome to KDC CMS API' });
+});
 router.use('/users', users);
 router.use('/page-definition', pageDefinition);
 router.use('/pages', pages);

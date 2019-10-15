@@ -7,7 +7,7 @@
     "setup:local": "mkdir -p .dbdata && npm run ddb:start && npm run ddb:wait && npm run ddb:exists || npm run ddb:init",
     "ddb:start": "docker-compose up -d",
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
-    "ddb:exists": "aws dynamodb describe-table --table-name kdc-cms-local --endpoint-url http://localhost:8103 --output text --query 'Table.TableName'",
+    "ddb:exists": "aws dynamodb describe-table --table-name kdc-cms-database-local --endpoint-url http://localhost:8103 --output text --query 'Table.TableName'",
     "ddb:init": "aws dynamodb create-table --cli-input-json file://schema.json --endpoint-url http://localhost:8103 --output text --query 'Table.TableName'",
     "ddb:stop": "docker-compose stop",
     "delete": "sls remove -v -s "

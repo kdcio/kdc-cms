@@ -10,7 +10,7 @@ describe('Contents', () => {
   });
 
   beforeEach(() => {
-    cy.login('ian@pogi.com', 'test');
+    cy.login(Cypress.env('email'), Cypress.env('password'));
   });
 
   it('should define content', () => {

@@ -9,6 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.1.5",
     "@reach/router": "^1.2.1",
     "bootstrap": "^4.3.1",
+    "kdc-cms-utils": "0.1.0",
     "lodash.find": "^4.6.0",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
@@ -28,7 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --fix",
-    "cypress:open": "cypress open"
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"

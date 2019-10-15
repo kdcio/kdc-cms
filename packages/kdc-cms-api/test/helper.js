@@ -5,7 +5,7 @@
  */
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = '0987654321';
-process.env.DYNAMODB_TABLE = 'kdc-cms-test';
+process.env.DYNAMODB_TABLE = 'kdc-cms-database-api-test';
 
 const { createTable } = require('kdc-cms-utils');
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -13,7 +13,7 @@ const faker = require('faker');
 const { clearDb } = require('kdc-cms-utils');
 const Users = require('kdc-cms-models/models/users');
 const app = require('../app');
-const schema = require('../schema.json');
+const schema = require('../../../resources/database/schema.json');
 
 const user = {
   email: faker.internet.email(),

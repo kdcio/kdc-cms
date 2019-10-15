@@ -62,6 +62,14 @@ A simple headless CMS for AWS serverless infrastructure.
 * API endpoint is [http://localhost:8101](http://localhost:8101)
 * [Dynamodb manager](https://hub.docker.com/r/taydy/dynamodb-manager/) is [http://localhost:8102](http://localhost:8102)
 * [Dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) endpoint is [http://localhost:8103](http://localhost:8103)
+* Run tests
+
+  ```bash
+  yarn test:api
+  yarn test:admin
+  ```
+
+  Before running admin test, edit the file [`packages/kdc-cms-admin/cypress.json`](packages/kdc-cms-admin/cypress.json) and change the email and password to match what entered in the setup.
 
 ## Deployment to AWS
 
@@ -87,6 +95,7 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
   yarn deploy:api $stage
   yarn deploy:admin $stage
   ```
+
 
 ## Other
 
