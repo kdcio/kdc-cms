@@ -29,7 +29,7 @@ A simple headless CMS for AWS serverless infrastructure.
   aws_secret_access_key=xxxxxxxx
   ```
 
-* Install serverless binary
+* Install [serverless](https://serverless.com/) binary
   
   ```bash
   sudo npm i -g serverless
