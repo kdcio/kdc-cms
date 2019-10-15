@@ -47,12 +47,17 @@ A simple headless CMS for AWS serverless infrastructure.
 * Install [docker](https://docs.docker.com/install/) for running [dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) and [dynamodb-manager](https://hub.docker.com/r/taydy/dynamodb-manager/) on your machine.
 
 * Setup database and create initial user.
-  
+
   ```bash
   yarn setup:local
   ```
 
-* yarn start
+* Start API and CMS
+
+  ```bash
+  yarn start
+  ```
+
 * Browser will open KDC CMS at [http://localhost:8100](http://localhost:8100).
 * API endpoint is [http://localhost:8101](http://localhost:8101)
 * [Dynamodb manager](https://hub.docker.com/r/taydy/dynamodb-manager/) is [http://localhost:8102](http://localhost:8102)
