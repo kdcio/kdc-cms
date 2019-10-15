@@ -1,26 +1,65 @@
 // include node fs module
 const fs = require("fs");
 const path = require("path");
+const Users = require("kdc-cms-models/models/users");
 
 const rootDir = path.resolve(__dirname, "../../");
 
-const createFile = async ({ aws }) => {
-  const { stage, region, profile } = aws;
-  const filename = path.resolve(rootDir, `setup.${stage}.yml`);
+const createFile = async ctx => {
+  const { stage, aws, user, jwt_secret } = ctx;
 
-  try {
-    // delete file if it exists
-    fs.unlinkSync(filename);
-  } catch (e) {}
+  if (aws) {
+    const { region, profile } = aws;
+    const filename = path.resolve(rootDir, `config.${stage}.yml`);
 
-  try {
-    fs.appendFileSync(filename, `REGION: ${region}\n`, "utf8");
-    fs.appendFileSync(filename, `PROFILE: ${profile}\n`, "utf8");
-    console.log('The "data to append" was appended to file!');
-  } catch (err) {
-    /* Handle the error */
-    console.log(err);
+    try {
+      // delete file if it exists
+      fs.unlinkSync(filename);
+    } catch (e) {}
+
+    try {
+      fs.appendFileSync(filename, `REGION: ${region}\n`, "utf8");
+      fs.appendFileSync(filename, `PROFILE: ${profile}\n`, "utf8");
+    } catch (err) {
+      /* Handle the error */
+      return Promise.reject(err);
+    }
   }
+
+  if (jwt_secret) {
+    try {
+      let filename = "";
+      if (!aws) {
+        filename = path.resolve(rootDir, `config.local.yml`);
+        try {
+          // delete file if it exists
+          fs.unlinkSync(filename);
+        } catch (e) {}
+      } else {
+        filename = path.resolve(rootDir, `config.${stage}.yml`);
+      }
+
+      fs.appendFileSync(filename, `JWT_SECRET: ${jwt_secret}\n`, "utf8");
+
+      // Set this for local
+      process.env.JWT_SECRET = jwt_secret;
+    } catch (err) {
+      /* Handle the error */
+      return Promise.reject(err);
+    }
+  }
+
+  if (user) {
+    const { name, email, password, role } = user;
+    // create user
+    return Users.create({ email, password, name, role })
+      .then(() => {
+        console.log("User created");
+      })
+      .catch(e => console.log(e));
+  }
+
+  return Promise.resolve(ctx);
 };
 
 module.exports = createFile;

@@ -1,4 +1,5 @@
 {
+  "TableName": "kdc-cms-local",
   "AttributeDefinitions": [
     {
       "AttributeName": "pk",
@@ -17,7 +18,6 @@
       "AttributeType": "S"
     }
   ],
-  "TableName": "kdc-cms",
   "KeySchema": [
     {
       "AttributeName": "pk",

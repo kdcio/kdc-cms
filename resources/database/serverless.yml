@@ -7,7 +7,6 @@ plugins:
 
 custom:
   stages:
-    - local
     - dev
     - staging
     - prod
@@ -16,8 +15,8 @@ provider:
   name: aws
   runtime: nodejs10.x
   stage: ${opt:stage}
-  region: ${file(../../setup.${self:provider.stage}.yml):REGION}
-  profile: ${file(../../setup.${self:provider.stage}.yml):PROFILE}
+  region: ${file(../../config.${self:provider.stage}.yml):REGION}
+  profile: ${file(../../config.${self:provider.stage}.yml):PROFILE}
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
 

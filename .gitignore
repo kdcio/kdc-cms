@@ -132,5 +132,9 @@ build
 *.gz
 .vscode
 .dbdata
+config.*.yml
+
+# project only works with npm
+package-lock.json
 
 # End of https://www.gitignore.io/api/osx,node,linux,windows

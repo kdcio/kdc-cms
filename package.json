@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "description": "Serverless Headless CMS",
   "scripts": {
-    "admin": "yarn workspace @kdc-cms/admin start",
-    "server": "yarn workspace @kdc-cms/server start",
+    "start:admin": "yarn workspace kdc-cms-admin start",
+    "start:api": "yarn workspace kdc-cms-api start",
     "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn admin\"",
-    "setup": "yarn workspace kdc-cms-setup start",
-    "server:setup": "yarn workspace @kdc-cms/server ddb:init",
+    "setup": "./scripts/setup.sh",
+    "delete": "./scripts/delete.sh",
     "server:ddb:stop": "yarn workspace @kdc-cms/server ddb:stop",
     "server:test": "yarn workspace @kdc-cms/server test",
     "server:coverage": "yarn workspace @kdc-cms/server coverage",
@@ -29,7 +29,8 @@
     }
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "resources/*"
   ],
   "dependencies": {
     "concurrently": "^4.1.2"
