@@ -4,7 +4,7 @@
   "description": "API for kdc-cms",
   "main": "index.js",
   "scripts": {
-    "start": "npm run ddb:wait && SLS_DEBUG=* sls offline --port 8101 -s local --inspect",
+    "start": "npm run ddb:wait && sls offline --port 8101 -s local",
     "start:local": "nodemon --exec \"sls offline start\" -e \"models/*.js,helpers/*.js,routes/*.js,app.js,lambda.js\"",
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
     "test": "mocha --watch",
