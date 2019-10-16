@@ -1,5 +1,5 @@
-import DDB from '../../lib/dynamodb';
-import { successPOST, failure } from '../../lib/response';
+import DDB from '../../../../lib/dynamodb';
+import { successPOST, failure } from '../../../../lib/response';
 
 export default async ({ name, id, ...attr }) => {
   const createdAt = new Date().valueOf();

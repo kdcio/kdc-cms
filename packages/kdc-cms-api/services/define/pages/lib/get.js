@@ -1,6 +1,6 @@
-import DDB from '../../lib/dynamodb';
-import { success, failure } from '../../lib/response';
-import remap from '../../lib/remap';
+import DDB from '../../../../lib/dynamodb';
+import { success, failure } from '../../../../lib/response';
+import remap from '../../../../lib/remap';
 import fieldMap from './map';
 
 export default async ({ id }, opts = {}) => {

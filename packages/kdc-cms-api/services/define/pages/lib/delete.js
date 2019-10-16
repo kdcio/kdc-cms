@@ -1,5 +1,5 @@
-import DDB from '../../lib/dynamodb';
-import { successDEL, failure } from '../../lib/response';
+import DDB from '../../../../lib/dynamodb';
+import { successDEL, failure } from '../../../../lib/response';
 
 export default async ({ id }) => {
   const params = {

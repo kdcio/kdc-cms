@@ -1,5 +1,5 @@
-import DDB from '../../lib/dynamodb';
-import { successPUT, failure } from '../../lib/response';
+import DDB from '../../../../lib/dynamodb';
+import { successPUT, failure } from '../../../../lib/response';
 import get from './get';
 
 export default async ({ id, attr }) => {

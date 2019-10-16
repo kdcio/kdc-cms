@@ -1,14 +1,12 @@
-import get from './get';
-import create from './create';
-import list from './list';
-import update from './update';
-import del from './delete';
-import parseParams from '../../lib/parseParams';
-import failure from '../../lib/response';
+import get from './lib/get';
+import create from './lib/create';
+import list from './lib/list';
+import update from './lib/update';
+import del from './lib/delete';
+import parseParams from '../../../lib/parseParams';
+import failure from '../../../lib/response';
 
 exports.handler = async event => {
-  console.log(event);
-
   const { httpMethod, pathParameters, body } = event;
   const params = parseParams(pathParameters, ['id']);
 
