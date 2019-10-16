@@ -6,7 +6,7 @@ A simple headless CMS for AWS serverless infrastructure.
 
 * Cheapest way to run CMS for small to medium websites. Might even cost you nothing if you stay within [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
 * Boilerplate CMS for new projects
-* Learn something new - [monorepo](https://en.wikipedia.org/wiki/Monorepo), [serverless](https://serverless.com), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
+* Learn something new - [monorepo](https://en.wikipedia.org/wiki/Monorepo), [serverless](https://serverless.com), [cypress](https://www.cypress.io/), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
 
 ## Installation
 
@@ -62,10 +62,23 @@ A simple headless CMS for AWS serverless infrastructure.
 * API endpoint is [http://localhost:8101](http://localhost:8101)
 * [Dynamodb manager](https://hub.docker.com/r/taydy/dynamodb-manager/) is [http://localhost:8102](http://localhost:8102)
 * [Dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) endpoint is [http://localhost:8103](http://localhost:8103)
-* Run tests
+* Run API tests
 
   ```bash
   yarn test:api
+  ```
+
+* Run Admin [Cypress](https://www.cypress.io/) tests
+  
+  Terminal 1:
+
+  ```bash
+  yarn start
+  ```
+
+  Terminal 2:
+
+  ```bash
   yarn test:admin
   ```
 
