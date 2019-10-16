@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run ddb:wait && sls offline --port 8101 -s local",
-    "start:local": "nodemon --exec \"sls offline start\" -e \"models/*.js,helpers/*.js,routes/*.js,app.js,lambda.js\"",
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
-    "test": "mocha --watch",
+    "test": "DDB_TABLE=kdc-cms-database-local JWT_SECRET=12345678 jest --watch",
     "coverage": "nyc mocha --exit",
     "deploy": "sls deploy -v -s ",
     "cleanZip": "rm -fR kdc-cms-server.zip build VERSION",
@@ -25,6 +24,9 @@
     "aws-sdk": "^2.550.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-jest": "^24.9.0",
     "chai": "^4.2.0",
     "debug": "^4.1.1",
     "eslint": "^6.5.1",
@@ -34,10 +36,8 @@
     "eslint-plugin-mocha": "^6.1.1",
     "eslint-plugin-prettier": "^3.1.1",
     "faker": "^4.1.0",
+    "jest": "^24.9.0",
     "kdc-cms-utils": "0.1.0",
-    "mocha": "^6.2.0",
-    "nodemon": "^1.19.2",
-    "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "readline-sync": "^1.4.10",
     "serverless-bundle": "^1.2.5",

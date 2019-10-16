@@ -1,9 +1,9 @@
 /* eslint-disable func-names */
 const request = require('supertest');
 const { expect } = require('chai');
-const { app, clearDb, admin } = require('./helper');
+// const { app, clearDb, admin } = require('./helper');
 
-const req = request(app);
+const req = request('http://localhost:8101');
 const homePage = {
   name: 'Home Page',
   id: 'home',
@@ -21,25 +21,25 @@ const homePage = {
 };
 
 describe('Page Definition', function() {
-  before(async function() {
-    const { token } = await admin;
-    this.token = token;
-    await clearDb('page');
-  });
+  // before(async function() {
+  //   const { token } = await admin;
+  //   this.token = token;
+  //   await clearDb('page');
+  // });
 
-  describe('POST /page-definition', function() {
+  describe('POST /define/pages', function() {
     it('should create', function(done) {
       req
-        .post('/page-definition')
+        .post('/define/pages')
         .set('Accept', 'application/json')
-        .set('Authorization', `Bearer ${this.token}`)
+        // .set('Authorization', `Bearer ${this.token}`)
         .send(homePage)
         .expect('Content-Type', /json/)
         .expect(
           201,
-          {
-            id: homePage.id
-          },
+          // {
+          //   id: homePage.id
+          // },
           done
         );
     });
@@ -47,7 +47,7 @@ describe('Page Definition', function() {
       req
         .get(`/pages/${homePage.id}`)
         .set('Accept', 'application/json')
-        .set('Authorization', `Bearer ${this.token}`)
+        // .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -67,11 +67,11 @@ describe('Page Definition', function() {
     });
   });
 
-  describe(`GET /page-definition/:id`, function() {
+  describe(`GET /define/pages/:id`, function() {
     it('should get', function(done) {
       req
-        .get(`/page-definition/${homePage.id}`)
-        .set('Authorization', `Bearer ${this.token}`)
+        .get(`/define/pages/${homePage.id}`)
+        // .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -92,11 +92,11 @@ describe('Page Definition', function() {
     });
   });
 
-  describe('GET /page-definition', function() {
+  describe('GET /define/pages', function() {
     it('should list', function(done) {
       req
-        .get('/page-definition')
-        .set('Authorization', `Bearer ${this.token}`)
+        .get('/define/pages')
+        // .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -114,22 +114,22 @@ describe('Page Definition', function() {
     });
   });
 
-  describe(`PUT /page-definition/:id`, function() {
+  describe(`PUT /define/pages/:id`, function() {
     it('it should update', function(done) {
       req
-        .put(`/page-definition/${homePage.id}`)
-        .set('Authorization', `Bearer ${this.token}`)
+        .put(`/define/pages/${homePage.id}`)
+        // .set('Authorization', `Bearer ${this.token}`)
         .set('Accept', 'application/json')
         .send({ name: 'New home page' })
         .expect(204, done);
     });
-  });
+    // });
 
-  describe(`GET /page-definition/:id`, function() {
+    // describe(`GET /define/pages/:id`, function() {
     it('should update name', function(done) {
       req
-        .get(`/page-definition/${homePage.id}`)
-        .set('Authorization', `Bearer ${this.token}`)
+        .get(`/define/pages/${homePage.id}`)
+        // .set('Authorization', `Bearer ${this.token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -150,16 +150,16 @@ describe('Page Definition', function() {
     });
   });
 
-  describe(`DELETE /page-definition/:id`, function() {
+  describe(`DELETE /define/pages/:id`, function() {
     it('should delete', function(done) {
       req
-        .delete(`/page-definition/${homePage.id}`)
-        .set('Authorization', `Bearer ${this.token}`)
+        .delete(`/define/pages/${homePage.id}`)
+        // .set('Authorization', `Bearer ${this.token}`)
         .expect(204, done);
     });
   });
 
-  after(async function() {
-    await clearDb('page');
-  });
+  // after(async function() {
+  //   await clearDb('page');
+  // });
 });

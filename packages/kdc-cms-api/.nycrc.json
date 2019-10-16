@@ -1,7 +1,0 @@
-{
-  "nyc": {
-    "all": true,
-    "include": ["routes/**/*.js", "models/**/*.js"],
-    "reporter": ["text", "lcov"]
-  }
-}
