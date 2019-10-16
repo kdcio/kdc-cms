@@ -1,16 +1,17 @@
-const express = require('express');
-const HttpStatus = require('http-status-codes');
-const PageDefinition = require('kdc-cms-models/models/pageDefinition');
-const Pages = require('kdc-cms-models/models/pages');
+import express from 'express';
+import HttpStatus from 'http-status-codes';
+import PageDefinition from 'kdc-cms-models/models/pageDefinition';
+import Pages from 'kdc-cms-models/models/pages';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const list = await PageDefinition.list();
+    const list = await new PageDefinition().list();
     res.status(HttpStatus.OK);
     res.send(list);
   } catch (error) {
+    console.error(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR);
     res.send(error);
   }
@@ -20,12 +21,13 @@ router.post('/', async (req, res) => {
   const { body } = req;
   try {
     const { id, name, fields } = body;
-    await PageDefinition.post(body);
-    await Pages.post({ id, name, fields });
+    await new PageDefinition().post(body);
+    await new Pages().post({ id, name, fields });
 
     res.status(HttpStatus.CREATED);
     res.send({ id });
   } catch (error) {
+    console.error(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR);
     res.send(error);
   }
@@ -36,11 +38,12 @@ router.put('/:id', async (req, res) => {
   const { body } = req;
   try {
     const { name, fields } = body;
-    await PageDefinition.put({ id, attr: body });
-    await Pages.put({ id, name, fields });
+    await new PageDefinition().put({ id, attr: body });
+    await new Pages().put({ id, name, fields });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
+    console.error(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR);
     res.send(error);
   }
@@ -49,11 +52,12 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    await PageDefinition.delete({ id });
-    await Pages.delete({ id });
+    await new PageDefinition().delete({ id });
+    await new Pages().delete({ id });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
+    console.error(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR);
     res.send(error);
   }
@@ -62,13 +66,14 @@ router.delete('/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const item = await PageDefinition.get({ id });
+    const item = await new PageDefinition().get({ id });
     res.status(HttpStatus.OK);
     res.send(item);
   } catch (error) {
+    console.error(error);
     res.status(HttpStatus.NOT_FOUND);
     res.send(error);
   }
 });
 
-module.exports = router;
+export default router;

@@ -7,18 +7,17 @@ if (process.env.AWS_PROFILE) {
   AWS.config.credentials = credentials;
 }
 
-if (process.env.DYNAMODB_ENDPOINT || process.env.IS_OFFLINE) {
-  if (process.env.IS_OFFLINE) {
-    process.env.DYNAMODB_ENDPOINT = "http://localhost:8103";
-  }
-
+if (process.env.IS_OFFLINE) {
   AWS.config.update({
-    region: process.env.AWS_REGION || "localhost",
-    endpoint: process.env.DYNAMODB_ENDPOINT
+    region: "localhost",
+    endpoint: "http://localhost:8103"
   });
 } else {
   AWS.config.update({
-    region: process.env.AWS_REGION || "ap-southeast-1"
+    region: process.env.DDB_REGION || "ap-southeast-1",
+    httpOptions: {
+      timeout: 5000
+    }
   });
 }
 
@@ -28,6 +27,9 @@ class DynamoDB {
       apiVersion: "2012-08-10"
     });
     this.tableName = process.env.DYNAMODB_TABLE || "kdc-cms-database-local";
+
+    console.log(AWS.config);
+    console.log(this.tableName);
   }
 }
 

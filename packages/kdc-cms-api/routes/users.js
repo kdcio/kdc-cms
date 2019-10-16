@@ -1,12 +1,13 @@
-const express = require('express');
-const HttpStatus = require('http-status-codes');
-const Users = require('kdc-cms-models/models/users');
+import express from 'express';
+import HttpStatus from 'http-status-codes';
+import Users from 'kdc-cms-models/models/users';
 
 const router = express.Router();
 
 // this should be protected
 router.get('/', async (req, res) => {
-  const list = await Users.list();
+  const user = new Users();
+  const list = await user.list();
   res.status(HttpStatus.OK);
   res.send(list.Items);
 });
@@ -27,16 +28,19 @@ router.get('/me', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const { body } = req;
-  const email = await Users.create(body);
+  const user = new Users();
+  const email = await user.create(body);
   res.status(HttpStatus.CREATED);
   res.send({ email });
 });
 
 router.post('/authenticate', async (req, res, next) => {
-  Users.authenticate(req.body)
-    .then(user =>
-      user
-        ? res.json(user)
+  const user = new Users();
+  user
+    .authenticate(req.body)
+    .then(u =>
+      u
+        ? res.json(u)
         : res
             .status(HttpStatus.UNAUTHORIZED)
             .json({ message: 'Username and/or password is incorrect' })
@@ -47,21 +51,24 @@ router.post('/authenticate', async (req, res, next) => {
 router.put('/:email', async (req, res) => {
   const { email } = req.params;
   const { body } = req;
-  await Users.put({ email, attr: body });
+  const user = new Users();
+  await user.put({ email, attr: body });
   res.status(HttpStatus.NO_CONTENT);
   res.send();
 });
 
 router.delete('/:email', async (req, res) => {
   const { email } = req.params;
-  await Users.delete({ email });
+  const user = new Users();
+  await user.delete({ email });
   res.status(HttpStatus.NO_CONTENT);
   res.send();
 });
 
 router.get('/:email', async (req, res) => {
   const { email } = req.params;
-  const item = await Users.get({ email });
+  const user = new Users();
+  const item = await user.get({ email });
   res.status(HttpStatus.OK);
   res.send(item);
 });
@@ -69,9 +76,10 @@ router.get('/:email', async (req, res) => {
 router.put('/:email/changePassword', async (req, res) => {
   const { email } = req.params;
   const { body } = req;
+  const user = new Users();
 
   try {
-    await Users.changePassword({ email, ...body });
+    await user.changePassword({ email, ...body });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
@@ -80,4 +88,4 @@ router.put('/:email/changePassword', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

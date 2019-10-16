@@ -6,12 +6,16 @@ plugins:
   - serverless-plugin-monorepo
   - serverless-offline
   - serverless-stage-manager
+  - serverless-bundle
 
 custom:
   stages:
     - dev
     - staging
     - prod
+
+package:
+  individually: true
 
 provider:
   name: aws
@@ -42,11 +46,12 @@ functions:
     name: ${self:service}-${self:provider.stage}
     handler: lambda.handler
     memorySize: 128
-    timeout: 5
+    timeout: 10
     environment:
       NODE_ENV: ${self:provider.stage}
       JWT_SECRET: ${file(../../config.${self:provider.stage}.yml):JWT_SECRET}
       DYNAMODB_TABLE: ${self:provider.environment.DYNAMODB_TABLE}
+      DDB_REGION: ${self:provider.region}
     package:
       excludeDevDependencies: true
       exclude:

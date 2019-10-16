@@ -1,9 +1,9 @@
-const express = require('express');
-const users = require('./users');
-const pageDefinition = require('./pageDefinition');
-const pages = require('./pages');
-const contentDefinition = require('./contentDefinition');
-const contents = require('./contents');
+import express from 'express';
+import users from './users';
+import pageDefinition from './pageDefinition';
+import pages from './pages';
+import contentDefinition from './contentDefinition';
+import contents from './contents';
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.use('/pages', pages);
 router.use('/content-definition', contentDefinition);
 router.use('/contents', contents);
 
-module.exports = router;
+export default router;

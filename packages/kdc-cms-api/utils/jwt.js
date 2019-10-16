@@ -1,4 +1,4 @@
-const expressJwt = require('express-jwt');
+import expressJwt from 'express-jwt';
 
 const jwt = () => {
   return expressJwt({ secret: process.env.JWT_SECRET }).unless({
@@ -10,4 +10,4 @@ const jwt = () => {
   });
 };
 
-module.exports = jwt;
+export default jwt;

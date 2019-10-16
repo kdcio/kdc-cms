@@ -1,12 +1,12 @@
-const express = require('express');
-const HttpStatus = require('http-status-codes');
-const ContentDefinition = require('kdc-cms-models/models/contentDefinition');
+import express from 'express';
+import HttpStatus from 'http-status-codes';
+import ContentDefinition from 'kdc-cms-models/models/contentDefinition';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const list = await ContentDefinition.list();
+    const list = await new ContentDefinition().list();
     res.status(HttpStatus.OK);
     res.send(list);
   } catch (error) {
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { body } = req;
-    const id = await ContentDefinition.post(body);
+    const id = await new ContentDefinition().post(body);
     res.status(HttpStatus.CREATED);
     res.send({ id });
   } catch (error) {
@@ -31,7 +31,7 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { body } = req;
-    await ContentDefinition.put({ id, attr: body });
+    await new ContentDefinition().put({ id, attr: body });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
@@ -43,7 +43,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await ContentDefinition.delete({ id });
+    await new ContentDefinition().delete({ id });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
@@ -55,7 +55,7 @@ router.delete('/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const item = await ContentDefinition.get({ id });
+    const item = await new ContentDefinition().get({ id });
     res.status(HttpStatus.OK);
     res.send(item);
   } catch (error) {
@@ -64,4 +64,4 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

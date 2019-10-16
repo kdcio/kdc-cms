@@ -1,4 +1,6 @@
 const errorHandler = (err, req, res) => {
+  console.error(err);
+
   if (typeof err === 'string') {
     // custom application error
     return res.status(400).json({ message: err });
@@ -13,4 +15,4 @@ const errorHandler = (err, req, res) => {
   return res.status(500).json({ message: err.message });
 };
 
-module.exports = errorHandler;
+export default errorHandler;

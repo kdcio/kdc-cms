@@ -122,4 +122,4 @@ class Pages extends DynamoDB {
   }
 }
 
-module.exports = new Pages();
+module.exports = Pages;

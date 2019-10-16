@@ -1,12 +1,12 @@
-const express = require('express');
-const HttpStatus = require('http-status-codes');
-const Pages = require('kdc-cms-models/models/pages');
+import express from 'express';
+import HttpStatus from 'http-status-codes';
+import Pages from 'kdc-cms-models/models/pages';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const list = await Pages.list();
+    const list = await new Pages().list();
     res.status(HttpStatus.OK);
     res.send(list);
   } catch (error) {
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { body } = req;
   try {
-    const id = await Pages.post(body);
+    const id = await new Pages().post(body);
     res.status(HttpStatus.CREATED);
     res.send({ id });
   } catch (error) {
@@ -31,7 +31,7 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { body } = req;
   try {
-    await Pages.put({ id, attr: body });
+    await new Pages().put({ id, attr: body });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
@@ -43,7 +43,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    await Pages.delete({ id });
+    await new Pages().delete({ id });
     res.status(HttpStatus.NO_CONTENT);
     res.send();
   } catch (error) {
@@ -55,7 +55,7 @@ router.delete('/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const item = await Pages.get({ id });
+    const item = await new Pages().get({ id });
     res.status(HttpStatus.OK);
     res.send(item);
   } catch (error) {
@@ -64,4 +64,4 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

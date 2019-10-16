@@ -155,4 +155,4 @@ class Contents extends DynamoDB {
   }
 }
 
-module.exports = new Contents();
+module.exports = Contents;

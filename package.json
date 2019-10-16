@@ -10,6 +10,8 @@
     "setup": "./scripts/setup.sh",
     "delete": "./scripts/delete.sh",
     "stop:ddb": "yarn workspace kdc-cms-resource-database ddb:stop",
+    "deploy:admin": "yarn workspace kdc-cms-admin deploy",
+    "deploy:api": "yarn workspace kdc-cms-api deploy",
     "test:admin": "yarn workspace kdc-cms-admin cypress",
     "test:api": "yarn workspace kdc-cms-api test"
   },

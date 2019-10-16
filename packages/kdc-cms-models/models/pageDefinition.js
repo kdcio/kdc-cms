@@ -30,7 +30,8 @@ class PageDefinition extends DynamoDB {
     return this.docClient
       .put(params)
       .promise()
-      .then(async () => Item.pk);
+      .then(async () => Item.pk)
+      .catch(e => console.log(e));
   }
 
   get({ id }, opts = {}) {
@@ -90,7 +91,8 @@ class PageDefinition extends DynamoDB {
     return this.docClient
       .put(params)
       .promise()
-      .then(async () => Item.pk);
+      .then(async () => Item.pk)
+      .catch(e => console.log(e));
   }
 
   async delete({ id }) {
@@ -103,4 +105,4 @@ class PageDefinition extends DynamoDB {
   }
 }
 
-module.exports = new PageDefinition();
+module.exports = PageDefinition;

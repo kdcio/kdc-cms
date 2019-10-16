@@ -103,4 +103,4 @@ class ContentDefinition extends DynamoDB {
   }
 }
 
-module.exports = new ContentDefinition();
+module.exports = ContentDefinition;

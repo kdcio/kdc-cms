@@ -1,6 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 const jwt = require("jsonwebtoken");
-const { isValidPassword, encryptPassword } = require("kdc-cms-utils").encrypt;
+const {
+  isValidPassword,
+  encryptPassword
+} = require("kdc-cms-utils/lib/encrypt");
 const DynamoDB = require("./dynamodb");
 
 class Users extends DynamoDB {
@@ -10,8 +13,11 @@ class Users extends DynamoDB {
       Key: { pk: email, sk: "user" },
       AttributesToGet: ["pk", "gs1sk", "role", "hash", "salt"]
     };
+    console.log(params);
 
     const data = await this.docClient.get(params).promise();
+    console.log(data);
+
     if (!data.Item) return null;
 
     const { Item: user } = data;
@@ -127,4 +133,4 @@ class Users extends DynamoDB {
   }
 }
 
-module.exports = new Users();
+module.exports = Users;
