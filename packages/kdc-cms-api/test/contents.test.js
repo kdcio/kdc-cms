@@ -39,10 +39,10 @@ const blogDef = {
 
 describe('Contents', function() {
   before(async function() {
-    await clearDb('content');
-    await clearDb(`content#${blogDef.id}`);
     const { token } = await admin;
     this.token = token;
+    await clearDb('content');
+    await clearDb(`content#${blogDef.id}`);
     // create content definition
     await req
       .post('/content-definition')

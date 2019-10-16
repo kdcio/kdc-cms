@@ -28,9 +28,9 @@ const blogs = {
 
 describe('Content Definition', function() {
   before(async function() {
-    await clearDb('content');
     const { token } = await admin;
     this.token = token;
+    await clearDb('content');
   });
 
   describe('POST /content-definition', function() {

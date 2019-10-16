@@ -29,10 +29,10 @@ const homePageDef = {
 
 describe('Pages', function() {
   before(async function() {
-    await clearDb('page');
-    await clearDb('page#data');
     const { token } = await admin;
     this.token = token;
+    await clearDb('page');
+    await clearDb('page#data');
     // create page definition
     await req
       .post('/page-definition')

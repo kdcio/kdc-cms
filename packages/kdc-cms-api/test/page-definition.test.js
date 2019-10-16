@@ -22,9 +22,9 @@ const homePage = {
 
 describe('Page Definition', function() {
   before(async function() {
-    await clearDb('page');
     const { token } = await admin;
     this.token = token;
+    await clearDb('page');
   });
 
   describe('POST /page-definition', function() {
