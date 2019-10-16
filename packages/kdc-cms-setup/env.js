@@ -16,7 +16,7 @@ try {
   const config = yaml.safeLoad(fs.readFileSync(filename, "utf8"));
   process.env.DDB_REGION = process.env.DDB_REGION || config.REGION;
   process.env.JWT_SECRET = process.env.JWT_SECRET || config.JWT_SECRET;
-  process.env.DYNAMODB_TABLE = `kdc-cms-database-${stage}`;
+  process.env.DDB_TABLE = `kdc-cms-database-${stage}`;
   if (stage !== "local") {
     process.env.AWS_PROFILE = process.env.AWS_PROFILE || config.PROFILE;
   }

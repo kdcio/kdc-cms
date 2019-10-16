@@ -1,4 +1,4 @@
-TableName: ${self:provider.environment.DYNAMODB_TABLE}
+TableName: ${self:provider.environment.DDB_TABLE}
 AttributeDefinitions:
   - AttributeName: "pk"
     AttributeType: "S"

@@ -1,4 +1,4 @@
-process.env.DYNAMODB_TABLE = 'kdc-cms-database-local';
+process.env.DDB_TABLE = 'kdc-cms-database-local';
 
 const { clearDb } = require('kdc-cms-utils');
 

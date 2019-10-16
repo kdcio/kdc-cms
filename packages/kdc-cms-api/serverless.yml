@@ -28,7 +28,7 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     JWT_SECRET: ${file(../../config.${self:provider.stage}.yml):JWT_SECRET}
-    DYNAMODB_TABLE: "${file(../../resources/database/serverless.yml):service}-${self:provider.stage}"
+    DDB_TABLE: "${file(../../resources/database/serverless.yml):service}-${self:provider.stage}"
     DDB_REGION: ${self:provider.region}
   iamRoleStatements:
     - Effect: Allow
@@ -39,17 +39,17 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}"
     - Effect: Allow
       Action:
         - dynamodb:Query
         - dynamodb:Scan
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/index/*"
 
 functions:
   pageDefinition:
     name: ${self:service}-page-definition-${self:provider.stage}
-    handler: services/page-definition/index.handler
+    handler: services/define/pages/index.handler
     events:
       - http:
           path: /define/pages/

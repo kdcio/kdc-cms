@@ -15,7 +15,7 @@ const docClient = new AWS.DynamoDB.DocumentClient({
 
 const deleteItem = async item => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE || "kdc-cms-database-local",
+    TableName: process.env.DDB_TABLE || "kdc-cms-database-local",
     Key: {
       pk: item.pk,
       sk: item.sk
@@ -29,7 +29,7 @@ const deleteItem = async item => {
 // it's since it's test. do not do this in production
 const clearDb = async key => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE || "kdc-cms-database-local",
+    TableName: process.env.DDB_TABLE || "kdc-cms-database-local",
     IndexName: "GS1",
     KeyConditionExpression: "gs1pk = :pk",
     ExpressionAttributeValues: {
