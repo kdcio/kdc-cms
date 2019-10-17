@@ -11,10 +11,13 @@ export default async ({ id }, opts = {}) => {
 
   try {
     const data = await DDB('get', params);
-    if (!data.Item) {
-      return failure(404, { code: 'PageNotFound', message: 'Page not found' });
-    }
     if (raw) return data.Item;
+    if (!data.Item) {
+      return failure(404, {
+        code: 'PageNotFound',
+        message: 'Page not found'
+      });
+    }
     return success(remap(data.Item, fieldMap));
   } catch (e) {
     return failure(500, e);
