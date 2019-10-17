@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
-const request = require('supertest');
-const { expect } = require('chai');
+import request from 'supertest';
+import { expect } from 'chai';
 import clearDb from './clearDb';
 // const { app, clearDb, admin } = require('./helper');
 
