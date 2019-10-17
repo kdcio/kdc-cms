@@ -4,7 +4,7 @@ import list from './lib/list';
 import update from './lib/update';
 import del from './lib/delete';
 import parseParams from '../../../lib/parseParams';
-import failure from '../../../lib/response';
+import { failure } from '../../../lib/response';
 
 const handler = async event => {
   const { httpMethod, pathParameters, body } = event;
