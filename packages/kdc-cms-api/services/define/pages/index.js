@@ -6,7 +6,7 @@ import del from './lib/delete';
 import parseParams from '../../../lib/parseParams';
 import failure from '../../../lib/response';
 
-exports.handler = async event => {
+export default async event => {
   const { httpMethod, pathParameters, body } = event;
   const params = parseParams(pathParameters, ['id']);
 
