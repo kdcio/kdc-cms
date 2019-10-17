@@ -6,7 +6,7 @@ import del from './lib/delete';
 import parseParams from '../../lib/parseParams';
 import failure from '../../lib/response';
 
-exports.handler = async event => {
+const handler = async event => {
   const { httpMethod, pathParameters, body } = event;
   const params = parseParams(pathParameters, ['id']);
 
@@ -37,3 +37,6 @@ exports.handler = async event => {
 
   return failure(400, { error: 'Invalid request' });
 };
+
+// eslint-disable-next-line import/prefer-default-export
+export { handler };

@@ -1,11 +1,21 @@
-import apigw from '../../../lib/apigw';
+import apigw from '../../lib/apigw';
 import { handler } from './index';
+import DDB from '../../lib/dynamodb';
 
 const req = apigw(handler);
 const homePage = {
-  name: 'Home Page',
-  id: 'home',
+  id: 'page-test',
+  title: 'My Company',
+  intro: 'Your wish is my command',
+  summary: 'this should not be added' // should not be added
+};
+
+const homePageDef = {
+  gs1pk: 'page',
   fieldCount: 2,
+  createdAt: 1571285818578,
+  sk: 'page',
+  pk: 'page-test',
   fields: [
     {
       name: 'title',
@@ -15,10 +25,19 @@ const homePage = {
       name: 'intro',
       type: 'long-text'
     }
-  ]
+  ],
+  gs1sk: 'Page Test'
 };
 
-describe('Page Definition', () => {
+describe('Pages', () => {
+  beforeAll(async () => {
+    await DDB('put', { Item: homePageDef });
+  });
+
+  afterAll(async () => {
+    await DDB('delete', { Key: { pk: homePageDef.pk, sk: 'page' } });
+  });
+
   it('should create', async () => {
     const { statusCode, body } = await req.post('/', homePage);
     expect(statusCode).toBe(201);
@@ -26,50 +45,41 @@ describe('Page Definition', () => {
   });
 
   it('should get', async () => {
-    const { statusCode, body } = await req.get(`/${homePage.id}`);
+    const { statusCode, body } = await req.get(`/${homePage.id}`, homePage);
     expect(statusCode).toBe(200);
     expect(body.pk).toEqual(undefined);
     expect(body.id).toEqual(homePage.id);
     expect(body.sk).toEqual(undefined);
     expect(body.gs1pk).toEqual(undefined);
-    expect(body.name).toEqual(homePage.name);
-    expect(body.fieldCount).toEqual(2);
-    expect(body.fields[0].name).toEqual('title');
-    expect(body.fields[0].type).toEqual('text');
-    expect(body.fields[1].name).toEqual('intro');
-    expect(body.fields[1].type).toEqual('long-text');
+    expect(body.gs1sk).toEqual(undefined);
+    expect(body.title).toEqual(homePage.title);
+    expect(body.intro).toEqual(homePage.intro);
+    expect(body.summary).toEqual(undefined);
   });
 
   it('should list', async () => {
     const { statusCode, body } = await req.get(`/`);
     expect(statusCode).toBe(200);
-    expect(body[0].pk).toEqual(undefined);
-    expect(body[0].id).toEqual(homePage.id);
-    expect(body[0].sk).toEqual(undefined);
-    expect(body[0].gs1pk).toEqual(undefined);
-    expect(body[0].name).toEqual(homePage.name);
-    expect(body[0].fieldCount).toEqual(2);
+    expect(body.length).toEqual(1);
   });
 
   it('it should update', async () => {
-    const { statusCode, body } = await req.put(`/${homePage.id}`, { name: 'New home page' });
+    const { statusCode, body } = await req.put(`/${homePage.id}`, { intro: "Yes I'm updated!" });
     expect(statusCode).toBe(204);
     expect(body).toBe(null);
   });
 
-  it('should get', async () => {
+  it('should update intro', async () => {
     const { statusCode, body } = await req.get(`/${homePage.id}`);
     expect(statusCode).toBe(200);
     expect(body.pk).toEqual(undefined);
     expect(body.id).toEqual(homePage.id);
     expect(body.sk).toEqual(undefined);
     expect(body.gs1pk).toEqual(undefined);
-    expect(body.name).toEqual('New home page');
-    expect(body.fieldCount).toEqual(2);
-    expect(body.fields[0].name).toEqual('title');
-    expect(body.fields[0].type).toEqual('text');
-    expect(body.fields[1].name).toEqual('intro');
-    expect(body.fields[1].type).toEqual('long-text');
+    expect(body.gs1sk).toEqual(undefined);
+    expect(body.title).toEqual(homePage.title);
+    expect(body.intro).toEqual("Yes I'm updated!");
+    expect(body.summary).toEqual(undefined);
   });
 
   it('should delete', async () => {

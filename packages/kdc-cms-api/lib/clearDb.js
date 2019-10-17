@@ -1,4 +1,4 @@
-import DDB from '../lib/dynamodb';
+import DDB from './dynamodb';
 
 const deleteItem = async item => {
   const params = {
