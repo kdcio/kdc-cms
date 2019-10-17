@@ -36,9 +36,9 @@ const Login = () => {
                   onSubmit={(event) => {
                     event.preventDefault();
                     setIsLoggingIn(true);
-                    const { email, password } = event.target.elements;
+                    const { username, password } = event.target.elements;
 
-                    login({ email: email.value, password: password.value }).catch((e) => {
+                    login({ username: username.value, password: password.value }).catch((e) => {
                       setIsLoggingIn(false);
                       setError(e);
                     });
@@ -46,14 +46,14 @@ const Login = () => {
                 >
                   {error ? <p className="text-danger">{error ? error.message : null}</p> : null}
                   <FormGroup>
-                    <Label htmlFor="email" className="sr-only">
+                    <Label htmlFor="username" className="sr-only">
                       Email address
                     </Label>
                     <Input
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="Email address"
+                      type="text"
+                      name="username"
+                      id="username"
+                      placeholder="Username"
                       required
                       autoFocus
                       className="form-control-user"

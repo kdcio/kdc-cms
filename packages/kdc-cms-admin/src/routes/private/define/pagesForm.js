@@ -34,16 +34,16 @@ const PagesForm = ({ id }) => {
     });
 
     if (id) {
-      api(`page-definition/${id}`, { body, method: 'PUT' }).then(() => navigate('/define/pages'));
+      api(`define/pages/${id}`, { body, method: 'PUT' }).then(() => navigate('/define/pages'));
     } else {
-      api('page-definition', { body }).then(() => navigate('/define/pages'));
+      api('define/pages', { body }).then(() => navigate('/define/pages'));
     }
   };
 
   useEffect(() => {
     if (!id) return;
 
-    api(`page-definition/${id}`).then((data) => {
+    api(`define/pages/${id}`).then((data) => {
       setInitialValues(data);
       setSize(data.fieldCount);
     });

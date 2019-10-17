@@ -22,10 +22,10 @@ const AuthProvider = (props) => {
   const [user, setUser] = React.useState(null);
   const { data, isLoading } = useAsync({ promiseFn: initUser });
 
-  const login = async ({ email, password }) => {
+  const login = async ({ username, password }) => {
     let resp = {};
     try {
-      resp = await api('users/authenticate', { body: { email, password } });
+      resp = await api('login', { body: { username, password } });
     } catch (e) {
       return Promise.reject(e);
     }

@@ -45,18 +45,18 @@ const TypesForm = ({ id }) => {
     }
 
     if (id) {
-      api(`content-definition/${id}`, { body, method: 'PUT' }).then(() => {
+      api(`define/contents/${id}`, { body, method: 'PUT' }).then(() => {
         navigate('/define/types');
       });
     } else {
-      api('content-definition', { body }).then(() => navigate('/define/types'));
+      api('define/contents', { body }).then(() => navigate('/define/types'));
     }
   };
 
   useEffect(() => {
     if (!id) return;
 
-    api(`content-definition/${id}`).then((data) => {
+    api(`define/contents/${id}`).then((data) => {
       setInitialValues(data);
       setSize(data.fieldCount - 2); // Subtract Name & Slug
     });
@@ -196,8 +196,8 @@ const TypesForm = ({ id }) => {
                   defaultValue={initialValues.sortKey}
                 >
                   <option value="name">Name</option>
-                  {field
-                    && field.map((v) => {
+                  {field &&
+                    field.map((v) => {
                       if (v.trim() === '') return null;
                       return (
                         <option key={v} value={v}>

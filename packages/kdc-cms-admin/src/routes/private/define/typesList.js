@@ -26,7 +26,7 @@ const TypesList = () => {
       'Are you sure you want to delete this content type?\nAll data associated with this content type will also be deleted.\n\nTHIS CANNOT BE UNDONE!'
     );
     if (r === true) {
-      api(`content-definition/${type}`, { method: 'DELETE' }).then(fetchList);
+      api(`define/contents/${type}`, { method: 'DELETE' }).then(fetchList);
     }
   };
 

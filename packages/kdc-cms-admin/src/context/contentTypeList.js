@@ -13,7 +13,7 @@ export const ContentTypeListProvider = ({ children }) => {
   const getType = (id) => find(typeList, { id });
 
   const fetchList = () => {
-    api('content-definition').then((data) => {
+    api('define/contents').then((data) => {
       setTypeList(data);
     });
   };
