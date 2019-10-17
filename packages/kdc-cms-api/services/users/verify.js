@@ -3,7 +3,7 @@ import get from './lib/get';
 
 const generatePolicy = (user, effect, resource) => {
   const authResponse = {
-    context: { user },
+    context: { ...user },
     principalId: user.username
   };
 
