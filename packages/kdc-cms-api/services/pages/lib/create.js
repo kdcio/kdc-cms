@@ -1,8 +1,14 @@
 import DDB from '../../../lib/dynamodb';
 import { successPOST, failure } from '../../../lib/response';
 import defGet from '../../define/pages/lib/get';
+import get from './get';
 
 export default async ({ name, id, ...attr }) => {
+  const current = await get({ id }, { raw: true });
+  if (current && current.code !== 'PageNotFound') {
+    return failure(400, { code: 'PageExists', message: 'Page already exists', id });
+  }
+
   const definition = await defGet({ id }, { raw: true });
   const validAttr = {};
   definition.fields.forEach(f => {
