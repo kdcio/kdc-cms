@@ -6,3 +6,15 @@ login:
         path: /login
         method: POST
         cors: true
+users:
+  name: ${self:service}-users-${self:provider.stage}
+  handler: services/users/index.handler
+  events:
+    - http:
+        path: /users/
+        method: any
+        cors: true
+    - http:
+        path: /users/{proxy+}
+        method: any
+        cors: true

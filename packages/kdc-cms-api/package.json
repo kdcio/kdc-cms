@@ -21,7 +21,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "aws-sdk": "^2.550.0"
+    "aws-sdk": "^2.550.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

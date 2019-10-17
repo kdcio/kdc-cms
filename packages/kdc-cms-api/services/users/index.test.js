@@ -1,6 +1,7 @@
 import faker from 'faker';
 import apigw from '../../lib/apigw';
 import { handler } from './index';
+import authenticate from './lib/authenticate';
 
 const req = apigw(handler);
 const user = {
@@ -22,6 +23,19 @@ describe('Users', () => {
     const { statusCode, body } = await req.post('/', user);
     expect(statusCode).toBe(409);
     expect(body.code).toBe('UsernameExists');
+  });
+
+  it('should login', async () => {
+    const { statusCode, body } = await authenticate({
+      username: user.username,
+      password: user.password
+    });
+    const token = JSON.parse(body);
+    expect(statusCode).toBe(200);
+    expect(token.username).toBe(user.username);
+    expect(token.name).toBe(user.name);
+    expect(token.role).toBe(user.role);
+    expect(token.token).not.toBeUndefined();
   });
 
   it('should get', async () => {
