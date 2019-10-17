@@ -11,7 +11,13 @@ const generatePolicy = (user, effect, resource) => {
     const statementOne = {
       Action: 'execute-api:Invoke',
       Effect: effect,
-      Resource: resource
+      /**
+       * Specifying resource will only allow the policy
+       * for that specific resource. We use wildcard so that
+       * it policy spans to multiple services.
+       */
+
+      Resource: '*' // resource
     };
 
     const policyDocument = {
@@ -30,11 +36,15 @@ const handler = (event, context, callback) => {
   const bearer = event.authorizationToken;
   if (!bearer) return callback(null, 'Unauthorized');
 
-  const token = bearer.substr(7);
+  const token = bearer.substr(String('Bearer ').length);
+  console.log(token);
 
   // Verifies secret and checks exp
   return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return callback(null, 'Unauthorized');
+    if (err) {
+      console.log(err);
+      return callback(null, 'Unauthorized');
+    }
 
     const { sub } = decoded;
     // Check whether user ID is legit in the DB
