@@ -1,3 +1,6 @@
+verify-token:
+  name: ${self:service}-verify-token-${self:provider.stage}
+  handler: services/users/verify.handler
 login:
   name: ${self:service}-login-${self:provider.stage}
   handler: services/users/login.handler
@@ -22,7 +25,9 @@ users:
         path: /users/
         method: any
         cors: true
+        authorizer: verify-token
     - http:
         path: /users/{proxy+}
         method: any
         cors: true
+        authorizer: verify-token

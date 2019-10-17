@@ -6,7 +6,9 @@ pages:
         path: /pages/
         method: any
         cors: true
+        authorizer: verify-token
     - http:
         path: /pages/{proxy+}
         method: any
         cors: true
+        authorizer: verify-token

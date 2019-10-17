@@ -1,11 +1,11 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
-const isValidPassword = (inputPassword, salt, hash) => {
+export const isValidPassword = (inputPassword, salt, hash) => {
   const inputHash = crypto.pbkdf2Sync(inputPassword, salt, 1000, 64, `sha512`).toString(`hex`);
   return inputHash === hash;
 };
 
-const encryptPassword = password => {
+export const encryptPassword = password => {
   // Creating a unique salt for a particular user
   const salt = crypto.randomBytes(16).toString('hex');
 
@@ -15,5 +15,3 @@ const encryptPassword = password => {
 
   return { hash, salt };
 };
-
-module.exports = { isValidPassword, encryptPassword };

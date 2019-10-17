@@ -6,7 +6,9 @@ contents:
         path: /contents/
         method: any
         cors: true
+        authorizer: verify-token
     - http:
         path: /contents/{proxy+}
         method: any
         cors: true
+        authorizer: verify-token

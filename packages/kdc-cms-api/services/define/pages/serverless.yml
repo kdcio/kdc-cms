@@ -6,7 +6,9 @@ pageDefinition:
         path: /define/pages/
         method: any
         cors: true
+        authorizer: verify-token
     - http:
         path: /define/pages/{proxy+}
         method: any
         cors: true
+        authorizer: verify-token

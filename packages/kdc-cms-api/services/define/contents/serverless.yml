@@ -6,7 +6,9 @@ contentDefinition:
         path: /define/contents/
         method: any
         cors: true
+        authorizer: verify-token
     - http:
         path: /define/contents/{proxy+}
         method: any
         cors: true
+        authorizer: verify-token
