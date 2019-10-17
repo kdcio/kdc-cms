@@ -1,0 +1,11 @@
+name: ${self:service}-content-definition-${self:provider.stage}
+handler: services/define/content/index.handler
+events:
+    - http:
+          path: /define/content/
+          method: any
+          cors: true
+    - http:
+          path: /define/content/{proxy+}
+          method: any
+          cors: true

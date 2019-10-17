@@ -49,6 +49,7 @@ provider:
 functions:
   pageDefinition: ${file(services/define/pages/serverless.yml)}
   pages: ${file(services/pages/serverless.yml)}
+  contentDefinition: ${file(services/content/serverless.yml)}
 
 resources:
   Outputs:
