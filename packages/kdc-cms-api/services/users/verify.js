@@ -37,14 +37,10 @@ const handler = (event, context, callback) => {
   if (!bearer) return callback(null, 'Unauthorized');
 
   const token = bearer.substr(String('Bearer ').length);
-  console.log(token);
 
   // Verifies secret and checks exp
   return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      console.log(err);
-      return callback(null, 'Unauthorized');
-    }
+    if (err) return callback(null, 'Unauthorized');
 
     const { sub } = decoded;
     // Check whether user ID is legit in the DB
