@@ -1,0 +1,8 @@
+login:
+  name: ${self:service}-login-${self:provider.stage}
+  handler: services/users/login.handler
+  events:
+    - http:
+        path: /login
+        method: POST
+        cors: true

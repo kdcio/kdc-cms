@@ -1,11 +1,12 @@
-name: ${self:service}-pages-${self:provider.stage}
-handler: services/pages/index.handler
-events:
+pages:
+  name: ${self:service}-pages-${self:provider.stage}
+  handler: services/pages/index.handler
+  events:
     - http:
-          path: /pages/
-          method: any
-          cors: true
+        path: /pages/
+        method: any
+        cors: true
     - http:
-          path: /pages/{proxy+}
-          method: any
-          cors: true
+        path: /pages/{proxy+}
+        method: any
+        cors: true

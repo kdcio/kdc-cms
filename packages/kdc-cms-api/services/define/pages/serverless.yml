@@ -1,11 +1,12 @@
-name: ${self:service}-page-definition-${self:provider.stage}
-handler: services/define/pages/index.handler
-events:
-  - http:
-      path: /define/pages/
-      method: any
-      cors: true
-  - http:
-      path: /define/pages/{proxy+}
-      method: any
-      cors: true
+pageDefinition:
+  name: ${self:service}-page-definition-${self:provider.stage}
+  handler: services/define/pages/index.handler
+  events:
+    - http:
+        path: /define/pages/
+        method: any
+        cors: true
+    - http:
+        path: /define/pages/{proxy+}
+        method: any
+        cors: true

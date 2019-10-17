@@ -1,11 +1,12 @@
-name: ${self:service}-contents-${self:provider.stage}
-handler: services/contents/index.handler
-events:
-        - http:
-                  path: /contents/
-                  method: any
-                  cors: true
-        - http:
-                  path: /contents/{proxy+}
-                  method: any
-                  cors: true
+contents:
+  name: ${self:service}-contents-${self:provider.stage}
+  handler: services/contents/index.handler
+  events:
+    - http:
+        path: /contents/
+        method: any
+        cors: true
+    - http:
+        path: /contents/{proxy+}
+        method: any
+        cors: true

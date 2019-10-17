@@ -47,10 +47,11 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/index/*"
 
 functions:
-  pageDefinition: ${file(services/define/pages/serverless.yml)}
-  pages: ${file(services/pages/serverless.yml)}
-  contentDefinition: ${file(services/define/contents/serverless.yml)}
-  contents: ${file(services/contents/serverless.yml)}
+  - ${file(services/auth/serverless.yml)}
+  - ${file(services/define/pages/serverless.yml)}
+  - ${file(services/pages/serverless.yml)}
+  - ${file(services/define/contents/serverless.yml)}
+  - ${file(services/contents/serverless.yml)}
 
 resources:
   Outputs:
