@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 const request = require('supertest');
 const { expect } = require('chai');
+import clearDb from './clearDb';
 // const { app, clearDb, admin } = require('./helper');
 
 const req = request('http://localhost:8101');
@@ -21,11 +22,11 @@ const homePage = {
 };
 
 describe('Page Definition', function() {
-  // before(async function() {
-  //   const { token } = await admin;
-  //   this.token = token;
-  //   await clearDb('page');
-  // });
+  beforeAll(async function() {
+    // const { token } = await admin;
+    // this.token = token;
+    await clearDb('page');
+  });
 
   describe('POST /define/pages', function() {
     it('should create', function(done) {
@@ -159,7 +160,7 @@ describe('Page Definition', function() {
     });
   });
 
-  // after(async function() {
-  //   await clearDb('page');
-  // });
+  afterAll(async function() {
+    await clearDb('page');
+  });
 });
