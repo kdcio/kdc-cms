@@ -5,7 +5,7 @@ import get from './get';
 
 const failed = () =>
   failure(401, {
-    code: 'LoginFailed',
+    error: 'LoginFailed',
     message: 'Username and/or password is incorrect'
   });
 

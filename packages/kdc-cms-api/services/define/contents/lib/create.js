@@ -6,7 +6,7 @@ export default async ({ name, id, ...attr }) => {
   const current = await get({ id }, { raw: true });
   if (current) {
     return failure(409, {
-      code: 'ContentDefinitionExists',
+      error: 'ContentDefinitionExists',
       message: 'Content definition already exists',
       id
     });

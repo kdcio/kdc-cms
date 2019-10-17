@@ -22,7 +22,7 @@ describe('Users', () => {
   it('should not create', async () => {
     const { statusCode, body } = await req.post('/', user);
     expect(statusCode).toBe(409);
-    expect(body.code).toBe('UsernameExists');
+    expect(body.error).toBe('UsernameExists');
   });
 
   it('should login', async () => {

@@ -7,7 +7,7 @@ export default async ({ username, name, password, ...attr }) => {
   const current = await get({ username }, { raw: true });
   if (current) {
     return failure(409, {
-      code: 'UsernameExists',
+      error: 'UsernameExists',
       message: 'Username already exists',
       username
     });

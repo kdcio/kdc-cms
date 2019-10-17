@@ -21,7 +21,7 @@ export default async ({ id, slug, attr }) => {
   const definition = await defGet({ id }, { raw: true });
   if (!definition) {
     return failure(400, {
-      code: 'ContentDefinitionNotFound',
+      error: 'ContentDefinitionNotFound',
       message: 'Content definition not found',
       id
     });

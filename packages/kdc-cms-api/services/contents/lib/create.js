@@ -7,7 +7,7 @@ export default async ({ Slug, id, ...attr }) => {
   const current = await get({ slug: Slug, id }, { raw: true });
   if (current) {
     return failure(409, {
-      code: 'ContentExists',
+      error: 'ContentExists',
       message: 'Content already exists',
       Slug
     });
@@ -16,7 +16,7 @@ export default async ({ Slug, id, ...attr }) => {
   const definition = await defGet({ id }, { raw: true });
   if (!definition) {
     return failure(400, {
-      code: 'ContentDefinitionNotFound',
+      error: 'ContentDefinitionNotFound',
       message: 'Content definition not found',
       id
     });

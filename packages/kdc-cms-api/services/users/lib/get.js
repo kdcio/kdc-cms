@@ -14,7 +14,7 @@ export default async ({ username }, opts = {}) => {
     if (raw) return data.Item;
     if (!data.Item) {
       return failure(404, {
-        code: 'UserNotFound',
+        error: 'UserNotFound',
         message: 'User not found'
       });
     }

@@ -57,7 +57,7 @@ describe('Contents', () => {
   it('should not create', async () => {
     const { statusCode, body } = await req.post(`/${newsDef.pk}`, news);
     expect(statusCode).toBe(409);
-    expect(body.code).toBe('ContentExists');
+    expect(body.error).toBe('ContentExists');
   });
 
   it('should get', async () => {

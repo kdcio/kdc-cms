@@ -14,7 +14,7 @@ export default async ({ id }, opts = {}) => {
     if (raw) return data.Item;
     if (!data.Item) {
       return failure(404, {
-        code: 'PageNotFound',
+        error: 'PageNotFound',
         message: 'Page not found'
       });
     }

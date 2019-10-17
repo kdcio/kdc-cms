@@ -14,7 +14,7 @@ export default async ({ id, slug }, opts = {}) => {
     if (raw) return data.Item;
     if (!data.Item) {
       return failure(404, {
-        code: 'ContentNotFound',
+        error: 'ContentNotFound',
         message: 'Content not found'
       });
     }

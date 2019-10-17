@@ -7,7 +7,7 @@ export default async ({ name, id, ...attr }) => {
   const current = await get({ id }, { raw: true });
   if (current) {
     return failure(409, {
-      code: 'PageExists',
+      error: 'PageExists',
       message: 'Page already exists',
       id
     });

@@ -35,6 +35,6 @@ describe('Login', () => {
       password: 'fake'
     });
     expect(statusCode).toBe(401);
-    expect(body.code).toBe('LoginFailed');
+    expect(body.error).toBe('LoginFailed');
   });
 });

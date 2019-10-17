@@ -14,7 +14,7 @@ export default async ({ id }, opts = {}) => {
     if (raw) return data.Item;
     if (!data.Item) {
       return failure(404, {
-        code: 'ContentDefinitionNotFound',
+        error: 'ContentDefinitionNotFound',
         message: 'Content definition not found'
       });
     }
