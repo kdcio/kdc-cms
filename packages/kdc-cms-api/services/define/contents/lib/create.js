@@ -1,7 +1,17 @@
 import DDB from '../../../../lib/dynamodb';
 import { successPOST, failure } from '../../../../lib/response';
+import get from './get';
 
 export default async ({ name, id, ...attr }) => {
+  const current = await get({ id }, { raw: true });
+  if (current) {
+    return failure(409, {
+      code: 'ContentDefinitionExists',
+      message: 'Content definition already exists',
+      id
+    });
+  }
+
   const createdAt = new Date().valueOf();
   const Item = {
     pk: id,
@@ -12,10 +22,7 @@ export default async ({ name, id, ...attr }) => {
     createdAt
   };
 
-  const params = {
-    Item,
-    ConditionExpression: 'attribute_not_exists(pk)'
-  };
+  const params = { Item };
 
   try {
     await DDB('put', params);

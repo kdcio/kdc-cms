@@ -5,8 +5,12 @@ import get from './get';
 
 export default async ({ Slug, id, ...attr }) => {
   const current = await get({ slug: Slug, id }, { raw: true });
-  if (current && current.code !== 'ContentNotFound') {
-    return failure(409, { code: 'ContentExists', message: 'Content already exists', Slug });
+  if (current) {
+    return failure(409, {
+      code: 'ContentExists',
+      message: 'Content already exists',
+      Slug
+    });
   }
 
   const definition = await defGet({ id }, { raw: true });

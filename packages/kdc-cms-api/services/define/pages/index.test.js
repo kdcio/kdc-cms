@@ -25,6 +25,12 @@ describe('Page Definition', () => {
     expect(body.id).toBe(homePage.id);
   });
 
+  it('should not create', async () => {
+    const { statusCode, body } = await req.post('/', homePage);
+    expect(statusCode).toBe(409);
+    expect(body.code).toBe('PageDefinitionExists');
+  });
+
   it('should get', async () => {
     const { statusCode, body } = await req.get(`/${homePage.id}`);
     expect(statusCode).toBe(200);

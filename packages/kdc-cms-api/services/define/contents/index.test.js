@@ -31,6 +31,12 @@ describe('Content Definition', () => {
     expect(body.id).toBe(blogs.id);
   });
 
+  it('should not create', async () => {
+    const { statusCode, body } = await req.post('/', blogs);
+    expect(statusCode).toBe(409);
+    expect(body.code).toBe('ContentDefinitionExists');
+  });
+
   it('should get', async () => {
     const { statusCode, body } = await req.get(`/${blogs.id}`);
     expect(statusCode).toBe(200);

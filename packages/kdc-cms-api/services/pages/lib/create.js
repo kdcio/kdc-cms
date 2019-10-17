@@ -5,8 +5,12 @@ import get from './get';
 
 export default async ({ name, id, ...attr }) => {
   const current = await get({ id }, { raw: true });
-  if (current && current.code !== 'PageNotFound') {
-    return failure(400, { code: 'PageExists', message: 'Page already exists', id });
+  if (current) {
+    return failure(409, {
+      code: 'PageExists',
+      message: 'Page already exists',
+      id
+    });
   }
 
   const definition = await defGet({ id }, { raw: true });
@@ -27,10 +31,7 @@ export default async ({ name, id, ...attr }) => {
     createdAt
   };
 
-  const params = {
-    Item,
-    ConditionExpression: 'attribute_not_exists(pk)'
-  };
+  const params = { Item };
 
   try {
     await DDB('put', params);
