@@ -4,8 +4,6 @@ import defGet from '../../define/pages/lib/get';
 
 export default async ({ name, id, ...attr }) => {
   const definition = await defGet({ id }, { raw: true });
-  console.log(definition);
-
   const validAttr = {};
   definition.fields.forEach(f => {
     if (attr[f.name]) {
