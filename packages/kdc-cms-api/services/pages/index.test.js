@@ -45,7 +45,7 @@ describe('Pages', () => {
   });
 
   it('should get', async () => {
-    const { statusCode, body } = await req.get(`/${homePage.id}`, homePage);
+    const { statusCode, body } = await req.get(`/${homePage.id}`);
     expect(statusCode).toBe(200);
     expect(body.pk).toEqual(undefined);
     expect(body.id).toEqual(homePage.id);
