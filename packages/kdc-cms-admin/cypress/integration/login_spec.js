@@ -5,7 +5,7 @@ describe('Login / Logout', () => {
 
   it('unsuccessful login', () => {
     cy.get('.h4').should('contain', 'Welcome Back!');
-    cy.get('#email').type('fake@pogi.com');
+    cy.get('#username').type('fake@pogi.com');
     cy.get('#password').type('test');
     cy.get('.btn-user').click();
     cy.get('.h4').should('contain', 'Welcome Back!');
@@ -14,7 +14,7 @@ describe('Login / Logout', () => {
 
   it('successfully login', () => {
     cy.get('.h4').should('contain', 'Welcome Back!');
-    cy.get('#email').type(Cypress.env('email'));
+    cy.get('#username').type(Cypress.env('username'));
     cy.get('#password').type(Cypress.env('password'));
     cy.get('.btn-user').click();
     cy.get('.sidebar-brand-text').should('contain', 'KDC CMS');

@@ -10,7 +10,7 @@ describe('Pages', () => {
   });
 
   beforeEach(() => {
-    cy.login(Cypress.env('email'), Cypress.env('password'));
+    cy.login(Cypress.env('username'), Cypress.env('password'));
   });
 
   it('should define page', () => {
