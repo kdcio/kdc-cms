@@ -48,7 +48,7 @@ const handler = (event, context, callback) => {
     const { sub } = decoded;
     // Check whether user ID is legit in the DB
     get({ username: sub }, { raw: true }).then(user => {
-      const { pk: username, role } = user;
+      const { pk: username, gs1sk: name, role } = user;
 
       // If the user id exists in the db, save to request for use in other routes
       if (user)
@@ -57,7 +57,8 @@ const handler = (event, context, callback) => {
           generatePolicy(
             {
               username,
-              role
+              role,
+              name
             },
             'Allow',
             event.methodArn

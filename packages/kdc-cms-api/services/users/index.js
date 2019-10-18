@@ -3,6 +3,7 @@ import create from './lib/create';
 import list from './lib/list';
 import update from './lib/update';
 import del from './lib/delete';
+import me from './lib/me';
 import parseParams from '../../lib/parseParams';
 import { failure } from '../../lib/response';
 
@@ -12,6 +13,11 @@ const handler = async event => {
 
   if (params && params.username) {
     const { username } = params;
+
+    if (httpMethod === 'GET' && username === 'me') {
+      return me(event);
+    }
+
     if (httpMethod === 'GET') {
       return get({ username });
     }
