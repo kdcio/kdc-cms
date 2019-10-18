@@ -7,7 +7,7 @@
     "start": "npm run ddb:wait && sls offline --port 8101 -s local",
     "start:debug": "npm run ddb:wait && SLS_DEBUG=* sls offline --port 8101 -s local",
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\"",
-    "test": "DDB_TABLE=kdc-cms-database-local JWT_SECRET=12345678 IS_OFFLINE=true jest --watch --runInBand",
+    "test": "DDB_TABLE=kdc-cms-database-test JWT_SECRET=12345678 IS_OFFLINE=true jest --watch --runInBand",
     "deploy": "sls deploy -v -s",
     "delete": "sls remove -v -s",
     "lint": "eslint . --fix"
