@@ -9,6 +9,7 @@
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
     "ddb:init": "aws dynamodb create-table --cli-input-json file://schema.json --endpoint-url http://localhost:8103 --output text --query 'Table.TableName'",
     "ddb:stop": "docker-compose stop",
+    "ddb:rm": "docker-compose rm",
     "delete": "sls remove -v -s "
   },
   "author": {
