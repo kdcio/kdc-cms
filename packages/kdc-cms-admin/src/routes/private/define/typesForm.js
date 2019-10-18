@@ -196,8 +196,8 @@ const TypesForm = ({ id }) => {
                   defaultValue={initialValues.sortKey}
                 >
                   <option value="name">Name</option>
-                  {field &&
-                    field.map((v) => {
+                  {field
+                    && field.map((v) => {
                       if (v.trim() === '') return null;
                       return (
                         <option key={v} value={v}>
