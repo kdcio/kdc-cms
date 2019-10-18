@@ -1,4 +1,4 @@
-import DDB from '../../../lib/dynamodb';
+import { DDB } from 'kdc-cms-dynamodb';
 import { successPOST, failure } from '../../../lib/response';
 import { encryptPassword } from '../../../lib/encrypt';
 import get from './get';

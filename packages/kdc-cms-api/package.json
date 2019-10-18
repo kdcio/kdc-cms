@@ -21,7 +21,8 @@
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.550.0",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "kdc-cms-dynamodb": "0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

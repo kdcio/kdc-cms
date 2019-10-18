@@ -1,4 +1,4 @@
-import DDB from '../../../lib/dynamodb';
+import { DDB } from 'kdc-cms-dynamodb';
 import { successPUT, failure } from '../../../lib/response';
 import get from './get';
 import del from './delete';

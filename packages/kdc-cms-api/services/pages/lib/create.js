@@ -1,4 +1,4 @@
-import DDB from '../../../lib/dynamodb';
+import { DDB } from 'kdc-cms-dynamodb';
 import { successPOST, failure } from '../../../lib/response';
 import defGet from '../../define/pages/lib/get';
 import get from './get';

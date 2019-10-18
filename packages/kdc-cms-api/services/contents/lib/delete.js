@@ -1,4 +1,4 @@
-import DDB from '../../../lib/dynamodb';
+import { DDB } from 'kdc-cms-dynamodb';
 import { successDEL, failure } from '../../../lib/response';
 
 export default async ({ id, slug }) => {

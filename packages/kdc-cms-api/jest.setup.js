@@ -1,9 +1,9 @@
-import clearDb from './lib/clearDb';
+import { clearByGSI } from 'kdc-cms-dynamodb';
 
 export default async () => {
-  await clearDb('page');
-  await clearDb('page#data');
-  await clearDb('content');
-  await clearDb('content#data');
-  await clearDb('user');
+  await clearByGSI('page');
+  await clearByGSI('page#data');
+  await clearByGSI('content');
+  await clearByGSI('content#data');
+  await clearByGSI('user');
 };

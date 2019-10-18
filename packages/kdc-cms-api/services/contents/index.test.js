@@ -1,6 +1,6 @@
+import { DDB } from 'kdc-cms-dynamodb';
 import apigw from '../../lib/apigw';
 import { handler } from './index';
-import DDB from '../../lib/dynamodb';
 
 const req = apigw(handler);
 const news = {

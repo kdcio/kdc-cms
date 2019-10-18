@@ -1,4 +1,4 @@
-import DDB from '../../../lib/dynamodb';
+import { DDB } from 'kdc-cms-dynamodb';
 import { success, failure } from '../../../lib/response';
 import remap from '../../../lib/remap';
 import fieldMap from './map';
