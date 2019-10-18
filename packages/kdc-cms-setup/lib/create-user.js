@@ -17,7 +17,7 @@ const create = async ({ username, name, password, ...attr }) => {
   }
 
   const createdAt = new Date().valueOf();
-  const { hash, salt } = encrypt.encryptPassword(password);
+  const { hash, salt } = encrypt.password(password);
   const Item = {
     pk: username,
     sk: "user",

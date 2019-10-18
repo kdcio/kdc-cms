@@ -1,6 +1,6 @@
 import { DDB } from 'kdc-cms-dynamodb';
+import { encrypt } from 'kdc-cms-utils';
 import { successPOST, failure } from '../../../lib/response';
-import { encryptPassword } from '../../../lib/encrypt';
 import get from './get';
 
 /**
@@ -19,7 +19,7 @@ export default async ({ username, name, password, ...attr }) => {
   }
 
   const createdAt = new Date().valueOf();
-  const { hash, salt } = encryptPassword(password);
+  const { hash, salt } = encrypt.password(password);
   const Item = {
     pk: username,
     sk: 'user',

@@ -9,8 +9,5 @@
     "url": "https://www.kdcsoftware.com"
   },
   "license": "MIT",
-  "private": true,
-  "dependencies": {
-    "aws-sdk": "^2.538.0"
-  }
+  "private": true
 }
