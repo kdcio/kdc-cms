@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const rootDir = path.resolve(__dirname, "../../");
+const rootDir = path.resolve(__dirname, "../../../");
 
 const createFile = async ctx => {
   const { stage, aws, jwt_secret } = ctx;
