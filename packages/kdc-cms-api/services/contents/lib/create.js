@@ -6,6 +6,7 @@ import get from './get';
 export default async ({ Slug, id, ...attr }) => {
   const current = await get({ slug: Slug, id }, { raw: true });
   if (current) {
+    if (current.statusCode) return current;
     return failure(409, {
       error: 'ContentExists',
       message: 'Content already exists',

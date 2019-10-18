@@ -10,6 +10,7 @@ import get from './get';
 export default async ({ username, name, password, ...attr }) => {
   const current = await get({ username }, { raw: true });
   if (current) {
+    if (current.statusCode) return current;
     return failure(409, {
       error: 'UsernameExists',
       message: 'Username already exists',
