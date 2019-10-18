@@ -1,9 +1,9 @@
 const TOKEN_KEY = '__kdc_cms_token__';
 const USER_KEY = '__kdc_cms_user__';
 
-Cypress.Commands.add('login', (email, password) => cy
-  .request('POST', 'http://localhost:8101/users/authenticate', {
-    email,
+Cypress.Commands.add('login', (username, password) => cy
+  .request('POST', 'http://localhost:8101/login', {
+    username,
     password,
   })
   .its('body')
