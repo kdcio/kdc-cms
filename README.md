@@ -109,6 +109,14 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
   yarn deploy:admin $stage
   ```
 
+* If you want to undo setup and deployment:
+
+  ```bash
+  yarn delete $stage
+  ```
+
+  **Note that this cannot be undone. Please be careful!**
+
 ## Other
 
 * [Software Design](docs/DESIGN.md)

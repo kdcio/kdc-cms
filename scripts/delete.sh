@@ -7,5 +7,6 @@ if [ "$STAGE" == "local" ]; then
     rm -f config.local.yml
 else
     yarn workspace kdc-cms-resource-database delete $STAGE
+    yarn workspace kdc-cms-api delete $STAGE
     rm -f config.$STAGE.yml
 fi

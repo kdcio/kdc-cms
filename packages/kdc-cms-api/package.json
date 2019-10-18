@@ -8,9 +8,8 @@
     "start:debug": "npm run ddb:wait && SLS_DEBUG=* sls offline --port 8101 -s local",
     "ddb:wait": "until nc -z localhost 8103; do sleep 1; done && echo \"DynamoDB started\"",
     "test": "DDB_TABLE=kdc-cms-database-local JWT_SECRET=12345678 IS_OFFLINE=true jest --watch --runInBand",
-    "deploy": "sls deploy -v -s ",
-    "cleanZip": "rm -fR kdc-cms-server.zip build VERSION",
-    "zip": "cd build && zip -r ../kdc-cms-server.zip *",
+    "deploy": "sls deploy -v -s",
+    "delete": "sls remove -v -s",
     "lint": "eslint . --fix"
   },
   "author": {
