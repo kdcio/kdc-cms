@@ -3,6 +3,10 @@ import { successPOST, failure } from '../../../lib/response';
 import { encryptPassword } from '../../../lib/encrypt';
 import get from './get';
 
+/**
+ * When changing this function, also change the file:
+ * kdc-cms-setup/lib/create-user.js
+ */
 export default async ({ username, name, password, ...attr }) => {
   const current = await get({ username }, { raw: true });
   if (current) {

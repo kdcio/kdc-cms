@@ -4,8 +4,8 @@
   "description": "Setup for KDC CMS",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "fu": "node first-user.js"
+    "start": "node -r esm index.js",
+    "fu": "node  -r esm first-user.js"
   },
   "author": {
     "name": "Ian Dela Cruz",
@@ -15,9 +15,10 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "esm": "^3.2.25",
     "inquirer": "^7.0.0",
     "js-yaml": "^3.13.1",
-    "kdc-cms-models": "0.1.0",
+    "kdc-cms-dynamodb": "0.1.0",
     "kdc-cms-utils": "0.1.0",
     "lodash.indexof": "^4.0.5"
   }

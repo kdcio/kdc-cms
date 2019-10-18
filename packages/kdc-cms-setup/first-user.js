@@ -1,7 +1,9 @@
 require("./env");
-const questions = require("./questions-user");
-const createFile = require("./create-file");
+const questions = require("./lib/questions-user");
+const createFile = require("./lib/create-file");
+const createUser = require("./lib/create-user");
 
 questions()
-  .then(createFile)
+  .then(ctx => createFile(ctx))
+  .then(ctx => createUser(ctx))
   .catch(e => console.log(e));

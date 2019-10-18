@@ -1,6 +1,11 @@
 const inquirer = require("inquirer");
-const { validateEmail, validatePassword } = require("kdc-cms-utils");
+const {
+  validateEmail,
+  validatePassword,
+  validateUsername
+} = require("kdc-cms-utils");
 
+let username = null;
 let name = null;
 let email = null;
 let password = null;
@@ -22,6 +27,14 @@ const requireValidEmail = value => {
   return "Please enter valid email";
 };
 
+const requireValidUsername = value => {
+  if (validateUsername(value)) {
+    return true;
+  }
+
+  return "Username needs to be at least 4 alphanumeric characters";
+};
+
 const askUserQuestions = async () => {
   let ans = await inquirer.prompt({
     type: "input",
@@ -30,6 +43,15 @@ const askUserQuestions = async () => {
     when: () => !name
   });
   if (ans.name) name = ans.name;
+
+  ans = await inquirer.prompt({
+    type: "input",
+    message: "Enter your username:",
+    name: "username",
+    validate: requireValidUsername,
+    when: () => !username
+  });
+  if (ans.username) username = ans.username;
 
   ans = await inquirer.prompt({
     type: "input",
@@ -68,13 +90,13 @@ const askUserQuestions = async () => {
 };
 
 const start = async ctx => {
-  while (!name || !email || !password) {
+  while (!name || !email || !password || !username) {
     await askUserQuestions();
   }
 
   return {
     ...ctx,
-    user: { name, email, password, role }
+    user: { username, name, email, password, role }
   };
 };
 

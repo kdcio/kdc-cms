@@ -1,12 +1,11 @@
 // include node fs module
 const fs = require("fs");
 const path = require("path");
-const Users = require("kdc-cms-models/models/users");
 
 const rootDir = path.resolve(__dirname, "../../");
 
 const createFile = async ctx => {
-  const { stage, aws, user, jwt_secret } = ctx;
+  const { stage, aws, jwt_secret } = ctx;
 
   if (aws) {
     const { region, profile } = aws;
@@ -40,17 +39,7 @@ const createFile = async ctx => {
     }
   }
 
-  if (user) {
-    const { name, email, password, role } = user;
-    // create user
-    return Users.create({ email, password, name, role })
-      .then(() => {
-        console.log("User created");
-      })
-      .catch(e => console.log(e));
-  }
-
-  return Promise.resolve(ctx);
+  return ctx;
 };
 
 module.exports = createFile;

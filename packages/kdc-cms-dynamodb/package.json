@@ -1,7 +1,7 @@
 {
-  "name": "kdc-cms-models",
+  "name": "kdc-cms-dynamodb",
   "version": "0.1.0",
-  "description": "Models for KDC CMS",
+  "description": "Utils for KDC CMS",
   "main": "index.js",
   "author": {
     "name": "Ian Dela Cruz",
@@ -11,6 +11,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "aws-sdk": "^2.538.0"
+    "aws-sdk": "^2.552.0"
   }
 }
