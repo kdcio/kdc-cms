@@ -1,5 +1,11 @@
+/**
+ * Use custom API Gateway Lambda Authorizer
+ * Tutorial: https://docs.aws.amazon.com/en_pv/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
+ */
+
 import jwt from 'jsonwebtoken';
 import get from './lib/get';
+import getResource from './lib/resource';
 
 const generatePolicy = (user, effect, resource) => {
   const authResponse = {
@@ -11,13 +17,7 @@ const generatePolicy = (user, effect, resource) => {
     const statementOne = {
       Action: 'execute-api:Invoke',
       Effect: effect,
-      /**
-       * Specifying resource will only allow the policy
-       * for that specific resource. We use wildcard so that
-       * it policy spans to multiple services.
-       */
-
-      Resource: '*' // resource
+      Resource: getResource(user.role, resource)
     };
 
     const policyDocument = {
@@ -40,11 +40,14 @@ const handler = (event, context, callback) => {
 
   // Verifies secret and checks exp
   return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return callback(null, 'Unauthorized');
+    if (err) {
+      callback(null, 'Unauthorized');
+      return;
+    }
 
     const { sub } = decoded;
     // Check whether user ID is legit in the DB
-    return get({ username: sub }, { raw: true }).then(user => {
+    get({ username: sub }, { raw: true }).then(user => {
       const { pk: username, role } = user;
 
       // If the user id exists in the db, save to request for use in other routes
