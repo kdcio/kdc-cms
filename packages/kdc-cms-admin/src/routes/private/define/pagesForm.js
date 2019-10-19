@@ -34,9 +34,13 @@ const PagesForm = ({ id }) => {
     });
 
     if (id) {
-      api(`define/pages/${id}`, { body, method: 'PUT' }).then(() => navigate('/define/pages'));
+      api(`define/pages/${id}`, { body, method: 'PUT' })
+        .then(() => api(`pages/${id}`, { body: { name: body.name }, method: 'PUT' }))
+        .then(() => navigate('/define/pages'));
     } else {
-      api('define/pages', { body }).then(() => navigate('/define/pages'));
+      api('define/pages', { body })
+        .then(() => api('pages', { body: { id: body.id } }))
+        .then(() => navigate('/define/pages'));
     }
   };
 

@@ -8,10 +8,11 @@ import api from '../../../utils/api';
 const PagesForm = ({ id }) => {
   const { register, handleSubmit } = useForm();
   const [initialValues, setInitialValues] = useState({});
+  const [fields, setFields] = useState(null);
   const onSubmit = (data) => {
     const body = {};
 
-    initialValues.fields.forEach((f) => {
+    fields.forEach((f) => {
       const { name } = f;
       if (data[name] && data[name].trim() === '') return;
       body[name] = data[name].trim();
@@ -23,9 +24,10 @@ const PagesForm = ({ id }) => {
   useEffect(() => {
     if (!id) return;
 
-    api(`pages/${id}`).then((data) => {
-      setInitialValues(data);
-    });
+    api(`pages/${id}`)
+      .then((data) => setInitialValues(data))
+      .then(() => api(`define/pages/${id}`))
+      .then((data) => setFields(data.fields));
   }, [id]);
 
   const renderField = (f) => (
@@ -61,9 +63,7 @@ const PagesForm = ({ id }) => {
       </CardHeader>
       <CardBody>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          {initialValues && initialValues.fields
-            ? initialValues.fields.map((f) => renderField(f))
-            : null}
+          {fields ? fields.map((f) => renderField(f)) : null}
 
           <hr />
           <Button type="submit" color="primary">
