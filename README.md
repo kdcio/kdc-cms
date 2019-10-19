@@ -96,16 +96,15 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
   yarn setup $stage
   ```
 
-* Run the command below.
+* Deploy API package:
 
-  ```bash
-  yarn deploy $stage
-  ```
-
-* You can also deploy individual package:
-  
   ```bash
   yarn deploy:api $stage
+  ```
+
+* Deploy Admin package:
+  
+  ```bash
   yarn deploy:admin $stage
   ```
 
