@@ -3,7 +3,7 @@ import { successPUT, failure } from '../../../lib/response';
 import get from './get';
 import defGet from '../../define/pages/lib/get';
 
-export default async ({ id, attr }) => {
+export default async ({ id, name, attr }) => {
   const current = await get({ id }, { raw: true });
   const definition = await defGet({ id }, { raw: true });
   const validAttr = {};
@@ -17,7 +17,7 @@ export default async ({ id, attr }) => {
   const Item = {
     ...current,
     ...validAttr,
-    gs1sk: definition.gs1sk,
+    gs1sk: name || definition.gs1sk,
     updatedAt
   };
 
