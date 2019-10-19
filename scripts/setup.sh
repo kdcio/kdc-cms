@@ -3,6 +3,11 @@
 STAGE=$1
 CONFIG="config.$STAGE.yml"
 
+if [ ! -d "node_modules" ]; then
+    echo "Please run 'yarn install' first"
+    exit 1
+fi
+
 if [ -f "$CONFIG" ]; then
     echo "Stage: $STAGE has already been setup."
     exit 1
