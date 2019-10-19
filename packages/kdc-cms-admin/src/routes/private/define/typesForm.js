@@ -195,7 +195,7 @@ const TypesForm = ({ id }) => {
                   innerRef={register}
                   defaultValue={initialValues.sortKey}
                 >
-                  <option value="name">Name</option>
+                  <option value="Name">Name</option>
                   {field
                     && field.map((v) => {
                       if (v.trim() === '') return null;
