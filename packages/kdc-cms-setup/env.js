@@ -19,6 +19,7 @@ try {
   process.env.DDB_TABLE = `kdc-cms-database-${stage}`;
   if (stage !== "local") {
     process.env.AWS_PROFILE = process.env.AWS_PROFILE || config.PROFILE;
+    process.env.IS_OFFLINE = false;
   } else {
     process.env.IS_OFFLINE = true;
   }
