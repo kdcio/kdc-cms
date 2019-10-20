@@ -5,6 +5,7 @@ import DefinePages from './define/pages';
 import DefineTypes from './define/types';
 import Pages from './pages/index';
 import Contents from './contents/index';
+import Users from './users/index';
 import Error404 from './404';
 
 const Public = () => (
@@ -14,6 +15,7 @@ const Public = () => (
     <DefineTypes path="/define/types/*" />
     <Pages path="/pages/*" />
     <Contents path="/contents/*" />
+    <Users path="/users/*" />
     <Error404 default />
   </Router>
 );

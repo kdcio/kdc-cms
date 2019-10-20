@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@reach/router';
-import { isDev } from 'kdc-cms-roles';
+import { isDev, isAdmin } from 'kdc-cms-roles';
 import { useContentTypeList } from '../context/contentTypeList';
 import { useSideBar } from '../context/sideBar';
 import { useAuth } from '../context/auth';
@@ -50,19 +50,25 @@ const SideBar = () => {
       ))}
       <hr className="sidebar-divider" />
 
-      {isDev(role) ? (
+      {isDev(role) || isAdmin(role) ? (
         <>
-          <div className="sidebar-heading">Define</div>
-          <li className="nav-item">
-            <Link className="nav-link" to="/define/pages">
-              <FontAwesomeIcon icon="wrench" />
-              <span>Pages</span>
-            </Link>
-          </li>
+          <div className="sidebar-heading">System</div>
           <li className="nav-item">
             <Link className="nav-link" to="/define/types">
               <FontAwesomeIcon icon="cog" />
-              <span>Content</span>
+              <span>Define Content</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/define/pages">
+              <FontAwesomeIcon icon="wrench" />
+              <span>Define Pages</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/users">
+              <FontAwesomeIcon icon="users" />
+              <span>Users</span>
             </Link>
           </li>
           <hr className="sidebar-divider d-none d-md-block" />
