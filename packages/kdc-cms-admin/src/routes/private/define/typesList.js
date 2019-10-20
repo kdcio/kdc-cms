@@ -1,11 +1,13 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 /* eslint-disable no-restricted-globals */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '@reach/router';
-import { Card, CardBody, CardHeader, Table, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import moment from 'moment';
 import { useContentTypeList } from '../../../context/contentTypeList';
+import RowSpinner from '../../../components/rowSpinner';
+import Table from '../../../components/table';
 import api from '../../../utils/api';
 
 const formatDate = ({ createdAt, updatedAt }) => {
@@ -20,18 +22,23 @@ const formatDate = ({ createdAt, updatedAt }) => {
 
 const TypesList = () => {
   const { typeList, fetchList } = useContentTypeList();
+  const [isLoading, setIsLoading] = useState(false);
 
   const deletePage = (type) => {
     const r = confirm(
       'Are you sure you want to delete this content type?\nAll data associated with this content type will also be deleted.\n\nTHIS CANNOT BE UNDONE!'
     );
     if (r === true) {
-      api(`define/contents/${type}`, { method: 'DELETE' }).then(fetchList);
+      setIsLoading(true);
+      api(`define/contents/${type}`, { method: 'DELETE' })
+        .then(fetchList)
+        .then(() => setIsLoading(false));
     }
   };
 
   useEffect(() => {
-    fetchList();
+    setIsLoading(true);
+    fetchList().then(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -56,28 +63,32 @@ const TypesList = () => {
             </tr>
           </thead>
           <tbody>
-            {typeList.map((type) => (
-              <tr key={type.id}>
-                <th scope="row">{type.id}</th>
-                <td>{type.name}</td>
-                <td>{type.description}</td>
-                <td className="text-center">{type.fieldCount}</td>
-                <td>{formatDate(type)}</td>
-                <td className="text-center">
-                  <Link to={`edit/${type.id}`} className="btn btn-sm btn-secondary mr-2">
-                    Edit
-                  </Link>
-                  <Button
-                    type="button"
-                    size="sm"
-                    color="danger"
-                    onClick={() => deletePage(type.id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {isLoading ? (
+              <RowSpinner colSpan={6} />
+            ) : (
+              typeList.map((type) => (
+                <tr key={type.id}>
+                  <th scope="row">{type.id}</th>
+                  <td>{type.name}</td>
+                  <td>{type.description}</td>
+                  <td className="text-center">{type.fieldCount}</td>
+                  <td>{formatDate(type)}</td>
+                  <td className="text-center">
+                    <Link to={`edit/${type.id}`} className="btn btn-sm btn-secondary mr-2">
+                      Edit
+                    </Link>
+                    <Button
+                      type="button"
+                      size="sm"
+                      color="danger"
+                      onClick={() => deletePage(type.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </CardBody>

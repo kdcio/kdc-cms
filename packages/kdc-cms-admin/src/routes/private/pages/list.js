@@ -3,8 +3,10 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 import { Link } from '@reach/router';
-import { Card, CardBody, CardHeader, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 import moment from 'moment';
+import RowSpinner from '../../../components/rowSpinner';
+import Table from '../../../components/table';
 import api from '../../../utils/api';
 
 const formatDate = (page) => {
@@ -19,11 +21,14 @@ const formatDate = (page) => {
 
 const PagesList = () => {
   const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchList = () => {
+      setIsLoading(true);
       api('pages').then((data) => {
         setList(data);
+        setIsLoading(false);
       });
     };
 
@@ -50,19 +55,23 @@ const PagesList = () => {
             </tr>
           </thead>
           <tbody>
-            {list.map((page) => (
-              <tr key={page.id}>
-                <th scope="row">{page.id}</th>
-                <td>{page.name}</td>
-                <td>{page.description}</td>
-                <td>{formatDate(page)}</td>
-                <td className="text-center">
-                  <Link to={`edit/${page.id}`} className="btn btn-sm btn-secondary mr-2">
-                    Edit
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {isLoading ? (
+              <RowSpinner colSpan={5} />
+            ) : (
+              list.map((page) => (
+                <tr key={page.id}>
+                  <th scope="row">{page.id}</th>
+                  <td>{page.name}</td>
+                  <td>{page.description}</td>
+                  <td>{formatDate(page)}</td>
+                  <td className="text-center">
+                    <Link to={`edit/${page.id}`} className="btn btn-sm btn-secondary mr-2">
+                      Edit
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </CardBody>

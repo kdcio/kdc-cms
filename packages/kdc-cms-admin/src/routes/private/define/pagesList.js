@@ -3,8 +3,10 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 import { Link } from '@reach/router';
-import { Card, CardBody, CardHeader, Table, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import moment from 'moment';
+import RowSpinner from '../../../components/rowSpinner';
+import Table from '../../../components/table';
 import api from '../../../utils/api';
 
 const formatDate = (page) => {
@@ -19,10 +21,13 @@ const formatDate = (page) => {
 
 const PagesList = () => {
   const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchList = () => {
+    setIsLoading(true);
     api('define/pages').then((data) => {
       setList(data);
+      setIsLoading(false);
     });
   };
 
@@ -31,7 +36,10 @@ const PagesList = () => {
       'Are you sure you want to delete this page?\nAll data associated with this page will also be deleted.\n\nTHIS CANNOT BE UNDONE!'
     );
     if (r === true) {
-      api(`define/pages/${id}`, { method: 'DELETE' }).then(fetchList);
+      setIsLoading(true);
+      api(`define/pages/${id}`, { method: 'DELETE' })
+        .then(fetchList)
+        .then(() => setIsLoading(false));
     }
   };
 
@@ -60,28 +68,32 @@ const PagesList = () => {
             </tr>
           </thead>
           <tbody>
-            {list.map((page) => (
-              <tr key={page.id}>
-                <th scope="row">{page.id}</th>
-                <td>{page.name}</td>
-                <td>{page.description}</td>
-                <td className="text-center">{page.fieldCount}</td>
-                <td>{formatDate(page)}</td>
-                <td className="text-center">
-                  <Link to={`edit/${page.id}`} className="btn btn-sm btn-secondary mr-2">
-                    Edit
-                  </Link>
-                  <Button
-                    type="button"
-                    size="sm"
-                    color="danger"
-                    onClick={() => deletePage(page.id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {isLoading ? (
+              <RowSpinner colSpan={6} />
+            ) : (
+              list.map((page) => (
+                <tr key={page.id}>
+                  <th scope="row">{page.id}</th>
+                  <td>{page.name}</td>
+                  <td>{page.description}</td>
+                  <td className="text-center">{page.fieldCount}</td>
+                  <td>{formatDate(page)}</td>
+                  <td className="text-center">
+                    <Link to={`edit/${page.id}`} className="btn btn-sm btn-secondary mr-2">
+                      Edit
+                    </Link>
+                    <Button
+                      type="button"
+                      size="sm"
+                      color="danger"
+                      onClick={() => deletePage(page.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </CardBody>

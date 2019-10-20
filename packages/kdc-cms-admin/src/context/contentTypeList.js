@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 import find from 'lodash.find';
@@ -12,11 +13,10 @@ export const ContentTypeListProvider = ({ children }) => {
 
   const getType = (id) => find(typeList, { id });
 
-  const fetchList = () => {
+  const fetchList = () =>
     api('define/contents').then((data) => {
       setTypeList(data);
     });
-  };
 
   useEffect(() => {
     fetchList();
