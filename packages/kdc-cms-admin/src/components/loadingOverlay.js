@@ -5,12 +5,9 @@ import { Spinner } from 'reactstrap';
 const LoadingOverlay = ({ isLoading, children }) => (
   <div className="position-relative">
     {isLoading ? (
-      <>
-        <div className="loading-overlay-background"></div>
-        <div className="loading-overlay-spinner">
-          <Spinner color="secondary" />
-        </div>
-      </>
+      <div className="loading-overlay-spinner">
+        <Spinner color="secondary" />
+      </div>
     ) : null}
     {children}
   </div>
