@@ -17,7 +17,7 @@ describe('Pages', () => {
     cy.visit('/');
     cy.get('.sidebar-brand-text').should('contain', 'KDC CMS');
     cy.get('#topBarTitle').should('contain', 'Dashboard');
-    cy.get(':nth-child(9) > .nav-link > span').click();
+    cy.get(':nth-child(10) > .nav-link > span').click();
     cy.location('pathname').should('eq', '/define/pages');
     cy.get('#topBarTitle').should('contain', 'Define Pages');
     cy.get('#addBtn').click();
