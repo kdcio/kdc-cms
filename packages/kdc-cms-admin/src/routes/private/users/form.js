@@ -8,7 +8,7 @@ import LoadingOverlay from '../../../components/loadingOverlay';
 
 const UsersForm = ({ username }) => {
   const { register, handleSubmit } = useForm();
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState({ role: 'admin' });
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data) => {
