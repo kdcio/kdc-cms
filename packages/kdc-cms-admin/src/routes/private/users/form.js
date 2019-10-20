@@ -12,9 +12,10 @@ const UsersForm = ({ username }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data) => {
-    const body = { ...data };
+    const { password, password2, ...user } = data;
     setIsLoading(true);
 
+    const body = { ...user, password };
     if (username) {
       api(`users/${username}`, { body, method: 'PUT' })
         .then(() => navigate('/users'))
