@@ -5,6 +5,7 @@ import useForm from 'react-hook-form';
 import slugify from 'slugify';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
+import LoadingOverlay from '../../../components/loadingOverlay';
 
 const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
@@ -12,6 +13,8 @@ const PagesForm = ({ id }) => {
   const { register, handleSubmit } = useForm();
   const [size, setSize] = useState(1);
   const [initialValues, setInitialValues] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = ({ name, description, field, type }) => {
     const body = {
       name: name.trim(),
@@ -19,6 +22,7 @@ const PagesForm = ({ id }) => {
       fields: [],
       fieldCount: 0,
     };
+    setIsLoading(true);
 
     if (description.trim() !== '') {
       body.description = description.trim();
@@ -36,21 +40,26 @@ const PagesForm = ({ id }) => {
     if (id) {
       api(`define/pages/${id}`, { body, method: 'PUT' })
         .then(() => api(`pages/${id}`, { body: { name: body.name }, method: 'PUT' }))
-        .then(() => navigate('/define/pages'));
+        .then(() => navigate('/define/pages'))
+        .catch(() => setIsLoading(false));
     } else {
       api('define/pages', { body })
         .then(() => api('pages', { body: { id: body.id } }))
-        .then(() => navigate('/define/pages'));
+        .then(() => navigate('/define/pages'))
+        .catch(() => setIsLoading(false));
     }
   };
 
   useEffect(() => {
     if (!id) return;
-
-    api(`define/pages/${id}`).then((data) => {
-      setInitialValues(data);
-      setSize(data.fieldCount);
-    });
+    setIsLoading(true);
+    api(`define/pages/${id}`)
+      .then((data) => {
+        setInitialValues(data);
+        setSize(data.fieldCount);
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
   }, [id]);
 
   return (
@@ -62,84 +71,86 @@ const PagesForm = ({ id }) => {
         </Link>
       </CardHeader>
       <CardBody>
-        <Form id="pageForm" onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup row>
-            <Label sm={2}>Page Name</Label>
-            <Col sm={4}>
-              <Input
-                type="text"
-                name="name"
-                innerRef={register}
-                defaultValue={initialValues.name}
-              />
-            </Col>
-            <Label sm={2}>Description</Label>
-            <Col sm={4}>
-              <Input
-                type="text"
-                name="description"
-                innerRef={register}
-                defaultValue={initialValues.description}
-              />
-            </Col>
-          </FormGroup>
-          <hr />
-          <h4>Fields</h4>
-          {createArrayWithNumbers(size).map((number) => (
-            <FormGroup key={number} row>
-              <Label sm={2}>Field Name</Label>
-              <Col sm={6}>
+        <LoadingOverlay isLoading={isLoading}>
+          <Form id="pageForm" onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup row>
+              <Label sm={2}>Page Name</Label>
+              <Col sm={4}>
                 <Input
                   type="text"
-                  name={`field[${number}]`}
+                  name="name"
                   innerRef={register}
-                  defaultValue={
-                    initialValues && initialValues.fields && initialValues.fields[number]
-                      ? initialValues.fields[number].name
-                      : ''
-                  }
+                  defaultValue={initialValues.name}
                 />
               </Col>
-              <Label sm={2}>Field Type</Label>
-              <Col sm={2}>
+              <Label sm={2}>Description</Label>
+              <Col sm={4}>
                 <Input
-                  type="select"
-                  name={`type[${number}]`}
+                  type="text"
+                  name="description"
                   innerRef={register}
-                  defaultValue={
-                    initialValues && initialValues.fields && initialValues.fields[number]
-                      ? initialValues.fields[number].type
-                      : ''
-                  }
-                >
-                  <option value="text">Text</option>
-                  <option value="long-text">Long Text</option>
-                </Input>
+                  defaultValue={initialValues.description}
+                />
               </Col>
             </FormGroup>
-          ))}
-          <div className="d-flex justify-content-end">
-            <Button
-              type="button"
-              color="success"
-              className="mr-2"
-              onClick={() => setSize(size + 1)}
-            >
-              Add
+            <hr />
+            <h4>Fields</h4>
+            {createArrayWithNumbers(size).map((number) => (
+              <FormGroup key={number} row>
+                <Label sm={2}>Field Name</Label>
+                <Col sm={6}>
+                  <Input
+                    type="text"
+                    name={`field[${number}]`}
+                    innerRef={register}
+                    defaultValue={
+                      initialValues && initialValues.fields && initialValues.fields[number]
+                        ? initialValues.fields[number].name
+                        : ''
+                    }
+                  />
+                </Col>
+                <Label sm={2}>Field Type</Label>
+                <Col sm={2}>
+                  <Input
+                    type="select"
+                    name={`type[${number}]`}
+                    innerRef={register}
+                    defaultValue={
+                      initialValues && initialValues.fields && initialValues.fields[number]
+                        ? initialValues.fields[number].type
+                        : ''
+                    }
+                  >
+                    <option value="text">Text</option>
+                    <option value="long-text">Long Text</option>
+                  </Input>
+                </Col>
+              </FormGroup>
+            ))}
+            <div className="d-flex justify-content-end">
+              <Button
+                type="button"
+                color="success"
+                className="mr-2"
+                onClick={() => setSize(size + 1)}
+              >
+                Add
+              </Button>
+              <Button
+                type="button"
+                color="danger"
+                onClick={() => (size > 1 ? setSize(size - 1) : null)}
+              >
+                Remove
+              </Button>
+            </div>
+            <hr />
+            <Button type="submit" color="primary">
+              Save
             </Button>
-            <Button
-              type="button"
-              color="danger"
-              onClick={() => (size > 1 ? setSize(size - 1) : null)}
-            >
-              Remove
-            </Button>
-          </div>
-          <hr />
-          <Button type="submit" color="primary">
-            Save
-          </Button>
-        </Form>
+          </Form>
+        </LoadingOverlay>
       </CardBody>
     </Card>
   );

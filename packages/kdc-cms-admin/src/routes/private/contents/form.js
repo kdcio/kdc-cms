@@ -6,16 +6,19 @@ import slugify from 'slugify';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
+import LoadingOverlay from '../../../components/loadingOverlay';
 
 const ContentsForm = ({ id, slug }) => {
   const { getType } = useContentTypeList();
   const { register, handleSubmit, setValue } = useForm();
   const [initialValues, setInitialValues] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const type = getType(id);
 
   const onSubmit = (data) => {
     const body = {};
     const { fields } = type;
+    setIsLoading(true);
 
     fields.forEach((v) => {
       if (data[v.name].trim() === '') return;
@@ -23,20 +26,28 @@ const ContentsForm = ({ id, slug }) => {
     });
 
     if (id && slug) {
-      api(`contents/${id}/${slug}`, { body, method: 'PUT' }).then(() => {
-        navigate(`/contents/${id}`);
-      });
+      api(`contents/${id}/${slug}`, { body, method: 'PUT' })
+        .then(() => {
+          navigate(`/contents/${id}`);
+        })
+        .catch(() => setIsLoading(false));
     } else {
-      api(`contents/${id}`, { body }).then(() => navigate(`/contents/${id}`));
+      api(`contents/${id}`, { body })
+        .then(() => navigate(`/contents/${id}`))
+        .catch(() => setIsLoading(false));
     }
   };
 
   useEffect(() => {
     if (!id || !slug) return;
+    setIsLoading(true);
 
-    api(`contents/${id}/${slug}`).then((data) => {
-      setInitialValues(data);
-    });
+    api(`contents/${id}/${slug}`)
+      .then((data) => {
+        setInitialValues(data);
+      })
+      .then(() => setIsLoading(false))
+      .catch(() => setIsLoading(false));
   }, [id, slug]);
 
   if (!type) return null;
@@ -83,13 +94,15 @@ const ContentsForm = ({ id, slug }) => {
         </Link>
       </CardHeader>
       <CardBody>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          {fields.map((f) => renderField(f))}
-          <hr />
-          <Button type="submit" color="primary">
-            Save
-          </Button>
-        </Form>
+        <LoadingOverlay isLoading={isLoading}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            {fields.map((f) => renderField(f))}
+            <hr />
+            <Button type="submit" color="primary">
+              Save
+            </Button>
+          </Form>
+        </LoadingOverlay>
       </CardBody>
     </Card>
   );

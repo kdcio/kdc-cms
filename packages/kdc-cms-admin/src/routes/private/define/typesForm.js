@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
@@ -6,6 +7,7 @@ import slugify from 'slugify';
 import find from 'lodash.find';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
+import LoadingOverlay from '../../../components/loadingOverlay';
 
 const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
@@ -13,6 +15,8 @@ const TypesForm = ({ id }) => {
   const { register, handleSubmit, watch } = useForm();
   const [size, setSize] = useState(1);
   const [initialValues, setInitialValues] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = ({ name, description, field, type, sortKey }) => {
     const body = {
       name: name.trim(),
@@ -21,6 +25,7 @@ const TypesForm = ({ id }) => {
       fieldCount: 2, // name and Slug
       sortKey,
     };
+    setIsLoading(true);
 
     if (description.trim() !== '') {
       body.description = description.trim();
@@ -45,21 +50,26 @@ const TypesForm = ({ id }) => {
     }
 
     if (id) {
-      api(`define/contents/${id}`, { body, method: 'PUT' }).then(() => {
-        navigate('/define/types');
-      });
+      api(`define/contents/${id}`, { body, method: 'PUT' })
+        .then(() => navigate('/define/types'))
+        .catch(() => setIsLoading(false));
     } else {
-      api('define/contents', { body }).then(() => navigate('/define/types'));
+      api('define/contents', { body })
+        .then(() => navigate('/define/types'))
+        .catch(() => setIsLoading(false));
     }
   };
 
   useEffect(() => {
     if (!id) return;
-
-    api(`define/contents/${id}`).then((data) => {
-      setInitialValues(data);
-      setSize(data.fieldCount - 2); // Subtract Name & Slug
-    });
+    setIsLoading(true);
+    api(`define/contents/${id}`)
+      .then((data) => {
+        setInitialValues(data);
+        setSize(data.fieldCount - 2); // Subtract Name & Slug
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
   }, [id]);
 
   let initialFields = [];
@@ -82,138 +92,140 @@ const TypesForm = ({ id }) => {
         </Link>
       </CardHeader>
       <CardBody>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup row>
-            <Label sm={2}>Type Name</Label>
-            <Col sm={4}>
-              <Input
-                type="text"
-                name="name"
-                innerRef={register}
-                defaultValue={initialValues.name}
-              />
-            </Col>
-            <Label sm={2}>Description</Label>
-            <Col sm={4}>
-              <Input
-                type="text"
-                name="description"
-                innerRef={register}
-                defaultValue={initialValues.description}
-              />
-            </Col>
-          </FormGroup>
-          <hr />
-          <h4>Fields</h4>
-          <FormGroup row>
-            <Label sm={2}>Field Name</Label>
-            <Col sm={6}>
-              <Input type="text" name="cName" innerRef={register} value="Name" readOnly />
-            </Col>
-            <Label sm={2}>Field Type</Label>
-            <Col sm={2}>
-              <Input type="text" name="cNameType" innerRef={register} value="Text" readOnly />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm={2}>Field Name</Label>
-            <Col sm={6}>
-              <Input type="text" name="slug" innerRef={register} value="Slug" readOnly />
-            </Col>
-            <Label sm={2}>Field Type</Label>
-            <Col sm={2}>
-              <Input type="text" name="slugType" innerRef={register} value="Text" readOnly />
-            </Col>
-          </FormGroup>
-          {createArrayWithNumbers(size).map((number) => {
-            let defName = '';
-            let defType = 'Text';
-
-            if (initialFields && initialFields[number]) {
-              defName = initialFields[number].name;
-              defType = initialFields[number].type;
-            }
-            return (
-              <FormGroup key={number} row>
-                <Label sm={2}>Field Name</Label>
-                <Col sm={6}>
-                  <Input
-                    type="text"
-                    name={`field[${number}]`}
-                    innerRef={register}
-                    defaultValue={defName}
-                  />
-                </Col>
-                <Label sm={2}>Field Type</Label>
-                <Col sm={2}>
-                  <Input
-                    type="select"
-                    name={`type[${number}]`}
-                    innerRef={register}
-                    defaultValue={defType}
-                  >
-                    <option value="text">Text</option>
-                    <option value="long-text">Long Text</option>
-                  </Input>
-                </Col>
-              </FormGroup>
-            );
-          })}
-          <div className="d-flex justify-content-end">
-            <Button
-              type="button"
-              color="success"
-              className="mr-2"
-              onClick={() => setSize(size + 1)}
-            >
-              Add
-            </Button>
-            <Button
-              type="button"
-              color="danger"
-              onClick={() => (size > 1 ? setSize(size - 1) : null)}
-            >
-              Remove
-            </Button>
-          </div>
-          <hr />
-          <FormGroup row>
-            <Label sm={2}>Sort by</Label>
-            <Col sm={4}>
-              {id ? (
+        <LoadingOverlay isLoading={isLoading}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup row>
+              <Label sm={2}>Type Name</Label>
+              <Col sm={4}>
                 <Input
                   type="text"
-                  name="sortKey"
+                  name="name"
                   innerRef={register}
-                  defaultValue={initialValues.sortKey}
-                  readOnly
+                  defaultValue={initialValues.name}
                 />
-              ) : (
+              </Col>
+              <Label sm={2}>Description</Label>
+              <Col sm={4}>
                 <Input
-                  type="select"
-                  name="sortKey"
+                  type="text"
+                  name="description"
                   innerRef={register}
-                  defaultValue={initialValues.sortKey}
-                >
-                  <option value="Name">Name</option>
-                  {field
-                    && field.map((v) => {
-                      if (v.trim() === '') return null;
-                      return (
-                        <option key={v} value={v}>
-                          {v}
-                        </option>
-                      );
-                    })}
-                </Input>
-              )}
-            </Col>
-          </FormGroup>
-          <hr />
-          <Button type="submit" color="primary">
-            Save
-          </Button>
-        </Form>
+                  defaultValue={initialValues.description}
+                />
+              </Col>
+            </FormGroup>
+            <hr />
+            <h4>Fields</h4>
+            <FormGroup row>
+              <Label sm={2}>Field Name</Label>
+              <Col sm={6}>
+                <Input type="text" name="cName" innerRef={register} value="Name" readOnly />
+              </Col>
+              <Label sm={2}>Field Type</Label>
+              <Col sm={2}>
+                <Input type="text" name="cNameType" innerRef={register} value="Text" readOnly />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label sm={2}>Field Name</Label>
+              <Col sm={6}>
+                <Input type="text" name="slug" innerRef={register} value="Slug" readOnly />
+              </Col>
+              <Label sm={2}>Field Type</Label>
+              <Col sm={2}>
+                <Input type="text" name="slugType" innerRef={register} value="Text" readOnly />
+              </Col>
+            </FormGroup>
+            {createArrayWithNumbers(size).map((number) => {
+              let defName = '';
+              let defType = 'Text';
+
+              if (initialFields && initialFields[number]) {
+                defName = initialFields[number].name;
+                defType = initialFields[number].type;
+              }
+              return (
+                <FormGroup key={number} row>
+                  <Label sm={2}>Field Name</Label>
+                  <Col sm={6}>
+                    <Input
+                      type="text"
+                      name={`field[${number}]`}
+                      innerRef={register}
+                      defaultValue={defName}
+                    />
+                  </Col>
+                  <Label sm={2}>Field Type</Label>
+                  <Col sm={2}>
+                    <Input
+                      type="select"
+                      name={`type[${number}]`}
+                      innerRef={register}
+                      defaultValue={defType}
+                    >
+                      <option value="text">Text</option>
+                      <option value="long-text">Long Text</option>
+                    </Input>
+                  </Col>
+                </FormGroup>
+              );
+            })}
+            <div className="d-flex justify-content-end">
+              <Button
+                type="button"
+                color="success"
+                className="mr-2"
+                onClick={() => setSize(size + 1)}
+              >
+                Add
+              </Button>
+              <Button
+                type="button"
+                color="danger"
+                onClick={() => (size > 1 ? setSize(size - 1) : null)}
+              >
+                Remove
+              </Button>
+            </div>
+            <hr />
+            <FormGroup row>
+              <Label sm={2}>Sort by</Label>
+              <Col sm={4}>
+                {id ? (
+                  <Input
+                    type="text"
+                    name="sortKey"
+                    innerRef={register}
+                    defaultValue={initialValues.sortKey}
+                    readOnly
+                  />
+                ) : (
+                  <Input
+                    type="select"
+                    name="sortKey"
+                    innerRef={register}
+                    defaultValue={initialValues.sortKey}
+                  >
+                    <option value="Name">Name</option>
+                    {field &&
+                      field.map((v) => {
+                        if (v.trim() === '') return null;
+                        return (
+                          <option key={v} value={v}>
+                            {v}
+                          </option>
+                        );
+                      })}
+                  </Input>
+                )}
+              </Col>
+            </FormGroup>
+            <hr />
+            <Button type="submit" color="primary">
+              Save
+            </Button>
+          </Form>
+        </LoadingOverlay>
       </CardBody>
     </Card>
   );
