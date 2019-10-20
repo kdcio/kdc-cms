@@ -9,7 +9,7 @@ let username = null;
 let name = null;
 let email = null;
 let password = null;
-const role = "admin";
+const role = "dev";
 
 const requireLetterAndNumber = value => {
   if (validatePassword(value)) {

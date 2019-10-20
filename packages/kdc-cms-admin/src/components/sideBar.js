@@ -1,12 +1,17 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@reach/router';
+import { isDev } from 'kdc-cms-roles';
 import { useContentTypeList } from '../context/contentTypeList';
 import { useSideBar } from '../context/sideBar';
+import { useAuth } from '../context/auth';
 
 const SideBar = () => {
   const { typeList } = useContentTypeList();
   const { sideBarOpen, ToggleSideBar } = useSideBar();
+  const { getUser } = useAuth();
+  const { role } = getUser();
+
   let sbClass = 'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion';
   if (!sideBarOpen) {
     sbClass += ' toggled';
@@ -43,22 +48,26 @@ const SideBar = () => {
           </Link>
         </li>
       ))}
-
       <hr className="sidebar-divider" />
-      <div className="sidebar-heading">Define</div>
-      <li className="nav-item">
-        <Link className="nav-link" to="/define/pages">
-          <FontAwesomeIcon icon="wrench" />
-          <span>Pages</span>
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link className="nav-link" to="/define/types">
-          <FontAwesomeIcon icon="cog" />
-          <span>Content</span>
-        </Link>
-      </li>
-      <hr className="sidebar-divider d-none d-md-block" />
+
+      {isDev(role) ? (
+        <>
+          <div className="sidebar-heading">Define</div>
+          <li className="nav-item">
+            <Link className="nav-link" to="/define/pages">
+              <FontAwesomeIcon icon="wrench" />
+              <span>Pages</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/define/types">
+              <FontAwesomeIcon icon="cog" />
+              <span>Content</span>
+            </Link>
+          </li>
+          <hr className="sidebar-divider d-none d-md-block" />
+        </>
+      ) : null}
 
       <div className="text-center d-none d-md-inline">
         <button

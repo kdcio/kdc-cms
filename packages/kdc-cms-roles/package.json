@@ -1,0 +1,13 @@
+{
+  "name": "kdc-cms-roles",
+  "version": "0.1.0",
+  "description": "Provide roles and permission for KDC CMS",
+  "main": "index.js",
+  "author": {
+    "name": "Ian Dela Cruz",
+    "email": "ian@kdcsoftware.com",
+    "url": "https://www.kdcsoftware.com"
+  },
+  "license": "MIT",
+  "private": true
+}

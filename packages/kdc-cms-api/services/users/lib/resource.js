@@ -7,8 +7,8 @@
 
 // format: {httpVerb}/[{resource}/[{child-resources}]]
 const resources = {
-  admin: '*',
-  editor: ['*/pages', '*/pages/*', '*/contents', '*/contents/*'],
+  dev: '*',
+  admin: ['*/pages', '*/pages/*', '*/contents', '*/contents/*', '*/users', '*/users/*'],
   application: ['GET/pages', 'GET/pages/*', 'GET/contents', 'GET/contents/*'],
   public: ['POST/review', 'PUT/users/me'],
   adviser: ['PUT/users/me']
