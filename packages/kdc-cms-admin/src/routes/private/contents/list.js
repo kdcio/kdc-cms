@@ -75,7 +75,7 @@ const ContentsList = ({ id }) => {
               <RowSpinner colSpan={4} />
             ) : (
               list.map((content) => (
-                <tr key={content.slug}>
+                <tr key={content.Slug}>
                   <th>{content.Name}</th>
                   <td>{content.Slug}</td>
                   <td>{formatDate(content)}</td>
