@@ -7,8 +7,7 @@ import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 
 const UsersForm = ({ username }) => {
-  const { register, handleSubmit } = useForm();
-  const [initialValues, setInitialValues] = useState({ role: 'admin' });
+  const { register, handleSubmit, reset } = useForm();
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data) => {
@@ -29,12 +28,15 @@ const UsersForm = ({ username }) => {
 
   useEffect(() => {
     if (!username) return;
-    setIsLoading(true);
-    api(`users/${username}`)
-      .then((data) => setInitialValues(data))
-      .then(() => setIsLoading(false))
-      .catch(() => setIsLoading(false));
-  }, [username]);
+    const fetchUser = () => {
+      setIsLoading(true);
+      api(`users/${username}`)
+        .then((data) => reset(data))
+        .then(() => setIsLoading(false))
+        .catch(() => setIsLoading(false));
+    };
+    fetchUser();
+  }, [username, reset]);
 
   return (
     <Card>
@@ -50,21 +52,11 @@ const UsersForm = ({ username }) => {
             <FormGroup row>
               <Label sm={2}>Full Name</Label>
               <Col sm={4}>
-                <Input
-                  type="text"
-                  name="name"
-                  innerRef={register}
-                  defaultValue={initialValues.name}
-                />
+                <Input type="text" name="name" innerRef={register} />
               </Col>
               <Label sm={2}>Role</Label>
               <Col sm={2}>
-                <Input
-                  type="select"
-                  name="role"
-                  innerRef={register}
-                  defaultValue={initialValues.role}
-                >
+                <Input type="select" name="role" innerRef={register}>
                   <option value="dev">Developer</option>
                   <option value="admin">Administrator</option>
                 </Input>
@@ -73,21 +65,11 @@ const UsersForm = ({ username }) => {
             <FormGroup row>
               <Label sm={2}>Username</Label>
               <Col sm={4}>
-                <Input
-                  type="text"
-                  name="username"
-                  innerRef={register}
-                  defaultValue={initialValues.username}
-                />
+                <Input type="text" name="username" innerRef={register} />
               </Col>
               <Label sm={2}>Email</Label>
               <Col sm={4}>
-                <Input
-                  type="email"
-                  name="email"
-                  innerRef={register}
-                  defaultValue={initialValues.email}
-                />
+                <Input type="email" name="email" innerRef={register} />
               </Col>
             </FormGroup>
             {username ? null : (
