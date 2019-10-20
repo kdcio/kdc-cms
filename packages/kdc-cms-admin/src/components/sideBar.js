@@ -53,18 +53,23 @@ const SideBar = () => {
       {isDev(role) || isAdmin(role) ? (
         <>
           <div className="sidebar-heading">System</div>
-          <li className="nav-item">
-            <Link className="nav-link" to="/define/types">
-              <FontAwesomeIcon icon="cog" />
-              <span>Define Content</span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/define/pages">
-              <FontAwesomeIcon icon="wrench" />
-              <span>Define Pages</span>
-            </Link>
-          </li>
+          {isDev(role) ? (
+            <>
+              <li className="nav-item">
+                <Link className="nav-link" to="/define/types">
+                  <FontAwesomeIcon icon="cog" />
+                  <span>Define Content</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/define/pages">
+                  <FontAwesomeIcon icon="wrench" />
+                  <span>Define Pages</span>
+                </Link>
+              </li>
+            </>
+          ) : null}
+
           <li className="nav-item">
             <Link className="nav-link" to="/users">
               <FontAwesomeIcon icon="users" />

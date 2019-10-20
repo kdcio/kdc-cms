@@ -71,5 +71,9 @@ describe('Users', () => {
     cy.get('#password').type('ganda');
     cy.get('.btn-user').click();
     cy.get('.sidebar-brand-text').should('contain', 'KDC CMS');
+
+    cy.get(':nth-child(9) > .nav-link').should('not.contain', 'Define Content');
+    cy.get(':nth-child(10) > .nav-link').should('not.contain', 'Define Pages');
+    cy.get(':nth-child(9) > .nav-link').should('contain', 'Users');
   });
 });
