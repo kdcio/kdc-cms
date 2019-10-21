@@ -34,12 +34,21 @@ export default async ({ id, slug, attr }) => {
     }
   });
 
+  const sortKey = validAttr[definition.sortKey];
+  if (!sortKey) {
+    return failure(400, {
+      error: 'SortKeyInvalid',
+      message: 'Sort key cannot be blank'
+    });
+  }
+
   const Item = {
     pk: slug,
     sk: `content#${id}`,
     gs1pk: `content#${id}`,
-    gs1sk: current.gs1sk,
+    gs1sk: sortKey,
     createdAt: current.createdAt,
+    sortKeyUsed: definition.sortKey,
     ...validAttr,
     updatedAt
   };

@@ -10,6 +10,12 @@ const news = {
   Slug: 'my-first-news'
 };
 
+const newsNoSortKey = {
+  Name: 'My Error News',
+  Body: 'Aute consequat aute aliquip proident sint.',
+  Slug: 'my-error-news'
+};
+
 const newsDef = {
   gs1pk: 'content',
   fieldCount: 4,
@@ -60,6 +66,12 @@ describe('Contents', () => {
     expect(body.error).toBe('ContentExists');
   });
 
+  it('should not create without a sortkey', async () => {
+    const { statusCode, body } = await req.post(`/${newsDef.pk}`, newsNoSortKey);
+    expect(statusCode).toBe(400);
+    expect(body.error).toBe('SortKeyInvalid');
+  });
+
   it('should get', async () => {
     const { statusCode, body } = await req.get(`/${newsDef.pk}/${news.Slug}`);
     expect(statusCode).toBe(200);
@@ -94,6 +106,17 @@ describe('Contents', () => {
     });
     expect(statusCode).toBe(204);
     expect(body).toBe(null);
+  });
+
+  it('it should Not update with out SortKey', async () => {
+    const { statusCode, body } = await req.put(`/${newsDef.pk}/${news.Slug}`, {
+      ...news,
+      title: 'My Updated Post',
+      Body: 'Updated body',
+      Date: undefined
+    });
+    expect(statusCode).toBe(400);
+    expect(body.error).toBe('SortKeyInvalid');
   });
 
   it('should update intro', async () => {

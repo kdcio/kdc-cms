@@ -36,12 +36,20 @@ export default async ({ Slug, id, ...attr }) => {
     validAttr.updatedAt = attr.updatedAt;
   }
 
+  const sortKey = validAttr[definition.sortKey];
+  if (!sortKey) {
+    return failure(400, {
+      error: 'SortKeyInvalid',
+      message: 'Sort key cannot be blank'
+    });
+  }
+
   const createdAt = new Date().valueOf();
   const Item = {
     pk: Slug,
     sk: `content#${id}`,
     gs1pk: `content#${id}`,
-    gs1sk: validAttr[definition.sortKey],
+    gs1sk: sortKey,
     sortKeyUsed: definition.sortKey,
     createdAt,
     ...validAttr
