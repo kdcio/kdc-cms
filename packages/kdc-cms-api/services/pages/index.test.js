@@ -70,7 +70,10 @@ describe('Pages', () => {
   });
 
   it('it should update', async () => {
-    const { statusCode, body } = await req.put(`/${homePage.id}`, { intro: "Yes I'm updated!" });
+    const { statusCode, body } = await req.put(`/${homePage.id}`, {
+      ...homePage,
+      intro: "Yes I'm updated!"
+    });
     expect(statusCode).toBe(204);
     expect(body).toBe(null);
   });

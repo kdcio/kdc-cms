@@ -88,6 +88,7 @@ describe('Contents', () => {
 
   it('it should update', async () => {
     const { statusCode, body } = await req.put(`/${newsDef.pk}/${news.Slug}`, {
+      ...news,
       title: 'My Updated Post',
       Body: 'Updated body'
     });

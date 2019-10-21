@@ -66,7 +66,10 @@ describe('Content Definition', () => {
   });
 
   it('it should update', async () => {
-    const { statusCode, body } = await req.put(`/${blogs.id}`, { name: 'New home page' });
+    const { statusCode, body } = await req.put(`/${blogs.id}`, {
+      ...blogs,
+      name: 'New home page'
+    });
     expect(statusCode).toBe(204);
     expect(body).toBe(null);
   });

@@ -58,7 +58,10 @@ describe('Page Definition', () => {
   });
 
   it('it should update', async () => {
-    const { statusCode, body } = await req.put(`/${homePage.id}`, { name: 'New home page' });
+    const { statusCode, body } = await req.put(`/${homePage.id}`, {
+      ...homePage,
+      name: 'New home page'
+    });
     expect(statusCode).toBe(204);
     expect(body).toBe(null);
   });

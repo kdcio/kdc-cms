@@ -37,7 +37,9 @@ export default async ({ id, slug, attr }) => {
   const Item = {
     pk: slug,
     sk: `content#${id}`,
-    ...current,
+    gs1pk: `content#${id}`,
+    gs1sk: current.gs1sk,
+    createdAt: current.createdAt,
     ...validAttr,
     updatedAt
   };

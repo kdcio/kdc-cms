@@ -8,9 +8,12 @@ export default async ({ id, attr }) => {
 
   const updatedAt = new Date().valueOf();
   const Item = {
-    ...page,
-    ...otherAttr,
+    pk: id,
+    sk: 'page',
+    gs1pk: 'page',
     gs1sk: name || page.gs1sk,
+    createdAt: page.createdAt,
+    ...otherAttr,
     updatedAt
   };
 

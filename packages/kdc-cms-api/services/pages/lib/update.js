@@ -15,15 +15,16 @@ export default async ({ id, name, attr }) => {
 
   const updatedAt = new Date().valueOf();
   const Item = {
-    ...current,
-    ...validAttr,
+    pk: id,
+    sk: 'page#data',
+    gs1pk: 'page#data',
+    createdAt: current.createdAt,
     gs1sk: name || definition.gs1sk,
+    ...validAttr,
     updatedAt
   };
 
-  const params = {
-    Item
-  };
+  const params = { Item };
 
   try {
     await DDB('put', params);
