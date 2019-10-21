@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
 import slugify from 'slugify';
-import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Form, Button } from 'reactstrap';
 import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
+import RenderField from '../../../components/renderField';
 
 const ContentsForm = ({ id, slug }) => {
   const { getType } = useContentTypeList();
@@ -86,44 +87,28 @@ const ContentsForm = ({ id, slug }) => {
 
   if (!type) return null;
   const { fields } = type;
-  const renderField = (f) => (
-    <FormGroup row key={f.name}>
-      <Label sm={2} className="text-capitalize">
-        {f.name}
-      </Label>
-      <Col sm={10}>
-        {f.type === 'long-text' ? (
-          <>
-            <Input
-              type="textarea"
-              name={f.name}
-              innerRef={register}
-              defaultValue={initialValues[f.name]}
-            />
-            <FormError errors={errors} name={f.name} />
-          </>
-        ) : (
-          <>
-            <Input
-              type="text"
-              name={f.name}
-              innerRef={register}
-              defaultValue={initialValues[f.name]}
-              onChange={(e) => {
-                if (f.name !== 'Name') return;
-                const Name = e.target.value;
-                if (Name && Name.length > 0) {
-                  const Slug = slugify(Name, { lower: true });
-                  setValue('Slug', Slug);
-                }
-              }}
-            />
-            <FormError errors={errors} name={f.name} />
-          </>
-        )}
-      </Col>
-    </FormGroup>
-  );
+
+  const onNameChange = (e) => {
+    const Name = e.target.value;
+    if (Name && Name.length > 0) {
+      const Slug = slugify(Name, { lower: true });
+      setValue('Slug', Slug);
+    }
+  };
+
+  let fieldInputs = null;
+  if (fields) {
+    fieldInputs = fields.map((f) => (
+      <RenderField
+        key={f.name}
+        name={f.name}
+        type={f.type}
+        register={register}
+        initialValue={initialValues[f.name]}
+        onChange={f.name === 'Name' ? onNameChange : null}
+      />
+    ));
+  }
 
   return (
     <LoadingOverlay isLoading={isLoading}>
@@ -137,7 +122,7 @@ const ContentsForm = ({ id, slug }) => {
         <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormError errors={errors} name="loading" />
-            {fields.map((f) => renderField(f))}
+            {fieldInputs}
             <hr />
             <FormError errors={errors} name="api" />
             <Button type="submit" color="primary">

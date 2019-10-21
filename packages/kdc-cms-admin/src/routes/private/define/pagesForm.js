@@ -145,6 +145,8 @@ const PagesForm = ({ id }) => {
                   >
                     <option value="text">Text</option>
                     <option value="long-text">Long Text</option>
+                    <option value="date">Date</option>
+                    <option value="datetime">DateTime</option>
                   </Input>
                 </Col>
               </FormGroup>

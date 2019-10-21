@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
-import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Form, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
+import RenderField from '../../../components/renderField';
 
 const PagesForm = ({ id }) => {
   const { register, handleSubmit, errors, setError } = useForm();
@@ -46,28 +47,18 @@ const PagesForm = ({ id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const renderField = (f) => (
-    <FormGroup row key={f.name}>
-      <Label sm={2}>{f.name}</Label>
-      <Col sm={10}>
-        {f.type === 'long-text' ? (
-          <Input
-            type="textarea"
-            name={f.name}
-            innerRef={register}
-            defaultValue={initialValues[f.name]}
-          />
-        ) : (
-          <Input
-            type="text"
-            name={f.name}
-            innerRef={register}
-            defaultValue={initialValues[f.name]}
-          />
-        )}
-      </Col>
-    </FormGroup>
-  );
+  let fieldInputs = null;
+  if (fields) {
+    fieldInputs = fields.map((f) => (
+      <RenderField
+        key={f.name}
+        name={f.name}
+        type={f.type}
+        register={register}
+        initialValue={initialValues[f.name]}
+      />
+    ));
+  }
 
   return (
     <LoadingOverlay isLoading={isLoading}>
@@ -81,7 +72,7 @@ const PagesForm = ({ id }) => {
         <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormError errors={errors} name="loading" />
-            {fields ? fields.map((f) => renderField(f)) : null}
+            {fieldInputs}
             <hr />
             <FormError errors={errors} name="api" />
             <Button type="submit" color="primary">

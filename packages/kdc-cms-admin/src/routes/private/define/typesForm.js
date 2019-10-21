@@ -32,8 +32,8 @@ const TypesForm = ({ id }) => {
       body.description = description.trim();
     }
 
-    body.fields.push({ name: 'Name', type: 'Text' });
-    body.fields.push({ name: 'Slug', type: 'Text' });
+    body.fields.push({ name: 'Name', type: 'text' });
+    body.fields.push({ name: 'Slug', type: 'text' });
 
     field.forEach((v, k) => {
       if (v.trim() === '') return;
@@ -149,7 +149,7 @@ const TypesForm = ({ id }) => {
             </FormGroup>
             {createArrayWithNumbers(size).map((number) => {
               let defName = '';
-              let defType = 'Text';
+              let defType = 'text';
 
               if (initialFields && initialFields[number]) {
                 defName = initialFields[number].name;
@@ -176,6 +176,8 @@ const TypesForm = ({ id }) => {
                     >
                       <option value="text">Text</option>
                       <option value="long-text">Long Text</option>
+                      <option value="date">Date</option>
+                      <option value="datetime">DateTime</option>
                     </Input>
                   </Col>
                 </FormGroup>
