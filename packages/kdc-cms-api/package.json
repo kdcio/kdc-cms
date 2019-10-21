@@ -10,6 +10,7 @@
     "test": "DDB_TABLE=kdc-cms-database-test JWT_SECRET=12345678 IS_OFFLINE=true jest --watch --runInBand",
     "deploy": "sls deploy -s",
     "deploy:info": "sls info  -v -s",
+    "deploy:func": "sls deploy function -s",
     "delete": "sls remove -s",
     "lint": "eslint . --fix"
   },
