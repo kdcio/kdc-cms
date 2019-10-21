@@ -1,0 +1,14 @@
+upload:
+  name: ${self:service}-upload-${self:provider.stage}
+  handler: services/upload/index.handler
+  events:
+    - http:
+        path: /upload/
+        method: any
+        cors: true
+        authorizer: verify-token
+    - http:
+        path: /upload/{proxy+}
+        method: any
+        cors: true
+        authorizer: verify-token

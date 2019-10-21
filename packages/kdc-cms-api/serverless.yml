@@ -30,6 +30,8 @@ provider:
     JWT_SECRET: ${file(../../config.${self:provider.stage}.yml):JWT_SECRET}
     DDB_TABLE: "${file(../../resources/database/serverless.yml):service}-${self:provider.stage}"
     DDB_REGION: ${self:provider.region}
+    S3_REGION: ${self:provider.region}
+    S3_UPLOAD: ${self:service}-uploads-${self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -45,6 +47,10 @@ provider:
         - dynamodb:Query
         - dynamodb:Scan
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DDB_TABLE}/index/*"
+    - Effect: Allow
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::${self:service}-uploads-${self:provider.stage}/*"
 
 functions:
   - ${file(services/users/serverless.yml)}
@@ -52,8 +58,25 @@ functions:
   - ${file(services/pages/serverless.yml)}
   - ${file(services/define/contents/serverless.yml)}
   - ${file(services/contents/serverless.yml)}
+  - ${file(services/upload/serverless.yml)}
 
 resources:
+  Resources:
+    S3BucketUploads:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-uploads-${self:provider.stage}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - PUT
+              AllowedOrigins:
+                - "*"
+              ExposedHeaders:
+                - ETag
+
   Outputs:
     ApiGatewayRestApiId:
       Value:

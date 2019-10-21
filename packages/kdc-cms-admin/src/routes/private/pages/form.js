@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
 import { Card, CardBody, CardHeader, Form, Button } from 'reactstrap';
+import ReactS3Uploader from 'react-s3-uploader';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
@@ -29,6 +30,16 @@ const PagesForm = ({ id }) => {
       .catch((e) => {
         setError('api', e.error, e.message);
         setIsLoading(false);
+      });
+  };
+
+  const getSignedUrl = (file, callback) => {
+    api(`upload/?filename=${file.name}&type=${file.type}&acl=public-read`)
+      .then((data) => {
+        callback(data);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -76,6 +87,18 @@ const PagesForm = ({ id }) => {
             {fieldInputs}
             <hr />
             <FormError errors={errors} name="api" />
+            <ReactS3Uploader
+              // className={uploaderClassName}
+              getSignedUrl={getSignedUrl}
+              accept="image/*"
+              onProgress={(p) => console.log(p)}
+              onError={(e) => console.log(e)}
+              onFinish={() => console.log('finished')}
+              uploadRequestHeaders={{
+                'x-amz-acl': 'public-read',
+              }}
+              contentDisposition="auto"
+            />
             <Button type="submit" color="primary">
               Save
             </Button>

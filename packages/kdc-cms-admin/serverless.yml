@@ -7,7 +7,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs10.x
   stage: ${opt:stage}
   region: ${file(../../config.${self:provider.stage}.yml):REGION, 'localhost'}
   profile: ${file(../../config.${self:provider.stage}.yml):PROFILE, 'default'}
