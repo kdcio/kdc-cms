@@ -7,17 +7,18 @@ import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button 
 import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
+import FormError from '../../../components/formError';
 
 const ContentsForm = ({ id, slug }) => {
   const { getType } = useContentTypeList();
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, errors, setError } = useForm();
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const type = getType(id);
 
   const onSubmit = (data) => {
     const body = {};
-    const { fields } = type;
+    const { fields, sortKey } = type;
     setIsLoading(true);
 
     fields.forEach((v) => {
@@ -25,16 +26,45 @@ const ContentsForm = ({ id, slug }) => {
       body[v.name] = data[v.name].trim();
     });
 
+    if (!body.Name) {
+      setError('Name', 'required');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!body.Slug) {
+      setError('Slug', 'required');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!body[sortKey]) {
+      setError(sortKey, 'required');
+      setIsLoading(false);
+      return;
+    }
+
     if (id && slug) {
       api(`contents/${id}/${slug}`, { body, method: 'PUT' })
         .then(() => {
           navigate(`/contents/${id}`);
         })
-        .catch(() => setIsLoading(false));
+        .catch((e) => {
+          if (e.error === 'SortKeyInvalid') {
+            setError('api', e.error, e.message);
+          } else {
+            setError('api', e.error, e.message);
+          }
+
+          setIsLoading(false);
+        });
     } else {
       api(`contents/${id}`, { body })
         .then(() => navigate(`/contents/${id}`))
-        .catch(() => setIsLoading(false));
+        .catch((e) => {
+          setError('api', e.error, e.message);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -47,7 +77,11 @@ const ContentsForm = ({ id, slug }) => {
         setInitialValues(data);
       })
       .then(() => setIsLoading(false))
-      .catch(() => setIsLoading(false));
+      .catch((e) => {
+        setError('loading', e.error, e.message);
+        setIsLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, slug]);
 
   if (!type) return null;
@@ -59,52 +93,60 @@ const ContentsForm = ({ id, slug }) => {
       </Label>
       <Col sm={10}>
         {f.type === 'long-text' ? (
-          <Input
-            type="textarea"
-            name={f.name}
-            innerRef={register}
-            defaultValue={initialValues[f.name]}
-          />
+          <>
+            <Input
+              type="textarea"
+              name={f.name}
+              innerRef={register}
+              defaultValue={initialValues[f.name]}
+            />
+            <FormError errors={errors} name={f.name} />
+          </>
         ) : (
-          <Input
-            type="text"
-            name={f.name}
-            innerRef={register}
-            defaultValue={initialValues[f.name]}
-            onChange={(e) => {
-              if (f.name !== 'Name') return;
-              const Name = e.target.value;
-              if (Name && Name.length > 0) {
-                const Slug = slugify(Name, { lower: true });
-                setValue('Slug', Slug);
-              }
-            }}
-          />
+          <>
+            <Input
+              type="text"
+              name={f.name}
+              innerRef={register}
+              defaultValue={initialValues[f.name]}
+              onChange={(e) => {
+                if (f.name !== 'Name') return;
+                const Name = e.target.value;
+                if (Name && Name.length > 0) {
+                  const Slug = slugify(Name, { lower: true });
+                  setValue('Slug', Slug);
+                }
+              }}
+            />
+            <FormError errors={errors} name={f.name} />
+          </>
         )}
       </Col>
     </FormGroup>
   );
 
   return (
-    <Card>
-      <CardHeader className="d-flex justify-content-between">
-        <h3 className="m-0">{id && slug ? `Edit ${type.name}` : `Add ${type.name}`}</h3>
-        <Link className="btn btn-sm btn-danger" to={`/contents/${id}`}>
-          Cancel
-        </Link>
-      </CardHeader>
-      <CardBody>
-        <LoadingOverlay isLoading={isLoading}>
+    <LoadingOverlay isLoading={isLoading}>
+      <Card>
+        <CardHeader className="d-flex justify-content-between">
+          <h3 className="m-0">{id && slug ? `Edit ${type.name}` : `Add ${type.name}`}</h3>
+          <Link className="btn btn-sm btn-danger" to={`/contents/${id}`}>
+            Cancel
+          </Link>
+        </CardHeader>
+        <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
+            <FormError errors={errors} name="loading" />
             {fields.map((f) => renderField(f))}
             <hr />
+            <FormError errors={errors} name="api" />
             <Button type="submit" color="primary">
               Save
             </Button>
           </Form>
-        </LoadingOverlay>
-      </CardBody>
-    </Card>
+        </CardBody>
+      </Card>
+    </LoadingOverlay>
   );
 };
 

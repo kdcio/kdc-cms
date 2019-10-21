@@ -5,9 +5,10 @@ import useForm from 'react-hook-form';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
+import FormError from '../../../components/formError';
 
 const PagesForm = ({ id }) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors, setError } = useForm();
   const [initialValues, setInitialValues] = useState({});
   const [fields, setFields] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +25,10 @@ const PagesForm = ({ id }) => {
 
     api(`pages/${id}`, { body, method: 'PUT' })
       .then(() => navigate('/pages'))
-      .catch(() => setIsLoading(false));
+      .catch((e) => {
+        setError('api', e.error, e.message);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -35,7 +39,11 @@ const PagesForm = ({ id }) => {
       .then(() => api(`pages/${id}`))
       .then((data) => setInitialValues(data))
       .then(() => setIsLoading(false))
-      .catch(() => setIsLoading(false));
+      .catch((e) => {
+        setError('loading', e.error, e.message);
+        setIsLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const renderField = (f) => (
@@ -62,26 +70,27 @@ const PagesForm = ({ id }) => {
   );
 
   return (
-    <Card>
-      <CardHeader className="d-flex justify-content-between">
-        <h3 className="m-0">{initialValues.name ? `Edit ${initialValues.name}` : 'Loading'}</h3>
-        <Link className="btn btn-sm btn-danger" to="/pages">
-          Cancel
-        </Link>
-      </CardHeader>
-      <CardBody>
-        <LoadingOverlay isLoading={isLoading}>
+    <LoadingOverlay isLoading={isLoading}>
+      <Card>
+        <CardHeader className="d-flex justify-content-between">
+          <h3 className="m-0">{initialValues.name ? `Edit ${initialValues.name}` : 'Loading'}</h3>
+          <Link className="btn btn-sm btn-danger" to="/pages">
+            Cancel
+          </Link>
+        </CardHeader>
+        <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
+            <FormError errors={errors} name="loading" />
             {fields ? fields.map((f) => renderField(f)) : null}
-
             <hr />
+            <FormError errors={errors} name="api" />
             <Button type="submit" color="primary">
               Save
             </Button>
           </Form>
-        </LoadingOverlay>
-      </CardBody>
-    </Card>
+        </CardBody>
+      </Card>
+    </LoadingOverlay>
   );
 };
 

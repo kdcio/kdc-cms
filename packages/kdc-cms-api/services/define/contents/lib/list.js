@@ -13,7 +13,8 @@ export default async () => {
     ExpressionAttributeNames: {
       '#fields': 'fields'
     },
-    ProjectionExpression: 'pk, gs1sk, description, fieldCount, #fields, createdAt, updatedAt'
+    ProjectionExpression:
+      'pk, gs1sk, description, fieldCount, #fields, sortKey, createdAt, updatedAt'
   };
 
   try {

@@ -6,11 +6,12 @@ import slugify from 'slugify';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
+import FormError from '../../../components/formError';
 
 const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
 const PagesForm = ({ id }) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors, setError } = useForm();
   const [size, setSize] = useState(1);
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -37,16 +38,28 @@ const PagesForm = ({ id }) => {
       body.fieldCount += 1;
     });
 
+    if (body.fieldCount <= 0) {
+      setError('field[0]', 'required', 'You need to define at least one field');
+      setIsLoading(false);
+      return;
+    }
+
     if (id) {
       api(`define/pages/${id}`, { body, method: 'PUT' })
         .then(() => api(`pages/${id}`, { body: { name: body.name }, method: 'PUT' }))
         .then(() => navigate('/define/pages'))
-        .catch(() => setIsLoading(false));
+        .catch((e) => {
+          setError('name', e.error, e.message);
+          setIsLoading(false);
+        });
     } else {
       api('define/pages', { body })
         .then(() => api('pages', { body: { id: body.id } }))
         .then(() => navigate('/define/pages'))
-        .catch(() => setIsLoading(false));
+        .catch((e) => {
+          setError('name', e.error, e.message);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -59,19 +72,23 @@ const PagesForm = ({ id }) => {
         setSize(data.fieldCount);
         setIsLoading(false);
       })
-      .catch(() => setIsLoading(false));
+      .catch((e) => {
+        setError('loading', e.error, e.message);
+        setIsLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
-    <Card>
-      <CardHeader className="d-flex justify-content-between">
-        <h3 className="m-0">{id ? 'Edit Page' : 'Add Page'}</h3>
-        <Link className="btn btn-sm btn-danger" to="/define/pages">
-          Cancel
-        </Link>
-      </CardHeader>
-      <CardBody>
-        <LoadingOverlay isLoading={isLoading}>
+    <LoadingOverlay isLoading={isLoading}>
+      <Card>
+        <CardHeader className="d-flex justify-content-between">
+          <h3 className="m-0">{id ? 'Edit Page' : 'Add Page'}</h3>
+          <Link className="btn btn-sm btn-danger" to="/define/pages">
+            Cancel
+          </Link>
+        </CardHeader>
+        <CardBody>
           <Form id="pageForm" onSubmit={handleSubmit(onSubmit)}>
             <FormGroup row>
               <Label sm={2}>Page Name</Label>
@@ -79,9 +96,11 @@ const PagesForm = ({ id }) => {
                 <Input
                   type="text"
                   name="name"
-                  innerRef={register}
+                  innerRef={register({ required: true })}
                   defaultValue={initialValues.name}
+                  invalid={errors.name !== undefined}
                 />
+                <FormError errors={errors} name="name" />
               </Col>
               <Label sm={2}>Description</Label>
               <Col sm={4}>
@@ -108,7 +127,9 @@ const PagesForm = ({ id }) => {
                         ? initialValues.fields[number].name
                         : ''
                     }
+                    invalid={errors[`field[${number}]`] !== undefined}
                   />
+                  <FormError errors={errors} name={`field[${number}]`} />
                 </Col>
                 <Label sm={2}>Field Type</Label>
                 <Col sm={2}>
@@ -150,9 +171,9 @@ const PagesForm = ({ id }) => {
               Save
             </Button>
           </Form>
-        </LoadingOverlay>
-      </CardBody>
-    </Card>
+        </CardBody>
+      </Card>
+    </LoadingOverlay>
   );
 };
 

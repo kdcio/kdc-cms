@@ -8,11 +8,12 @@ import find from 'lodash.find';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
+import FormError from '../../../components/formError';
 
 const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
 const TypesForm = ({ id }) => {
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch, errors, setError } = useForm();
   const [size, setSize] = useState(1);
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -42,21 +43,25 @@ const TypesForm = ({ id }) => {
 
     // check if sort key exists
     if (!find(body.fields, { name: sortKey })) {
-      /**
-       * TODO: Add error handler
-       */
-      // console.log('sort key field not found');
+      setError('sortKey', 'required', 'Sort field not found');
+      setIsLoading(false);
       return;
     }
 
     if (id) {
       api(`define/contents/${id}`, { body, method: 'PUT' })
         .then(() => navigate('/define/types'))
-        .catch(() => setIsLoading(false));
+        .catch((e) => {
+          setError('name', e.error, e.message);
+          setIsLoading(false);
+        });
     } else {
       api('define/contents', { body })
         .then(() => navigate('/define/types'))
-        .catch(() => setIsLoading(false));
+        .catch((e) => {
+          setError('name', e.error, e.message);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -69,7 +74,11 @@ const TypesForm = ({ id }) => {
         setSize(data.fieldCount - 2); // Subtract Name & Slug
         setIsLoading(false);
       })
-      .catch(() => setIsLoading(false));
+      .catch((e) => {
+        setError('loading', e.error, e.message);
+        setIsLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   let initialFields = [];
@@ -84,25 +93,27 @@ const TypesForm = ({ id }) => {
   const field = watch('field');
 
   return (
-    <Card>
-      <CardHeader className="d-flex justify-content-between">
-        <h3 className="m-0">{id ? 'Edit Type' : 'Add Type'}</h3>
-        <Link className="btn btn-sm btn-danger" to="/define/types">
-          Cancel
-        </Link>
-      </CardHeader>
-      <CardBody>
-        <LoadingOverlay isLoading={isLoading}>
+    <LoadingOverlay isLoading={isLoading}>
+      <Card>
+        <CardHeader className="d-flex justify-content-between">
+          <h3 className="m-0">{id ? 'Edit Type' : 'Add Type'}</h3>
+          <Link className="btn btn-sm btn-danger" to="/define/types">
+            Cancel
+          </Link>
+        </CardHeader>
+        <CardBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup row>
-              <Label sm={2}>Type Name</Label>
+              <Label sm={2}>Name</Label>
               <Col sm={4}>
                 <Input
                   type="text"
                   name="name"
-                  innerRef={register}
+                  innerRef={register({ required: true })}
                   defaultValue={initialValues.name}
+                  invalid={errors.name !== undefined}
                 />
+                <FormError errors={errors} name="name" />
               </Col>
               <Label sm={2}>Description</Label>
               <Col sm={4}>
@@ -200,23 +211,27 @@ const TypesForm = ({ id }) => {
                     readOnly
                   />
                 ) : (
-                  <Input
-                    type="select"
-                    name="sortKey"
-                    innerRef={register}
-                    defaultValue={initialValues.sortKey}
-                  >
-                    <option value="Name">Name</option>
-                    {field &&
-                      field.map((v) => {
-                        if (v.trim() === '') return null;
-                        return (
-                          <option key={v} value={v}>
-                            {v}
-                          </option>
-                        );
-                      })}
-                  </Input>
+                  <>
+                    <Input
+                      type="select"
+                      name="sortKey"
+                      innerRef={register}
+                      defaultValue={initialValues.sortKey}
+                      invalid={errors.sortKey !== undefined}
+                    >
+                      <option value="Name">Name</option>
+                      {field &&
+                        field.map((v) => {
+                          if (v.trim() === '') return null;
+                          return (
+                            <option key={v} value={v}>
+                              {v}
+                            </option>
+                          );
+                        })}
+                    </Input>
+                    <FormError errors={errors} name="sortKey" />
+                  </>
                 )}
               </Col>
             </FormGroup>
@@ -225,9 +240,9 @@ const TypesForm = ({ id }) => {
               Save
             </Button>
           </Form>
-        </LoadingOverlay>
-      </CardBody>
-    </Card>
+        </CardBody>
+      </Card>
+    </LoadingOverlay>
   );
 };
 
