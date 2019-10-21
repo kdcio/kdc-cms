@@ -9,7 +9,7 @@ import FormError from '../../../components/formError';
 import RenderField from '../../../components/renderField';
 
 const PagesForm = ({ id }) => {
-  const { register, handleSubmit, errors, setError } = useForm();
+  const { register, handleSubmit, errors, setError, setValue } = useForm();
   const [initialValues, setInitialValues] = useState({});
   const [fields, setFields] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +56,7 @@ const PagesForm = ({ id }) => {
         type={f.type}
         register={register}
         initialValue={initialValues[f.name]}
+        setValue={setValue}
       />
     ));
   }

@@ -106,6 +106,7 @@ const ContentsForm = ({ id, slug }) => {
         register={register}
         initialValue={initialValues[f.name]}
         onChange={f.name === 'Name' ? onNameChange : null}
+        setValue={setValue}
       />
     ));
   }

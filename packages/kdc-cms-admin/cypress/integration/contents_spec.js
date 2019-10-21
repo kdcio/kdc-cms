@@ -105,9 +105,7 @@ describe('Contents', () => {
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type('My First Blog');
     cy.get(':nth-child(2) > .col-sm-10 > .form-control').should('have.value', 'my-first-blog');
     cy.get(':nth-child(3) > .col-sm-10 > .form-control').type('Oct. 6, 2019');
-    cy.get(':nth-child(4) > .col-sm-10 > .form-control').type(
-      'Enim cillum aliqua velit officia nulla dolore duis.'
-    );
+    cy.type_ckeditor('Enim cillum aliqua velit officia nulla dolore duis.');
     cy.get(':nth-child(5) > .col-sm-10 > .form-control').type('Juan Dela Cruz');
     cy.get('form > .btn').click();
 
@@ -121,9 +119,7 @@ describe('Contents', () => {
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type('My Second Blog');
     cy.get(':nth-child(2) > .col-sm-10 > .form-control').should('have.value', 'my-second-blog');
     cy.get(':nth-child(3) > .col-sm-10 > .form-control').type('Oct. 8, 2019');
-    cy.get(':nth-child(4) > .col-sm-10 > .form-control').type(
-      'Nulla ut qui cillum ex minim ullamco sint id id.'
-    );
+    cy.type_ckeditor('Nulla ut qui cillum ex minim ullamco sint id id.');
     cy.get(':nth-child(5) > .col-sm-10 > .form-control').type('Juan Dela Cruz');
     cy.get('form > .btn').click();
 
@@ -139,10 +135,9 @@ describe('Contents', () => {
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').should('have.value', 'My First Blog');
     cy.get(':nth-child(2) > .col-sm-10 > .form-control').should('have.value', 'my-first-blog');
     cy.get(':nth-child(3) > .col-sm-10 > .form-control').should('have.value', 'Oct. 6, 2019');
-    cy.get(':nth-child(4) > .col-sm-10 > .form-control').should(
-      'have.value',
-      'Enim cillum aliqua velit officia nulla dolore duis.'
-    );
+    cy.getData_ckeditor().then((d) => {
+      expect(d).to.equal('<p>Enim cillum aliqua velit officia nulla dolore duis.</p>');
+    });
     cy.get(':nth-child(5) > .col-sm-10 > .form-control').should('have.value', 'Juan Dela Cruz');
 
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type(' edited');
@@ -153,9 +148,7 @@ describe('Contents', () => {
     cy.get(':nth-child(3) > .col-sm-10 > .form-control')
       .clear()
       .type('Oct. 1, 2019');
-    cy.get(':nth-child(4) > .col-sm-10 > .form-control')
-      .clear()
-      .type('Ea labore irure magna eiusmod ullamco aliquip nisi.');
+    cy.type_ckeditor('Ea labore irure magna eiusmod ullamco aliquip nisi.');
     cy.get(':nth-child(5) > .col-sm-10 > .form-control')
       .clear()
       .type('Happy Dela Cruz');
@@ -182,10 +175,9 @@ describe('Contents', () => {
       'my-first-blog-edited'
     );
     cy.get(':nth-child(3) > .col-sm-10 > .form-control').should('have.value', 'Oct. 1, 2019');
-    cy.get(':nth-child(4) > .col-sm-10 > .form-control').should(
-      'have.value',
-      'Ea labore irure magna eiusmod ullamco aliquip nisi.'
-    );
+    cy.getData_ckeditor().then((d) => {
+      expect(d).to.equal('<p>Ea labore irure magna eiusmod ullamco aliquip nisi.</p>');
+    });
     cy.get(':nth-child(5) > .col-sm-10 > .form-control').should('have.value', 'Happy Dela Cruz');
 
     cy.get('.d-flex > .btn').click();

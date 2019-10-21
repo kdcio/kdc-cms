@@ -61,9 +61,7 @@ describe('Pages', () => {
     cy.get('.text-center > .btn').click();
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type('KDC CMS');
     cy.get(':nth-child(2) > .col-sm-10 > .form-control').type('Headless CMS for Serverless');
-    cy.get(':nth-child(3) > .col-sm-10 > .form-control').type(
-      'Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam.'
-    );
+    cy.type_ckeditor('Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam.');
     cy.get(':nth-child(4) > .col-sm-10 > .form-control').type(
       'Quis ad ullamco cupidatat exercitation aliquip tempor sunt pariatur ex Lorem veniam.'
     );
@@ -74,17 +72,20 @@ describe('Pages', () => {
       'have.value',
       'Headless CMS for Serverless'
     );
-    cy.get(':nth-child(3) > .col-sm-10 > .form-control').should(
-      'have.value',
-      'Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam.'
-    );
+    cy.getData_ckeditor().then((d) => {
+      expect(d).to.equal(
+        '<p>Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam.</p>'
+      );
+    });
     cy.get(':nth-child(4) > .col-sm-10 > .form-control').should(
       'have.value',
       'Quis ad ullamco cupidatat exercitation aliquip tempor sunt pariatur ex Lorem veniam.'
     );
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type(' edited');
     cy.get(':nth-child(2) > .col-sm-10 > .form-control').type(' edited');
-    cy.get(':nth-child(3) > .col-sm-10 > .form-control').type(' edited');
+    cy.type_ckeditor(
+      'Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam. edited'
+    );
     cy.get(':nth-child(4) > .col-sm-10 > .form-control').type(' edited');
     cy.get('form > .btn').click();
     cy.get('.text-center > .btn').click();
@@ -93,10 +94,11 @@ describe('Pages', () => {
       'have.value',
       'Headless CMS for Serverless edited'
     );
-    cy.get(':nth-child(3) > .col-sm-10 > .form-control').should(
-      'have.value',
-      'Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam. edited'
-    );
+    cy.getData_ckeditor().then((d) => {
+      expect(d).to.equal(
+        '<p>Incididunt commodo consequat fugiat incididunt eiusmod dolor eu veniam. edited</p>'
+      );
+    });
     cy.get(':nth-child(4) > .col-sm-10 > .form-control').should(
       'have.value',
       'Quis ad ullamco cupidatat exercitation aliquip tempor sunt pariatur ex Lorem veniam. edited'
