@@ -38,6 +38,7 @@ const PagesList = () => {
     if (r === true) {
       setIsLoading(true);
       api(`define/pages/${id}`, { method: 'DELETE' })
+        .then(() => api(`pages/${id}`, { method: 'DELETE' }))
         .then(fetchList)
         .then(() => setIsLoading(false));
     }
