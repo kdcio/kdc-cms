@@ -178,6 +178,7 @@ const TypesForm = ({ id }) => {
                       <option value="long-text">Long Text</option>
                       <option value="date">Date</option>
                       <option value="datetime">DateTime</option>
+                      <option value="image">Image</option>
                     </Input>
                   </Col>
                 </FormGroup>
