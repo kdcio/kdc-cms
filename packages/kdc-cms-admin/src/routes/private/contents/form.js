@@ -8,7 +8,7 @@ import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
-import RenderField from '../../../components/renderField';
+import RenderField from '../../../components/RenderField';
 
 const ContentsForm = ({ id, slug }) => {
   const { getType } = useContentTypeList();
@@ -22,9 +22,9 @@ const ContentsForm = ({ id, slug }) => {
     const { fields, sortKey } = type;
     setIsLoading(true);
 
-    fields.forEach((v) => {
-      if (data[v.name].trim() === '') return;
-      body[v.name] = data[v.name].trim();
+    fields.forEach(({ name }) => {
+      if (!data[name] || data[name].trim() === '') return;
+      body[name] = data[name].trim();
     });
 
     if (!body.Name) {
@@ -107,6 +107,7 @@ const ContentsForm = ({ id, slug }) => {
         initialValue={initialValues[f.name]}
         onChange={f.name === 'Name' ? onNameChange : null}
         setValue={setValue}
+        setIsLoading={setIsLoading}
       />
     ));
   }

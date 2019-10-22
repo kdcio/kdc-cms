@@ -6,7 +6,7 @@ import { Card, CardBody, CardHeader, Form, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
-import RenderField from '../../../components/renderField';
+import RenderField from '../../../components/RenderField';
 
 const PagesForm = ({ id }) => {
   const { register, handleSubmit, errors, setError, setValue } = useForm();
@@ -18,9 +18,8 @@ const PagesForm = ({ id }) => {
     const body = {};
     setIsLoading(true);
 
-    fields.forEach((f) => {
-      const { name } = f;
-      if (data[name] && data[name].trim() === '') return;
+    fields.forEach(({ name }) => {
+      if (!data[name] || data[name].trim() === '') return;
       body[name] = data[name].trim();
     });
 
