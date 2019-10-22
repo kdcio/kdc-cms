@@ -1,4 +1,16 @@
 import AWS from 'aws-sdk'; // eslint-disable-line import/no-extraneous-dependencies
+import crypto from 'crypto';
+
+const generateKey = source => {
+  const d = new Date();
+  const yr = d.getFullYear();
+  const mn = String(d.getMonth() + 1).padStart(2, 0);
+  const dy = String(d.getDate()).padStart(2, 0);
+  const id = crypto.randomBytes(8).toString('hex');
+  const filename = source.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+
+  return `${yr}/${mn}/${dy}/${id}-${filename}`;
+};
 
 export const handler = async event => {
   const { S3_REGION: region, S3_UPLOAD: bucket } = process.env;
@@ -8,9 +20,6 @@ export const handler = async event => {
   }
 
   const S3 = new AWS.S3({ signatureVersion: 'v4', region });
-
-  console.log(event);
-  console.log(event.queryStringParameters);
 
   const { filename, type, acl } = event.queryStringParameters;
 
@@ -30,7 +39,7 @@ export const handler = async event => {
 
   const params = {
     Bucket: bucket,
-    Key: filename,
+    Key: generateKey(filename),
     ContentType: type,
     Expires: 60,
     ACL: acl
@@ -46,11 +55,12 @@ export const handler = async event => {
         'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
         'Access-Control-Allow-Headers': '*'
       },
-      body: JSON.stringify({ signedUrl })
+      body: JSON.stringify({
+        signedUrl,
+        url: `https://${bucket}.s3.amazonaws.com/${params.Key}`
+      })
     };
   } catch (error) {
-    console.log(error);
-
     return {
       statusCode: 401,
       headers: {
