@@ -25,6 +25,7 @@
     "aws-sdk": "^2.550.0",
     "jsonwebtoken": "^8.5.1",
     "kdc-cms-dynamodb": "0.1.0",
+    "kdc-cms-roles": "0.1.0",
     "kdc-cms-utils": "0.1.0"
   },
   "devDependencies": {

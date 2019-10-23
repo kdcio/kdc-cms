@@ -1,3 +1,4 @@
 const roles = require("./lib/roles");
+const policies = require("./lib/policies");
 
-module.exports = { ...roles };
+module.exports = { ...roles, ...policies };

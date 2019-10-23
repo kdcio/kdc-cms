@@ -4,32 +4,8 @@
  */
 
 import jwt from 'jsonwebtoken';
+import { generatePolicy } from 'kdc-cms-roles';
 import get from './lib/get';
-import getResource from './lib/resource';
-
-const generatePolicy = (user, effect, resource) => {
-  const authResponse = {
-    context: { ...user },
-    principalId: user.username
-  };
-
-  if (effect && resource) {
-    const statementOne = {
-      Action: 'execute-api:Invoke',
-      Effect: effect,
-      Resource: getResource(user.role, resource)
-    };
-
-    const policyDocument = {
-      Version: '2012-10-17',
-      Statement: [statementOne]
-    };
-
-    authResponse.policyDocument = policyDocument;
-  }
-
-  return authResponse;
-};
 
 const handler = (event, context, callback) => {
   // Check header or url parameters or post parameters for token
