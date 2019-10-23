@@ -52,6 +52,8 @@ const ContentsList = ({ id }) => {
 
   if (!type) return null;
 
+  const { sortKey } = type;
+
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between">
@@ -65,7 +67,7 @@ const ContentsList = ({ id }) => {
           <thead>
             <tr>
               <th className="text-capitalize">Name</th>
-              <th className="text-capitalize">Slug</th>
+              <th className="text-capitalize">{sortKey}</th>
               <th>Last Modified</th>
               <th className="text-center">Action</th>
             </tr>
@@ -77,7 +79,7 @@ const ContentsList = ({ id }) => {
               list.map((content) => (
                 <tr key={content.Slug}>
                   <th>{content.Name}</th>
-                  <td>{content.Slug}</td>
+                  <td>{content[sortKey]}</td>
                   <td>{formatDate(content)}</td>
                   <td className="text-center">
                     <Link to={`edit/${content.Slug}`} className="btn btn-sm btn-secondary mr-2">

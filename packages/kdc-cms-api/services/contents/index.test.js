@@ -90,12 +90,13 @@ describe('Contents', () => {
   it('should list', async () => {
     const { statusCode, body } = await req.get(`/${newsDef.pk}`);
     expect(statusCode).toBe(200);
-    expect(body.length).toEqual(1);
-    expect(body[0].Name).toEqual(news.Name);
-    expect(body[0].Slug).toEqual(news.Slug);
-    expect(body[0].Date).toEqual(news.Date);
-    expect(body[0].Body).toEqual(undefined);
-    expect(body[0].createdAt).toEqual(news.createdAt);
+    expect(body.next).toBe(null);
+    expect(body.list.length).toEqual(1);
+    expect(body.list[0].Name).toEqual(news.Name);
+    expect(body.list[0].Slug).toEqual(news.Slug);
+    expect(body.list[0].Date).toEqual(news.Date);
+    expect(body.list[0].Body).toEqual(undefined);
+    expect(body.list[0].createdAt).toEqual(news.createdAt);
   });
 
   it('it should update', async () => {
