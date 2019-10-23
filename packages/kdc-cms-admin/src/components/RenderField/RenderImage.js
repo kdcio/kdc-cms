@@ -22,7 +22,9 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
   useEffect(() => {
     register({ name });
     setImage(initialValue);
-  }, [name, register, initialValue]);
+    setValue(name, initialValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValue]);
 
   return (
     <Media>
@@ -48,6 +50,7 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
           }}
           onFinish={(e) => {
             setValue(name, e.url);
+            setImage(e.url);
             setIsLoading(false);
           }}
           uploadRequestHeaders={{
