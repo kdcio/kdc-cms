@@ -57,6 +57,7 @@ const PagesForm = ({ id }) => {
         initialValue={initialValues[f.name]}
         setValue={setValue}
         setIsLoading={setIsLoading}
+        errors={errors}
       />
     ));
   }

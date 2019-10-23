@@ -52,7 +52,7 @@ const ContentsForm = ({ id, slug }) => {
         })
         .catch((e) => {
           if (e.error === 'SortKeyInvalid') {
-            setError('api', e.error, e.message);
+            setError(sortKey, e.error, e.message);
           } else {
             setError('api', e.error, e.message);
           }
@@ -111,6 +111,7 @@ const ContentsForm = ({ id, slug }) => {
         onChange={f.name === 'Name' ? onNameChange : null}
         setValue={setValue}
         setIsLoading={setIsLoading}
+        errors={errors}
       />
     ));
   }

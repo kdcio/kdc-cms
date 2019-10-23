@@ -19,7 +19,6 @@ const RenderLongText = ({ name, register, initialValue, setValue }) => {
           'bold',
           'italic',
           'link',
-          'unlink',
           'bulletedList',
           'numberedList',
           'blockQuote',

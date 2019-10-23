@@ -6,19 +6,24 @@ import RenderLongText from './RenderLongText';
 import RenderDate from './RenderDate';
 import RenderDateTime from './RenderDateTime';
 import RenderImage from './RenderImage';
+import FormError from '../formError';
 
 const RenderField = (f) => {
+  const { type, name, errors } = f;
   let field = null;
-  if (f.type === 'text') field = RenderText(f);
-  if (f.type === 'long-text') field = RenderLongText(f);
-  if (f.type === 'date') field = RenderDate(f);
-  if (f.type === 'datetime') field = RenderDateTime(f);
-  if (f.type === 'image') field = RenderImage(f);
+  if (type === 'text') field = RenderText(f);
+  if (type === 'long-text') field = RenderLongText(f);
+  if (type === 'date') field = RenderDate(f);
+  if (type === 'datetime') field = RenderDateTime(f);
+  if (type === 'image') field = RenderImage(f);
 
   return (
-    <FormGroup row key={f.name}>
-      <Label sm={2}>{f.name}</Label>
-      <Col sm={10}>{field}</Col>
+    <FormGroup row key={name}>
+      <Label sm={2}>{name}</Label>
+      <Col sm={10}>
+        {field}
+        <FormError errors={errors} name={name} />
+      </Col>
     </FormGroup>
   );
 };
