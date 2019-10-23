@@ -3,6 +3,7 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@reach/router';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import moment from 'moment';
@@ -24,15 +25,41 @@ const formatDate = (page) => {
 const ContentsList = ({ id }) => {
   const { getType } = useContentTypeList();
   const [list, setList] = useState([]);
+  const [next, setNext] = useState(null);
+  const [nextStack, setNextStack] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const type = getType(id);
 
-  const fetchList = () => {
+  const fetchList = (start) => {
     setIsLoading(true);
-    api(`contents/${id}`).then((data) => {
-      setList(data);
+    let url = `contents/${id}?limit=5`;
+    if (start) {
+      url += `&start=${start}`;
+    }
+    return api(url).then((data) => {
+      setList(data.list);
       setIsLoading(false);
+      setNext(data.next);
+      setNextStack((oldStack) => [...oldStack, data.next]);
+      return data.next;
     });
+  };
+
+  const nextPage = () => {
+    fetchList(next);
+  };
+
+  const prevPage = () => {
+    if (nextStack.length === 2) {
+      setNextStack([]);
+      fetchList();
+    } else if (nextStack.length > 2) {
+      nextStack.pop();
+      nextStack.pop();
+      const prev = nextStack[nextStack.length - 1];
+      setNextStack([...nextStack]);
+      fetchList(prev);
+    }
   };
 
   const deleteContent = (slug) => {
@@ -51,7 +78,6 @@ const ContentsList = ({ id }) => {
   }, [id]);
 
   if (!type) return null;
-
   const { sortKey } = type;
 
   return (
@@ -99,6 +125,14 @@ const ContentsList = ({ id }) => {
             )}
           </tbody>
         </Table>
+        <div className="d-flex justify-content-between">
+          <Button size="sm" outline disabled={nextStack.length <= 1} onClick={prevPage}>
+            <FontAwesomeIcon icon="chevron-left" /> Prev
+          </Button>
+          <Button size="sm" outline disabled={!next} onClick={nextPage}>
+            Next <FontAwesomeIcon icon="chevron-right" />
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );

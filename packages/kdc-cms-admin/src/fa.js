@@ -13,6 +13,8 @@ import {
   faUser,
   faSignOutAlt,
   faUsers,
+  faChevronRight,
+  faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -28,5 +30,7 @@ library.add(
   faWrench,
   faUser,
   faSignOutAlt,
-  faUsers
+  faUsers,
+  faChevronRight,
+  faChevronLeft
 );
