@@ -148,6 +148,7 @@ const PagesForm = ({ id }) => {
                     <option value="date">Date</option>
                     <option value="datetime">DateTime</option>
                     <option value="image">Image</option>
+                    <option value="bool">Boolean</option>
                   </Input>
                 </Col>
               </FormGroup>

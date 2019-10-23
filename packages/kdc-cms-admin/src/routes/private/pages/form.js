@@ -18,9 +18,13 @@ const PagesForm = ({ id }) => {
     const body = {};
     setIsLoading(true);
 
-    fields.forEach(({ name }) => {
-      if (!data[name] || data[name].trim() === '') return;
-      body[name] = data[name].trim();
+    fields.forEach(({ name, type }) => {
+      let value = data[name];
+      if (value && type !== 'bool') {
+        value = value.trim();
+      }
+      if (!value || value === '') return;
+      body[name] = value;
     });
 
     api(`pages/${id}`, { body, method: 'PUT' })

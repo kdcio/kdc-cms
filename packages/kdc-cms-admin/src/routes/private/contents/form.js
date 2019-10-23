@@ -22,9 +22,13 @@ const ContentsForm = ({ id, slug }) => {
     const { fields, sortKey } = type;
     setIsLoading(true);
 
-    fields.forEach(({ name }) => {
-      if (!data[name] || data[name].trim() === '') return;
-      body[name] = data[name].trim();
+    fields.forEach(({ name, ftype }) => {
+      let value = data[name];
+      if (value && ftype !== 'bool') {
+        value = value.trim();
+      }
+      if (!value || value === '') return;
+      body[name] = value;
     });
 
     if (!body.Name) {

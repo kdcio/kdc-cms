@@ -6,6 +6,7 @@ import RenderLongText from './RenderLongText';
 import RenderDate from './RenderDate';
 import RenderDateTime from './RenderDateTime';
 import RenderImage from './RenderImage';
+import RenderBoolean from './RenderBoolean';
 import FormError from '../formError';
 
 const RenderField = (f) => {
@@ -16,6 +17,7 @@ const RenderField = (f) => {
   if (type === 'date') field = RenderDate(f);
   if (type === 'datetime') field = RenderDateTime(f);
   if (type === 'image') field = RenderImage(f);
+  if (type === 'bool') field = RenderBoolean(f);
 
   return (
     <FormGroup row key={name}>
