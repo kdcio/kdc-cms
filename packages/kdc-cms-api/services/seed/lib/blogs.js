@@ -75,11 +75,5 @@ export default async count => {
     );
   }
 
-  return Promise.all(promises)
-    .then(r => {
-      console.log(r);
-
-      return max;
-    })
-    .catch(e => console.log(e));
+  return Promise.all(promises).then(() => max);
 };
