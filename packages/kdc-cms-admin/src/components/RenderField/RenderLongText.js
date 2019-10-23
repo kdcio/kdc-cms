@@ -12,6 +12,22 @@ const RenderLongText = ({ name, register, initialValue, setValue }) => {
   return (
     <CKEditor
       editor={ClassicEditor}
+      config={{
+        toolbar: [
+          'heading',
+          '|',
+          'bold',
+          'italic',
+          'link',
+          'unlink',
+          'bulletedList',
+          'numberedList',
+          'blockQuote',
+          'mediaEmbed',
+          'undo',
+          'redo',
+        ],
+      }}
       data={initialValue}
       onChange={() => {
         const data = editor.getData();
