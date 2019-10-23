@@ -9,6 +9,7 @@ export default async count => {
     id: 'blogs',
     description: 'Seeding CMS with blogs',
     sortKey: 'Publish Date',
+    fieldCount: 9,
     fields: [
       {
         name: 'Name',
@@ -41,6 +42,10 @@ export default async count => {
       {
         name: 'Body',
         type: 'long-text'
+      },
+      {
+        name: 'Enabled',
+        type: 'bool'
       }
     ]
   });
@@ -70,7 +75,8 @@ export default async count => {
         Author: faker.name.findName(),
         Category: faker.hacker.noun(),
         Tags: faker.hacker.verb(),
-        Body
+        Body,
+        Enabled: true
       })
     );
   }
