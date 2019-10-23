@@ -59,6 +59,7 @@ functions:
   - ${file(services/define/contents/serverless.yml)}
   - ${file(services/contents/serverless.yml)}
   - ${file(services/upload/serverless.yml)}
+  - ${file(services/seed/serverless.yml)}
 
 resources:
   Resources:

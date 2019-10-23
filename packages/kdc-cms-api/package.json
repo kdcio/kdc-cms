@@ -23,6 +23,7 @@
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.550.0",
+    "faker": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "kdc-cms-dynamodb": "0.1.0",
     "kdc-cms-roles": "0.1.0",
@@ -39,7 +40,6 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
-    "faker": "^4.1.0",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "serverless-bundle": "^1.2.5",

@@ -1,0 +1,14 @@
+seed:
+  name: ${self:service}-seed-${self:provider.stage}
+  handler: services/seed/index.handler
+  events:
+    - http:
+        path: /seed/
+        method: any
+        cors: true
+        authorizer: verify-token
+    - http:
+        path: /seed/{proxy+}
+        method: any
+        cors: true
+        authorizer: verify-token
