@@ -29,7 +29,7 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
   return (
     <Media>
       {image ? (
-        <Media left href={image} className="mr-2">
+        <Media left href={image} className="mr-2" target="_blank">
           <Media object src={image} alt={name} style={{ maxWidth: '100px' }} />
         </Media>
       ) : null}
