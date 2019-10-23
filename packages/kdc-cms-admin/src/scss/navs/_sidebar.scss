@@ -15,12 +15,11 @@
         font-size: 0.65rem;
         display: block;
       }
-    }
-    &.active {
-      .nav-link {
+      &.active {
         font-weight: 700;
       }
     }
+
     // Accordion
     .collapse {
       position: absolute;
@@ -344,9 +343,7 @@
       &[data-toggle='collapse']::after {
         color: fade-out($white, 0.5);
       }
-    }
-    &.active {
-      .nav-link {
+      &.active {
         color: $white;
         svg {
           color: $white;
