@@ -14,7 +14,7 @@ export default async () => {
       '#fields': 'fields'
     },
     ProjectionExpression:
-      'pk, gs1sk, description, fieldCount, #fields, sortKey, createdAt, updatedAt'
+      'pk, gs1sk, description, fieldCount, #fields, sortKey, createdAt, updatedAt, docCount'
   };
 
   try {

@@ -2,6 +2,7 @@ import { DDB } from 'kdc-cms-dynamodb';
 import { successPOST, failure } from '../../../lib/response';
 import defGet from '../../define/contents/lib/get';
 import get from './get';
+import inc from '../../define/contents/lib/inc';
 
 export default async ({ Slug, id, ...attr }) => {
   const current = await get({ slug: Slug, id }, { raw: true });
@@ -59,6 +60,9 @@ export default async ({ Slug, id, ...attr }) => {
 
   try {
     await DDB('put', params);
+    // increment count in definition
+    await inc({ id, inc: 1 });
+
     return successPOST({ id: Item.pk });
   } catch (e) {
     return failure(500, e);

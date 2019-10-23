@@ -29,8 +29,7 @@ export default async (id, { limit, start }) => {
     ExpressionAttributeNames,
     ProjectionExpression,
     ScanIndexForward: false,
-    Limit: parseInt(limit, 10) || 10,
-    ReturnConsumedCapacity: 'TOTAL'
+    Limit: parseInt(limit, 10) || 5
   };
 
   try {
