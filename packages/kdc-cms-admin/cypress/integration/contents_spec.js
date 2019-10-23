@@ -20,7 +20,7 @@ describe('Contents', () => {
     cy.get(':nth-child(9) > .nav-link > span').click();
     cy.location('pathname').should('eq', '/define/types');
     cy.get('#topBarTitle').should('contain', 'Define Content Types');
-    cy.get('.d-flex > .btn').click();
+    cy.get('.card-header > .btn').click();
 
     cy.location('pathname').should('eq', '/define/types/add');
     cy.get('.m-0').should('have.text', 'Add Type');
@@ -98,7 +98,7 @@ describe('Contents', () => {
 
     cy.location('pathname').should('eq', '/contents/blogs');
     cy.get('#topBarTitle').should('contain', 'Content');
-    cy.get('.d-flex > .btn').click();
+    cy.get('.card-header > .btn').click();
 
     cy.location('pathname').should('eq', '/contents/blogs/add');
     cy.get('.m-0').should('contain', 'Add Blogs');
@@ -111,8 +111,8 @@ describe('Contents', () => {
 
     cy.location('pathname').should('eq', '/contents/blogs');
     cy.get('tbody > tr > :nth-child(1)').should('have.text', 'My First Blog');
-    cy.get('tbody > tr > :nth-child(2)').should('have.text', 'my-first-blog');
-    cy.get('.d-flex > .btn').click();
+    cy.get('tbody > tr > :nth-child(2)').should('have.text', 'Oct. 6, 2019');
+    cy.get('.card-header > .btn').click();
 
     cy.location('pathname').should('eq', '/contents/blogs/add');
     cy.get('.m-0').should('contain', 'Add Blogs');
@@ -125,9 +125,9 @@ describe('Contents', () => {
 
     cy.location('pathname').should('eq', '/contents/blogs');
     cy.get('tbody > :nth-child(1) > :nth-child(1)').should('have.text', 'My Second Blog');
-    cy.get('tbody > :nth-child(1) > :nth-child(2)').should('have.text', 'my-second-blog');
+    cy.get('tbody > :nth-child(1) > :nth-child(2)').should('have.text', 'Oct. 8, 2019');
     cy.get('tbody > :nth-child(2) > :nth-child(1)').should('have.text', 'My First Blog');
-    cy.get('tbody > :nth-child(2) > :nth-child(2)').should('have.text', 'my-first-blog');
+    cy.get('tbody > :nth-child(2) > :nth-child(2)').should('have.text', 'Oct. 6, 2019');
     cy.get(':nth-child(2) > .text-center > .btn-secondary').click();
 
     cy.location('pathname').should('eq', '/contents/blogs/edit/my-first-blog');
@@ -156,13 +156,13 @@ describe('Contents', () => {
 
     cy.location('pathname').should('eq', '/contents/blogs');
     cy.get('tbody > :nth-child(1) > :nth-child(1)').should('have.text', 'My Second Blog');
-    cy.get('tbody > :nth-child(1) > :nth-child(2)').should('have.text', 'my-second-blog');
+    cy.get('tbody > :nth-child(1) > :nth-child(2)').should('have.text', 'Oct. 8, 2019');
     cy.get('tbody > :nth-child(2) > :nth-child(1)').should('have.text', 'My First Blog edited');
-    cy.get('tbody > :nth-child(2) > :nth-child(2)').should('have.text', 'my-first-blog-edited');
+    cy.get('tbody > :nth-child(2) > :nth-child(2)').should('have.text', 'Oct. 1, 2019');
 
     cy.get(':nth-child(1) > .text-center > .btn-danger').click();
     cy.get('tbody > tr > :nth-child(1)').should('have.text', 'My First Blog edited');
-    cy.get('tbody > tr > :nth-child(2)').should('have.text', 'my-first-blog-edited');
+    cy.get('tbody > tr > :nth-child(2)').should('have.text', 'Oct. 1, 2019');
     cy.get('.btn-secondary').click();
 
     cy.location('pathname').should('eq', '/contents/blogs/edit/my-first-blog-edited');
@@ -180,7 +180,7 @@ describe('Contents', () => {
     });
     cy.get(':nth-child(5) > .col-sm-10 > .form-control').should('have.value', 'Happy Dela Cruz');
 
-    cy.get('.d-flex > .btn').click();
+    cy.get('.card-header > .btn').click();
     cy.location('pathname').should('eq', '/contents/blogs');
     cy.get('.m-0').should('contain', 'List Blogs');
   });
