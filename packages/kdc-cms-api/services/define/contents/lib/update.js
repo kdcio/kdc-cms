@@ -14,6 +14,7 @@ export default async ({ id, attr }) => {
     gs1sk: name || content.gs1sk,
     createdAt: content.createdAt,
     ...otherAttr,
+    docCount: content.docCount,
     updatedAt
   };
 
