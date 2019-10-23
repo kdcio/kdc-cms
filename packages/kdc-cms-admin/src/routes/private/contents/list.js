@@ -12,6 +12,8 @@ import RowSpinner from '../../../components/rowSpinner';
 import Table from '../../../components/table';
 import api from '../../../utils/api';
 
+const ITEMS_PER_PAGE = 5;
+
 const formatDate = (page) => {
   let ts = 0;
   if (page.updatedAt) ts = page.updatedAt;
@@ -23,7 +25,7 @@ const formatDate = (page) => {
 };
 
 const ContentsList = ({ id }) => {
-  const { getType } = useContentTypeList();
+  const { getType, fetchList: fetchTypeList } = useContentTypeList();
   const [list, setList] = useState([]);
   const [next, setNext] = useState(null);
   const [nextStack, setNextStack] = useState([]);
@@ -32,7 +34,7 @@ const ContentsList = ({ id }) => {
 
   const fetchList = (start) => {
     setIsLoading(true);
-    let url = `contents/${id}?limit=5`;
+    let url = `contents/${id}?limit=${ITEMS_PER_PAGE}`;
     if (start) {
       url += `&start=${start}`;
     }
@@ -67,7 +69,11 @@ const ContentsList = ({ id }) => {
     if (r === true) {
       setIsLoading(true);
       api(`contents/${id}/${slug}`, { method: 'DELETE' })
-        .then(fetchList)
+        .then(async () => {
+          setNextStack([]);
+          await fetchTypeList();
+          await fetchList();
+        })
         .then(() => setIsLoading(false));
     }
   };
@@ -78,7 +84,9 @@ const ContentsList = ({ id }) => {
   }, [id]);
 
   if (!type) return null;
-  const { sortKey } = type;
+  const { sortKey, docCount } = type;
+  const totalPages = Math.ceil(docCount / ITEMS_PER_PAGE);
+  const curPage = nextStack.length;
 
   return (
     <Card>
@@ -129,7 +137,10 @@ const ContentsList = ({ id }) => {
           <Button size="sm" outline disabled={nextStack.length <= 1} onClick={prevPage}>
             <FontAwesomeIcon icon="chevron-left" /> Prev
           </Button>
-          <Button size="sm" outline disabled={!next} onClick={nextPage}>
+          <div className="muted">
+            {curPage} of {totalPages}
+          </div>
+          <Button size="sm" outline disabled={curPage >= totalPages} onClick={nextPage}>
             Next <FontAwesomeIcon icon="chevron-right" />
           </Button>
         </div>

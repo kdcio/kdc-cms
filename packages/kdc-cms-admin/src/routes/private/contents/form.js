@@ -11,7 +11,7 @@ import FormError from '../../../components/formError';
 import RenderField from '../../../components/RenderField';
 
 const ContentsForm = ({ id, slug }) => {
-  const { getType } = useContentTypeList();
+  const { getType, fetchList: fetchTypeList } = useContentTypeList();
   const { register, handleSubmit, setValue, errors, setError } = useForm();
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,10 @@ const ContentsForm = ({ id, slug }) => {
         });
     } else {
       api(`contents/${id}`, { body })
-        .then(() => navigate(`/contents/${id}`))
+        .then(async () => {
+          await fetchTypeList();
+          navigate(`/contents/${id}`);
+        })
         .catch((e) => {
           setError('api', e.error, e.message);
           setIsLoading(false);
