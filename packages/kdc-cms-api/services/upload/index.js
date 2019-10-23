@@ -10,7 +10,6 @@ export const handler = async event => {
 
   const { httpMethod, pathParameters } = event;
   const params = parseParams(pathParameters, ['path']);
-  console.log(params);
 
   if (httpMethod === 'GET' && params && params.path === 'sign') {
     const { filename, type, acl } = event.queryStringParameters;
