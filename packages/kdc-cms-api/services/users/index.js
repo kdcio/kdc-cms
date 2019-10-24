@@ -8,7 +8,7 @@ import parseParams from '../../lib/parseParams';
 import { failure } from '../../lib/response';
 
 const handler = async event => {
-  const { httpMethod, pathParameters, body } = event;
+  const { httpMethod, pathParameters, body, queryStringParameters } = event;
   const params = parseParams(pathParameters, ['username']);
 
   if (params && params.username) {
@@ -33,7 +33,7 @@ const handler = async event => {
   }
 
   if (httpMethod === 'GET') {
-    return list();
+    return list(queryStringParameters || {});
   }
 
   if (httpMethod === 'POST' && body) {
