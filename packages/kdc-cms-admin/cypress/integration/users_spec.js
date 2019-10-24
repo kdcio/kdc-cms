@@ -15,7 +15,7 @@ describe('Users', () => {
     cy.visit('/');
     cy.get('.sidebar-brand-text').should('contain', 'KDC CMS');
     cy.get('#topBarTitle').should('contain', 'Dashboard');
-    cy.get(':nth-child(11) > .nav-link > span').click();
+    cy.get(':nth-child(12) > .nav-link > span').click();
     cy.location('pathname').should('eq', '/users');
 
     cy.get('#topBarTitle').should('contain', 'Users');

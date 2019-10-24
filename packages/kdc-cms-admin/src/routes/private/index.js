@@ -7,6 +7,7 @@ import DefineTypes from './define/types';
 import Pages from './pages';
 import Contents from './contents';
 import Users from './users';
+import Apps from './apps';
 import Error404 from './404';
 
 const Public = () => (
@@ -17,6 +18,7 @@ const Public = () => (
     <Pages path="/pages/*" />
     <Contents path="/contents/*" />
     <Users path="/users/*" />
+    <Apps path="/apps/*" />
     <Error404 default />
   </Router>
 );
