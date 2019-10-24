@@ -55,7 +55,7 @@ const UsersForm = ({ username }) => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between">
-        <h3 className="m-0">{username ? `Edit ${username}` : 'Add App'}</h3>
+        <h3 className="m-0">{username ? 'Edit App' : 'Add App'}</h3>
         <Link className="btn btn-sm btn-danger" to="/apps">
           Cancel
         </Link>
