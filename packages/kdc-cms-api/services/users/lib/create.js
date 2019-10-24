@@ -34,7 +34,8 @@ export default async ({ username, name, password, password2, ...attr }) => {
     createdAt
   };
 
-  if (attr.role === ROLE_APP) {
+  const { role } = attr;
+  if (role === ROLE_APP) {
     /**
      * Save app password so we can regenerate a new token later
      */
@@ -46,7 +47,7 @@ export default async ({ username, name, password, password2, ...attr }) => {
 
   try {
     await DDB('put', params);
-    if (attr.role === ROLE_APP) {
+    if (role === ROLE_APP) {
       // get token and save
       const token = await auth({ username, password }, { tokenOnly: true });
       await update({ username, attr: { token } });
