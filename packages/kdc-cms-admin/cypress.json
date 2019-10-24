@@ -2,6 +2,7 @@
   "baseUrl": "http://localhost:8100",
   "env": {
     "username": "ianpogi",
-    "password": "test12"
+    "password": "test12",
+    "apiUrl": "http://localhost:8101"
   }
 }

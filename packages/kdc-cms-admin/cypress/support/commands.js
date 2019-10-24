@@ -1,9 +1,10 @@
 const TOKEN_KEY = '__kdc_cms_token__';
 const USER_KEY = '__kdc_cms_user__';
 
-Cypress.Commands.add('login', (username, password) =>
-  cy
-    .request('POST', 'http://localhost:8101/login', {
+// eslint-disable-next-line arrow-body-style
+Cypress.Commands.add('login', (username, password) => {
+  return cy
+    .request('POST', `${Cypress.env('apiUrl')}/login`, {
       username,
       password,
     })
@@ -14,8 +15,8 @@ Cypress.Commands.add('login', (username, password) =>
         win.localStorage.setItem(TOKEN_KEY, token);
         win.localStorage.setItem(USER_KEY, JSON.stringify(user));
       });
-    })
-);
+    });
+});
 
 Cypress.Commands.add('type_ckeditor', (content) => {
   cy.window().then((win) => {
