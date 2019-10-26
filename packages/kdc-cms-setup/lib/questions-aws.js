@@ -104,8 +104,6 @@ const start = async ctx => {
     }
   ]);
 
-  console.log(ans);
-
   return {
     ...ctx,
     aws: { ...ans }

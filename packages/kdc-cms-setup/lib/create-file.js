@@ -8,12 +8,25 @@ const createFile = async ctx => {
   const { stage, aws, jwt_secret } = ctx;
 
   if (aws) {
-    const { region, profile } = aws;
+    const {
+      region,
+      profile,
+      domain,
+      apiUrl,
+      apiUrlCF,
+      adminUrl,
+      adminUrlCF
+    } = aws;
     const filename = path.resolve(rootDir, `config.${stage}.yml`);
 
     try {
       fs.appendFileSync(filename, `REGION: ${region}\n`, "utf8");
       fs.appendFileSync(filename, `PROFILE: ${profile}\n`, "utf8");
+      fs.appendFileSync(filename, `ROOT_DOMAIN: ${domain}\n`, "utf8");
+      fs.appendFileSync(filename, `API_URL: ${apiUrl}\n`, "utf8");
+      fs.appendFileSync(filename, `API_USE_CF: ${apiUrlCF}\n`, "utf8");
+      fs.appendFileSync(filename, `ADMIN_URL: ${adminUrl}\n`, "utf8");
+      fs.appendFileSync(filename, `ADMIN_USE_CF: ${adminUrlCF}\n`, "utf8");
     } catch (err) {
       /* Handle the error */
       return Promise.reject(err);
