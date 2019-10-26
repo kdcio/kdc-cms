@@ -1,6 +1,15 @@
 const crypto = require("crypto");
+const clear = require("clear");
+const chalk = require("chalk");
+const figlet = require("figlet");
 const questionsAWS = require("./lib/questions-aws");
 const createFile = require("./lib/create-file");
+
+clear();
+
+console.log(
+  chalk.yellow(figlet.textSync("KDC CMS", { horizontalLayout: "full" }))
+);
 
 const args = process.argv.slice(2);
 const [stage] = args;
