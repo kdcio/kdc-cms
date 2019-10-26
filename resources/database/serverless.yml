@@ -2,15 +2,6 @@ service: kdc-cms-database
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
-plugins:
-  - serverless-stage-manager
-
-custom:
-  stages:
-    - dev
-    - staging
-    - prod
-
 provider:
   name: aws
   runtime: nodejs10.x
