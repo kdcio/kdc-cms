@@ -2,6 +2,8 @@
 
 A simple headless CMS for AWS serverless infrastructure.
 
+**Note: THIS PROJECT IS UNDER HEAVY DEVELOPMENT!**
+
 ## Reason
 
 * Cheapest way to run CMS for small to medium websites. Might even cost you nothing if you stay within [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
