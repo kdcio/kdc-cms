@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const inquirer = require("inquirer");
 const validator = require("validator");
 const {
@@ -6,6 +8,7 @@ const {
 } = require("./aws-regions");
 const awsProfiles = require("./aws-profiles");
 const indexOf = require("lodash.indexof");
+const rootDir = path.resolve(__dirname, "../../../");
 
 const start = async ctx => {
   const { stage } = ctx;
@@ -13,7 +16,30 @@ const start = async ctx => {
     return ctx;
   }
 
-  const ans = await inquirer.prompt([
+  let ans = {};
+  let configFileExists = false;
+  const configFile = path.resolve(rootDir, `config.${stage}.yml`);
+  try {
+    fs.statSync(configFile);
+    configFileExists = true;
+  } catch (error) {}
+
+  if (configFileExists) {
+    ans = await inquirer.prompt([
+      {
+        type: "confirm",
+        message: `config.${stage}.yml already exist. Contents will be deleted. Are you sure you want to continue?`,
+        name: "configOverwrite",
+        default: false
+      }
+    ]);
+
+    if (!ans.configOverwrite) {
+      return Promise.reject(new Error("Config already exists"));
+    }
+  }
+
+  ans = await inquirer.prompt([
     {
       type: "list",
       name: "region",
@@ -46,37 +72,8 @@ const start = async ctx => {
     },
     {
       type: "input",
-      message: "Enter your API endpoint:",
-      name: "apiUrl",
-      default: function(answers) {
-        if (stage === "prod" || stage === "production") {
-          return `api.${answers.domain}`;
-        } else {
-          return `api-${stage}.${answers.domain}`;
-        }
-      },
-      validate: function(value, answers) {
-        if (validator.isFQDN(value)) {
-          return true;
-        } else {
-          return `Please enter a valid endpoint. Example: api-${stage}.${answers.domain}`;
-        }
-      },
-      when: function(answers) {
-        // Only run if user set a name
-        return !!answers.domain;
-      }
-    },
-    {
-      type: "confirm",
-      message: "Do you want to use CloudFront for your API endpoint?",
-      name: "apiUrlCF",
-      default: false
-    },
-    {
-      type: "input",
-      message: "Enter your CMS endpoint:",
-      name: "adminUrl",
+      message: "Enter your CMS S3 Bucket:",
+      name: "cmsBucket",
       default: function(answers) {
         if (stage === "prod" || stage === "production") {
           return `admin.${answers.domain}`;
@@ -97,10 +94,27 @@ const start = async ctx => {
       }
     },
     {
-      type: "confirm",
-      message: "Do you want to use CloudFront for your CMS endpoint?",
-      name: "adminUrlCF",
-      default: false
+      type: "input",
+      message: "Enter your Image Upload S3 bucket:",
+      name: "uploadBucket",
+      default: function(answers) {
+        if (stage === "prod" || stage === "production") {
+          return `uploads.${answers.domain}`;
+        } else {
+          return `uploads-${stage}.${answers.domain}`;
+        }
+      },
+      validate: function(value, answers) {
+        if (validator.isFQDN(value)) {
+          return true;
+        } else {
+          return `Please enter a valid endpoint. Example: uploads-${stage}.${answers.domain}`;
+        }
+      },
+      when: function(answers) {
+        // Only run if user set a name
+        return !!answers.domain;
+      }
     }
   ]);
 
