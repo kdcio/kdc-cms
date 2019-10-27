@@ -34,8 +34,9 @@ const create = async ({ username, name, password, ...attr }) => {
   return DDB("put", params);
 };
 
-const createUser = async ctx => {
-  const { user } = ctx;
+const createUser = async () => {
+  const { KDC_CMS } = process.env;
+  const user = JSON.parse(KDC_CMS);
   if (user) {
     // same code as kdc-cms-api/services/users/lib/create
     return create(user)
@@ -45,7 +46,7 @@ const createUser = async ctx => {
       .catch(e => console.log(e));
   }
 
-  return Promise.resolve(ctx);
+  return Promise.resolve();
 };
 
 module.exports = createUser;

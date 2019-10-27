@@ -9,7 +9,7 @@ provider:
   region: ${file(../../config.${self:provider.stage}.yml):REGION}
   profile: ${file(../../config.${self:provider.stage}.yml):PROFILE}
   environment:
-    DDB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DDB_TABLE: database-${self:provider.stage}.${file(../../config.${self:provider.stage}.yml):ROOT_DOMAIN}
 
 resources:
   Resources:
