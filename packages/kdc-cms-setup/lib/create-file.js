@@ -55,11 +55,15 @@ const createFile = async ctx => {
     } catch (error) {}
 
     try {
-      fs.appendFileSync(filename, `NAME: ${name}\n`, "utf8");
-      fs.appendFileSync(filename, `USERNAME: ${username}\n`, "utf8");
-      fs.appendFileSync(filename, `EMAIL: ${email}\n`, "utf8");
-      fs.appendFileSync(filename, `PASSWORD: ${password}\n`, "utf8");
-      fs.appendFileSync(filename, `ROLE: ${role}\n`, "utf8");
+      fs.appendFileSync(filename, `name: ${name}\n`, "utf8");
+      fs.appendFileSync(filename, `username: ${username}\n`, "utf8");
+      fs.appendFileSync(filename, `email: ${email}\n`, "utf8");
+      fs.appendFileSync(
+        filename,
+        `password: ${Buffer.from(password).toString("base64")}\n`,
+        "utf8"
+      );
+      fs.appendFileSync(filename, `role: ${role}\n`, "utf8");
     } catch (err) {
       /* Handle the error */
       return Promise.reject(err);

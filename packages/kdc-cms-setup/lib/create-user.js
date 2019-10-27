@@ -38,6 +38,7 @@ const createUser = async () => {
   const { KDC_CMS } = process.env;
   const user = JSON.parse(KDC_CMS);
   if (user) {
+    user.password = Buffer.from(user.password, "base64").toString("ascii");
     // same code as kdc-cms-api/services/users/lib/create
     return create(user)
       .then(() => {
