@@ -1,26 +1,26 @@
 const inquirer = require("inquirer");
-const {
-  validateEmail,
-  validatePassword,
-  validateUsername
-} = require("kdc-cms-utils");
-
-let username = null;
-let name = null;
-let email = null;
-let password = null;
-const role = "dev";
+const validator = require("validator");
+const chalk = require("chalk");
+const { validatePassword } = require("kdc-cms-utils");
 
 const requireLetterAndNumber = value => {
-  if (validatePassword(value)) {
-    return true;
+  if (!value) {
+    return "Password cannot be blank";
   }
 
-  return "Password need to have at least a letter and a number";
+  if (value.length < 6) {
+    return "Password needs to be at least 6 characters";
+  }
+
+  if (!validatePassword(value)) {
+    return "Password need to have at least a letter and a number";
+  }
+
+  return true;
 };
 
 const requireValidEmail = value => {
-  if (validateEmail(value)) {
+  if (validator.isEmail(value)) {
     return true;
   }
 
@@ -28,76 +28,74 @@ const requireValidEmail = value => {
 };
 
 const requireValidUsername = value => {
-  if (validateUsername(value)) {
-    return true;
+  if (!value) {
+    return "Username cannot be blank";
   }
 
-  return "Username needs to be at least 4 alphanumeric characters";
+  if (value.length < 3) {
+    return "Username needs to be at least 3 characters";
+  }
+
+  if (!validator.isAlphanumeric(value)) {
+    return "Username needs to be alphanumeric characters";
+  }
+
+  return true;
 };
 
-const askUserQuestions = async () => {
-  let ans = await inquirer.prompt({
-    type: "input",
-    message: "Enter your name:",
-    name: "name",
-    when: () => !name
-  });
-  if (ans.name) name = ans.name;
+const role = "dev";
+const start = async ctx => {
+  console.log(`\n\n${chalk.green.bold("First admin user:")}\n`);
 
-  ans = await inquirer.prompt({
-    type: "input",
-    message: "Enter your username:",
-    name: "username",
-    validate: requireValidUsername,
-    when: () => !username
-  });
-  if (ans.username) username = ans.username;
+  let user = { role };
+  let ans = await inquirer.prompt([
+    {
+      type: "input",
+      message: "Enter your name:",
+      name: "name"
+    },
+    {
+      type: "input",
+      message: "Enter your username:",
+      name: "username",
+      validate: requireValidUsername
+    },
+    {
+      type: "input",
+      message: "Enter your email:",
+      name: "email",
+      validate: requireValidEmail
+    }
+  ]);
 
-  ans = await inquirer.prompt({
-    type: "input",
-    message: "Enter your email:",
-    name: "email",
-    validate: requireValidEmail,
-    when: () => !email
-  });
-  if (ans.email) email = ans.email;
+  user = { ...user, ...ans };
 
-  while (!password) {
-    let ans = await inquirer.prompt([
+  while (!user.password) {
+    ans = await inquirer.prompt([
       {
         type: "password",
         message: "Enter your password:",
         name: "password1",
         mask: "*",
-        validate: requireLetterAndNumber,
-        when: () => !password
+        validate: requireLetterAndNumber
       },
       {
         type: "password",
         message: "Confirm password:",
         name: "password2",
         mask: "*",
-        validate: requireLetterAndNumber,
-        when: () => !password
+        validate: requireLetterAndNumber
       }
     ]);
+
     if (ans.password1 !== ans.password2) {
       console.log("Passwords did not match");
     } else {
-      password = ans.password1;
+      user.password = ans.password1;
     }
   }
-};
 
-const start = async ctx => {
-  while (!name || !email || !password || !username) {
-    await askUserQuestions();
-  }
-
-  return {
-    ...ctx,
-    user: { username, name, email, password, role }
-  };
+  return { ...ctx, user };
 };
 
 module.exports = start;

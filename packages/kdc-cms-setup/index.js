@@ -3,6 +3,7 @@ const clear = require("clear");
 const chalk = require("chalk");
 const figlet = require("figlet");
 const questionsAWS = require("./lib/questions-aws");
+const questionsUser = require("./lib/questions-user");
 const createFile = require("./lib/create-file");
 
 clear();
@@ -21,5 +22,6 @@ if (!stage) {
 
 const jwt_secret = crypto.randomBytes(20).toString("hex");
 questionsAWS({ stage, jwt_secret })
+  .then(questionsUser)
   .then(createFile)
   .catch(e => console.log(e));

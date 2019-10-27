@@ -133,6 +133,7 @@ build
 .vscode
 .dbdata
 config.*.yml
+user.*.yml
 .webpack
 
 # project only works with npm
