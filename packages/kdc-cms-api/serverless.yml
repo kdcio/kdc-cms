@@ -12,7 +12,7 @@ custom:
   remover:
     prompt: true
     buckets:
-      - ${self:service}-uploads-${self:provider.stage}
+      - ${self:provider.environment.S3_UPLOAD}
 
 package:
   individually: true
