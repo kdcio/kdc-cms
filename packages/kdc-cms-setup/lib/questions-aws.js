@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const chalk = require("chalk");
 const inquirer = require("inquirer");
 const validator = require("validator");
 const {
@@ -12,6 +13,9 @@ const rootDir = path.resolve(__dirname, "../../../");
 
 const start = async ctx => {
   const { stage } = ctx;
+
+  console.log(`Setting up STAGE: ${chalk.green.bold(stage)}\n`);
+
   if (stage === "local") {
     return ctx;
   }
@@ -25,10 +29,21 @@ const start = async ctx => {
   } catch (error) {}
 
   if (configFileExists) {
+    console.log(
+      chalk.bold("=================================") +
+        chalk.red.bold(" WARNING!!! ") +
+        chalk.bold("=================================\n\n") +
+        `'${chalk.bold.red(
+          `config.${stage}.yml`
+        )}' exist. This mean you've run setup for this stage before.\n` +
+        `Continuing means the file contents will be delete and you'll lose control\n` +
+        `over the previous setup.\n`
+    );
+
     ans = await inquirer.prompt([
       {
         type: "confirm",
-        message: `config.${stage}.yml already exist. Contents will be deleted. Are you sure you want to continue?`,
+        message: `Are you sure you want to continue?`,
         name: "configOverwrite",
         default: false
       }
