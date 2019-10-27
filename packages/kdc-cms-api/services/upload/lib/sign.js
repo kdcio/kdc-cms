@@ -36,7 +36,7 @@ const sign = async ({ region, bucket, filename, type, acl }) => {
 
     return success({
       signedUrl,
-      url: `https://${bucket}.s3.amazonaws.com/${params.Key}`
+      url: `http://${bucket}.s3.amazonaws.com/${params.Key}`
     });
   } catch (error) {
     return failure(401, error);
