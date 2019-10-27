@@ -14,5 +14,5 @@ provider:
 
 custom:
   client:
-    bucketName: ${self:service}-${self:provider.stage}
+    bucketName: ${file(../../config.${self:provider.stage}.yml):ADMIN_BUCKET}
     distributionFolder: build/

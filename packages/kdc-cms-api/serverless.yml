@@ -28,10 +28,10 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     JWT_SECRET: ${file(../../config.${self:provider.stage}.yml):JWT_SECRET}
-    DDB_TABLE: "${file(../../resources/database/serverless.yml):service}-${self:provider.stage}"
+    DDB_TABLE: database-${self:provider.stage}.${file(../../config.${self:provider.stage}.yml):ROOT_DOMAIN}
     DDB_REGION: ${self:provider.region}
     S3_REGION: ${self:provider.region}
-    S3_UPLOAD: ${self:service}-uploads-${self:provider.stage}
+    S3_UPLOAD: ${file(../../config.${self:provider.stage}.yml):UPLOAD_BUCKET}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -50,7 +50,7 @@ provider:
     - Effect: Allow
       Action:
         - "s3:*"
-      Resource: "arn:aws:s3:::${self:service}-uploads-${self:provider.stage}/*"
+      Resource: "arn:aws:s3:::${self:provider.environment.S3_UPLOAD}/*"
 
 functions:
   - ${file(services/users/serverless.yml)}
@@ -66,7 +66,7 @@ resources:
     S3BucketUploads:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-uploads-${self:provider.stage}
+        BucketName: ${self:provider.environment.S3_UPLOAD}
         CorsConfiguration:
           CorsRules:
             - AllowedHeaders:
