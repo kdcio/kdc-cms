@@ -37,5 +37,20 @@
   ],
   "dependencies": {
     "concurrently": "^4.1.2"
-  }
+  },
+  "keywords": [
+    "CMS",
+    "headless",
+    "serverless",
+    "aws",
+    "cheap",
+    "kdc",
+    "software",
+    "nodejs",
+    "react",
+    "gatsby",
+    "monorepo",
+    "lambda",
+    "dynamodb"
+  ]
 }
