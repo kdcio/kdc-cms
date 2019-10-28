@@ -1,3 +1,4 @@
+import { ROLE_APP } from 'kdc-cms-roles';
 import get from './lib/get';
 import create from './lib/create';
 import list from './lib/list';
@@ -7,7 +8,13 @@ import parseParams from '../../lib/parseParams';
 import { failure } from '../../lib/response';
 
 const handler = async event => {
-  const { httpMethod, pathParameters, body, queryStringParameters } = event;
+  const {
+    httpMethod,
+    pathParameters,
+    body,
+    queryStringParameters,
+    requestContext: { authorizer }
+  } = event;
   const params = parseParams(pathParameters, ['id', 'slug']);
 
   if (!params || !params.id) {
@@ -32,6 +39,10 @@ const handler = async event => {
   }
 
   if (httpMethod === 'GET') {
+    const { role } = authorizer;
+    if (role === ROLE_APP) {
+      return list(id, { ...queryStringParameters, allFields: true });
+    }
     return list(id, queryStringParameters || {});
   }
 

@@ -4,7 +4,7 @@ import remap from '../../../lib/remap';
 import fieldMap from './map';
 import defGet from '../../define/contents/lib/get';
 
-export default async (id, { limit, start }) => {
+export default async (id, { limit, start, allFields }) => {
   const definition = await defGet({ id }, { raw: true });
   const { sortKey } = definition;
   const ExpressionAttributeNames = { '#Name': 'Name' };
@@ -26,11 +26,14 @@ export default async (id, { limit, start }) => {
     IndexName: 'GS1',
     KeyConditionExpression,
     ExpressionAttributeValues,
-    ExpressionAttributeNames,
-    ProjectionExpression,
     ScanIndexForward: false,
     Limit: parseInt(limit, 10) || 5
   };
+
+  if (!allFields) {
+    params.ProjectionExpression = ProjectionExpression;
+    params.ExpressionAttributeNames = ExpressionAttributeNames;
+  }
 
   try {
     const data = await DDB('query', params);
