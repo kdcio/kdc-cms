@@ -24,7 +24,7 @@ try {
     process.env.DDB_TABLE = `database-${stage}.${config.ROOT_DOMAIN}`;
   } else {
     process.env.IS_OFFLINE = true;
-    process.env.DDB_TABLE = "kdc-cms-database-local";
+    process.env.DDB_TABLE = "database-local.localhost";
   }
 
   const user = yaml.safeLoad(fs.readFileSync(userFile, "utf8"));

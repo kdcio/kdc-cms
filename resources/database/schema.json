@@ -1,5 +1,5 @@
 {
-  "TableName": "kdc-cms-database-local",
+  "TableName": "database-local.localhost",
   "AttributeDefinitions": [
     {
       "AttributeName": "pk",

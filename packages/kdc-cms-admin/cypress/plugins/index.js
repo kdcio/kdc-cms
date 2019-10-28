@@ -1,4 +1,4 @@
-process.env.DDB_TABLE = 'kdc-cms-database-local';
+process.env.DDB_TABLE = 'database-local.localhost';
 process.env.IS_OFFLINE = true;
 
 // eslint-disable-next-line import/no-extraneous-dependencies
