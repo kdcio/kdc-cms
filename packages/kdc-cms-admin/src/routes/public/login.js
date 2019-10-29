@@ -40,6 +40,9 @@ const Login = () => {
 
                     login({ username: username.value, password: password.value }).catch((e) => {
                       setIsLoggingIn(false);
+                      if (e.errorMessage) {
+                        e.message = e.errorMessage;
+                      }
                       setError(e);
                     });
                   }}
@@ -47,7 +50,7 @@ const Login = () => {
                   {error ? <p className="text-danger">{error ? error.message : null}</p> : null}
                   <FormGroup>
                     <Label htmlFor="username" className="sr-only">
-                      Email address
+                      Username
                     </Label>
                     <Input
                       type="text"

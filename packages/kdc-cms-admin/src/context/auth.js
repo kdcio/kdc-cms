@@ -39,7 +39,7 @@ const AuthProvider = (props) => {
       return Promise.resolve();
     }
 
-    return Promise.reject(new Error({ message: 'Invalid data' }));
+    return Promise.reject(resp);
   };
 
   const logout = () => {
