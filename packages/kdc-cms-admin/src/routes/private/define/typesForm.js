@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
-import slugify from 'slugify';
+import kebabCase from 'lodash.kebabcase';
+import camelCase from 'lodash.camelcase';
 import find from 'lodash.find';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
@@ -14,16 +15,16 @@ const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
 const TypesForm = ({ id }) => {
   const { register, handleSubmit, watch, errors, setError } = useForm();
-  const [size, setSize] = useState(1);
+  const [size, setSize] = useState(0);
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = ({ name, description, field, type, sortKey }) => {
     const body = {
       name: name.trim(),
-      id: id || slugify(name, { lower: true }),
+      id: id || kebabCase(name),
       fields: [],
-      fieldCount: 2, // name and Slug
+      fieldCount: 0,
       sortKey,
     };
     setIsLoading(true);
@@ -32,12 +33,9 @@ const TypesForm = ({ id }) => {
       body.description = description.trim();
     }
 
-    body.fields.push({ name: 'Name', type: 'text' });
-    body.fields.push({ name: 'Slug', type: 'text' });
-
     field.forEach((v, k) => {
       if (v.trim() === '') return;
-      body.fields.push({ name: v.trim(), type: type[k] });
+      body.fields.push({ label: v.trim(), name: camelCase(v), type: type[k] });
       body.fieldCount += 1;
     });
 
@@ -66,12 +64,15 @@ const TypesForm = ({ id }) => {
   };
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      setSize(1);
+      return;
+    }
     setIsLoading(true);
     api(`define/contents/${id}`)
       .then((data) => {
         setInitialValues(data);
-        setSize(data.fieldCount - 2); // Subtract Name & Slug
+        setSize(data.fieldCount);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -81,16 +82,9 @@ const TypesForm = ({ id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  let initialFields = [];
-  const { fields } = initialValues;
-  if (fields) {
-    initialFields = fields.filter((v) => {
-      if (v.name === 'Name' || v.name === 'Slug') return false;
-      return true;
-    });
-  }
-
+  const { fields: initialFields } = initialValues;
   const field = watch('field');
+  const sortKey = find(initialValues.fields, { name: initialValues.sortKey });
 
   return (
     <LoadingOverlay isLoading={isLoading}>
@@ -127,34 +121,15 @@ const TypesForm = ({ id }) => {
             </FormGroup>
             <hr />
             <h4>Fields</h4>
-            <FormGroup row>
-              <Label sm={2}>Field Name</Label>
-              <Col sm={6}>
-                <Input type="text" name="cName" innerRef={register} value="Name" readOnly />
-              </Col>
-              <Label sm={2}>Field Type</Label>
-              <Col sm={2}>
-                <Input type="text" name="cNameType" innerRef={register} value="Text" readOnly />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label sm={2}>Field Name</Label>
-              <Col sm={6}>
-                <Input type="text" name="slug" innerRef={register} value="Slug" readOnly />
-              </Col>
-              <Label sm={2}>Field Type</Label>
-              <Col sm={2}>
-                <Input type="text" name="slugType" innerRef={register} value="Text" readOnly />
-              </Col>
-            </FormGroup>
             {createArrayWithNumbers(size).map((number) => {
               let defName = '';
               let defType = 'text';
 
               if (initialFields && initialFields[number]) {
-                defName = initialFields[number].name;
+                defName = initialFields[number].label;
                 defType = initialFields[number].type;
               }
+
               return (
                 <FormGroup key={number} row>
                   <Label sm={2}>Field Name</Label>
@@ -207,13 +182,26 @@ const TypesForm = ({ id }) => {
               <Label sm={2}>Sort by</Label>
               <Col sm={4}>
                 {id ? (
-                  <Input
-                    type="text"
-                    name="sortKey"
-                    innerRef={register}
-                    defaultValue={initialValues.sortKey}
-                    readOnly
-                  />
+                  <>
+                    <Input
+                      type="hidden"
+                      name="sortKey"
+                      innerRef={register}
+                      defaultValue={initialValues.sortKey}
+                      invalid={errors.sortKey !== undefined}
+                      readOnly
+                    />
+                    {sortKey && (
+                      <Input
+                        plaintext
+                        defaultValue={sortKey.label}
+                        invalid={errors.sortKey !== undefined}
+                        readOnly
+                      />
+                    )}
+
+                    <FormError errors={errors} name="sortKey" />
+                  </>
                 ) : (
                   <>
                     <Input
@@ -223,12 +211,11 @@ const TypesForm = ({ id }) => {
                       defaultValue={initialValues.sortKey}
                       invalid={errors.sortKey !== undefined}
                     >
-                      <option value="Name">Name</option>
                       {field &&
                         field.map((v) => {
                           if (v.trim() === '') return null;
                           return (
-                            <option key={v} value={v}>
+                            <option key={v} value={camelCase(v)}>
                               {v}
                             </option>
                           );
