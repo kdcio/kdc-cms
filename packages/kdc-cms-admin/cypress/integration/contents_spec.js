@@ -2,11 +2,13 @@ describe('Contents', () => {
   before(() => {
     cy.task('clearDb', 'content');
     cy.task('clearDb', 'content#blogs');
+    cy.task('clearDb', 'content#blogs#slug');
   });
 
   after(() => {
     cy.task('clearDb', 'content');
     cy.task('clearDb', 'content#blogs');
+    cy.task('clearDb', 'content#blogs#slug');
   });
 
   beforeEach(() => {
@@ -30,6 +32,7 @@ describe('Contents', () => {
     cy.get('.d-flex > .mr-2').click();
     cy.get(':nth-child(5) > .col-sm-6 > .form-control').type('Slug');
     cy.get(':nth-child(5) > div.col-sm-2 > .form-control').select('slug');
+    cy.get('.form-check-input').click();
     cy.get('.d-flex > .mr-2').click();
     cy.get(':nth-child(6) > .col-sm-6 > .form-control').type('Publish Date');
     cy.get(':nth-child(6) > div.col-sm-2 > .form-control').select('date');
@@ -121,11 +124,18 @@ describe('Contents', () => {
     cy.location('pathname').should('eq', '/contents/blogs/add');
     cy.get('.m-0').should('contain', 'Add Blogs');
     cy.get(':nth-child(1) > .col-sm-10 > .form-control').type('My Second Blog');
-    cy.get(':nth-child(2) > .col-sm-10 > .form-control').type('my{shift}Second{shift}Blog');
-    cy.get(':nth-child(2) > .col-sm-10 > .form-control').should('have.value', 'my-second-blog');
+    cy.get(':nth-child(2) > .col-sm-10 > .form-control').type('my{shift}First{shift}Blog');
+    cy.get(':nth-child(2) > .col-sm-10 > .form-control').should('have.value', 'my-first-blog');
     cy.get(':nth-child(3) > .col-sm-10 > .form-control').type('2019-10-08');
     cy.type_ckeditor('Nulla ut qui cillum ex minim ullamco sint id id.');
     cy.get(':nth-child(5) > .col-sm-10 > .form-control').type('Juan Dela Cruz');
+    cy.get('form > .btn').click();
+
+    cy.get('.invalid-feedback').should('be.visible');
+    cy.get('.invalid-feedback').should('have.text', 'Unique value exists');
+    cy.get(':nth-child(2) > .col-sm-10 > .form-control').clear();
+    cy.get(':nth-child(2) > .col-sm-10 > .form-control').type('my{shift}Second{shift}Blog');
+    cy.get(':nth-child(2) > .col-sm-10 > .form-control').should('have.value', 'my-second-blog');
     cy.get('form > .btn').click();
 
     cy.location('pathname').should('eq', '/contents/blogs');

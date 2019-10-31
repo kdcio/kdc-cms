@@ -24,6 +24,8 @@ export default async ({ typeId, ...attr }) => {
     uniqueItems.push({
       pk: `content#${typeId}#${f.name}#${attr[f.name]}`,
       sk: `content#${typeId}#${f.name}`,
+      gs1pk: `content#${typeId}#${f.name}`,
+      gs1sk: f.name,
       name: f.name
     });
   });
@@ -106,7 +108,7 @@ export default async ({ typeId, ...attr }) => {
       if (k > 0 && con === 'ConditionalCheckFailed') {
         err = {
           error: 'UniqueExists',
-          message: 'Unique already exists',
+          message: 'Unique value exists',
           uniqueKey: uniqueItems[k - 1].name
         };
       }

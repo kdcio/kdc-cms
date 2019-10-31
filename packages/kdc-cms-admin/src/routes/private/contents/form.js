@@ -37,30 +37,31 @@ const ContentsForm = ({ typeId, contentId }) => {
       return;
     }
 
+    const handleApiError = (e) => {
+      if (e.error === 'SortKeyInvalid') {
+        setError(sortKey, e.error, e.message);
+      } else if (e.error === 'UniqueExists') {
+        setError(e.uniqueKey, e.error, e.message);
+      } else {
+        setError('api', e.error, e.message);
+      }
+
+      setIsLoading(false);
+    };
+
     if (typeId && contentId) {
       api(`contents/${typeId}/${contentId}`, { body, method: 'PUT' })
         .then(() => {
           navigate(`/contents/${typeId}`);
         })
-        .catch((e) => {
-          if (e.error === 'SortKeyInvalid') {
-            setError(sortKey, e.error, e.message);
-          } else {
-            setError('api', e.error, e.message);
-          }
-
-          setIsLoading(false);
-        });
+        .catch(handleApiError);
     } else {
       api(`contents/${typeId}`, { body })
         .then(async () => {
           await fetchTypeList();
           navigate(`/contents/${typeId}`);
         })
-        .catch((e) => {
-          setError('api', e.error, e.message);
-          setIsLoading(false);
-        });
+        .catch(handleApiError);
     }
   };
 

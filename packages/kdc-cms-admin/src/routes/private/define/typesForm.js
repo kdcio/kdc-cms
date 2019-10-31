@@ -21,7 +21,7 @@ const TypesForm = ({ id }) => {
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = ({ name, description, field, type, sortKey }) => {
+  const onSubmit = ({ name, description, field, type, unique, sortKey }) => {
     const body = {
       name: name.trim(),
       id: id || kebabCase(name),
@@ -37,7 +37,11 @@ const TypesForm = ({ id }) => {
 
     field.forEach((v, k) => {
       if (v.trim() === '') return;
-      body.fields.push({ label: v.trim(), name: camelCase(v), type: type[k] });
+      const f = { label: v.trim(), name: camelCase(v), type: type[k] };
+      if (unique[k]) {
+        f.unique = true;
+      }
+      body.fields.push(f);
       body.fieldCount += 1;
     });
 
@@ -85,7 +89,8 @@ const TypesForm = ({ id }) => {
   }, [id]);
 
   const { fields: initialFields } = initialValues;
-  const field = watch('field');
+  const field = watch('field', []);
+  const type = watch('type', []);
   const sortKey = find(initialValues.fields, { name: initialValues.sortKey });
 
   return (
@@ -126,10 +131,15 @@ const TypesForm = ({ id }) => {
             {createArrayWithNumbers(size).map((number) => {
               let defName = '';
               let defType = 'text';
+              let defUnique = false;
 
               if (initialFields && initialFields[number]) {
                 defName = initialFields[number].label;
                 defType = initialFields[number].type;
+              }
+
+              if (defType === 'slug') {
+                defUnique = initialFields[number].unique;
               }
 
               return (
@@ -157,6 +167,17 @@ const TypesForm = ({ id }) => {
                         </option>
                       ))}
                     </Input>
+                    {type[number] === 'slug' && (
+                      <Label check style={{ marginLeft: '1.5rem' }}>
+                        <Input
+                          type="checkbox"
+                          name={`unique[${number}]`}
+                          innerRef={register}
+                          defaultChecked={defUnique}
+                        />{' '}
+                        Unique
+                      </Label>
+                    )}
                   </Col>
                 </FormGroup>
               );
@@ -228,6 +249,7 @@ const TypesForm = ({ id }) => {
               </Col>
             </FormGroup>
             <hr />
+            <FormError errors={errors} name="submit" />
             <Button type="submit" color="primary">
               Save
             </Button>
