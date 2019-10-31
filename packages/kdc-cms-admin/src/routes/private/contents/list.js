@@ -28,6 +28,8 @@ const ContentsList = ({ typeId }) => {
   const { getType, fetchList: fetchTypeList } = useContentTypeList();
   const [list, setList] = useState([]);
   const [next, setNext] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [curPage, setCurPage] = useState(1);
   const [nextStack, setNextStack] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const type = getType(typeId);
@@ -41,9 +43,18 @@ const ContentsList = ({ typeId }) => {
     return api(url)
       .then((data) => {
         setList(data.list);
+        if (data.next) {
+          setNext(data.next);
+          setNextStack((oldStack) => {
+            if (oldStack.indexOf(data.next) >= 0) {
+              return oldStack;
+            }
+            const newStack = [...oldStack, data.next];
+            setCurPage(newStack.length);
+            return newStack;
+          });
+        }
         setIsLoading(false);
-        setNext(data.next);
-        setNextStack((oldStack) => [...oldStack, data.next]);
         return data.next;
       })
       .catch(() => navigate('/404'));
@@ -81,14 +92,20 @@ const ContentsList = ({ typeId }) => {
   };
 
   useEffect(() => {
+    setCurPage(1);
+    setNext(null);
+    setNextStack([]);
+    setList([]);
+    setTotalPages(1);
     fetchList();
+    if (!type) return;
+    const { docCount } = type;
+    setTotalPages(Math.ceil(docCount / ITEMS_PER_PAGE) || 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeId]);
+  }, [typeId, type]);
 
   if (!type) return null;
-  const { sortKey, nameKey, docCount } = type;
-  const totalPages = Math.ceil(docCount / ITEMS_PER_PAGE) || 1;
-  const curPage = nextStack.length;
+  const { sortKey, nameKey } = type;
 
   return (
     <Card>
