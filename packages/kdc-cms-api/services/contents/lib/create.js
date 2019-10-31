@@ -32,7 +32,8 @@ export default async ({ typeId, ...attr }) => {
   if (!sortKey) {
     return failure(400, {
       error: 'SortKeyInvalid',
-      message: 'Sort key cannot be blank'
+      message: 'Sort key cannot be blank',
+      sortKey: definition.sortKey
     });
   }
 
@@ -40,7 +41,8 @@ export default async ({ typeId, ...attr }) => {
   if (!nameKey) {
     return failure(400, {
       error: 'NameKeyInvalid',
-      message: 'Name key cannot be blank'
+      message: 'Name key cannot be blank.',
+      nameKey: definition.nameKey
     });
   }
 
