@@ -38,7 +38,7 @@ const TypesForm = ({ id }) => {
     field.forEach((v, k) => {
       if (v.trim() === '') return;
       const f = { label: v.trim(), name: camelCase(v), type: type[k] };
-      if (unique[k]) {
+      if (unique && unique[k] !== undefined) {
         f.unique = true;
       }
       body.fields.push(f);
