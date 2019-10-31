@@ -22,13 +22,21 @@ const ContentsForm = ({ typeId, contentId }) => {
     const { fields, sortKey } = type;
     setIsLoading(true);
 
-    fields.forEach(({ name, ftype }) => {
+    fields.forEach(({ name, type: fType }) => {
       let value = data[name];
-      if (value && ftype !== 'bool') {
+      if (value && fType !== 'bool') {
         value = value.trim();
       }
       if (!value || value === '') return;
-      body[name] = value;
+
+      if (fType === 'image') {
+        body[name] = {
+          src: value,
+          type: 'image',
+        };
+      } else {
+        body[name] = value;
+      }
     });
 
     if (!body[sortKey]) {

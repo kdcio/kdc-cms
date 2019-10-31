@@ -24,7 +24,15 @@ const PagesForm = ({ id }) => {
         value = value.trim();
       }
       if (!value || value === '') return;
-      body[name] = value;
+
+      if (type === 'image') {
+        body[name] = {
+          src: value,
+          type: 'image',
+        };
+      } else {
+        body[name] = value;
+      }
     });
 
     api(`pages/${id}`, { body, method: 'PUT' })

@@ -21,8 +21,11 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
 
   useEffect(() => {
     register({ name });
-    setImage(initialValue);
-    setValue(name, initialValue);
+    if (initialValue && initialValue.src) {
+      setImage(initialValue.src);
+      setValue(name, initialValue.src);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValue]);
 
