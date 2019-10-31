@@ -19,7 +19,7 @@ export default async (typeId, { limit, start, allFields }) => {
   let KeyConditionExpression = 'gs1pk = :pk';
   const ExpressionAttributeValues = { ':pk': `content#${typeId}` };
 
-  if (sortKey !== 'Name') {
+  if (sortKey !== definition.nameKey) {
     ExpressionAttributeNames['#sort'] = sortKey;
     ProjectionExpression += ', #sort';
   }

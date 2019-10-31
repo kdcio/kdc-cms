@@ -103,7 +103,7 @@ const ContentsList = ({ typeId }) => {
           <thead>
             <tr>
               <th className="text-capitalize">Name</th>
-              <th className="text-capitalize">{sortKey}</th>
+              {nameKey !== sortKey ? <th className="text-capitalize">{sortKey}</th> : null}
               <th>Last Modified</th>
               <th className="text-center">Action</th>
             </tr>
@@ -115,7 +115,7 @@ const ContentsList = ({ typeId }) => {
               list.map((content) => (
                 <tr key={content.id}>
                   <th>{content[nameKey]}</th>
-                  <td>{content[sortKey]}</td>
+                  {nameKey !== sortKey ? <td>{content[sortKey]}</td> : null}
                   <td>{formatDate(content)}</td>
                   <td className="text-center">
                     <Link to={`edit/${content.id}`} className="btn btn-sm btn-secondary mr-2">
