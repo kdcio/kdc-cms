@@ -9,15 +9,23 @@ import RenderImage from './RenderImage';
 import RenderBoolean from './RenderBoolean';
 import FormError from '../formError';
 
+const fieldTypeMap = {
+  text: RenderText,
+  'long-text': RenderLongText,
+  date: RenderDate,
+  datetime: RenderDateTime,
+  image: RenderImage,
+  bool: RenderBoolean,
+};
+
+export const fieldTypes = Object.keys(fieldTypeMap);
+
 const RenderField = (f) => {
   const { type, name, label, errors } = f;
   let field = null;
-  if (type === 'text') field = RenderText(f);
-  if (type === 'long-text') field = RenderLongText(f);
-  if (type === 'date') field = RenderDate(f);
-  if (type === 'datetime') field = RenderDateTime(f);
-  if (type === 'image') field = RenderImage(f);
-  if (type === 'bool') field = RenderBoolean(f);
+  if (fieldTypeMap[type]) {
+    field = fieldTypeMap[type](f);
+  }
 
   return (
     <FormGroup row key={name}>

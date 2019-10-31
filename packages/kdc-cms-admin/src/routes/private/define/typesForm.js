@@ -5,11 +5,13 @@ import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
 import kebabCase from 'lodash.kebabcase';
 import camelCase from 'lodash.camelcase';
+import startCase from 'lodash.startcase';
 import find from 'lodash.find';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
+import { fieldTypes } from '../../../components/RenderField';
 
 const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
@@ -149,12 +151,11 @@ const TypesForm = ({ id }) => {
                       innerRef={register}
                       defaultValue={defType}
                     >
-                      <option value="text">Text</option>
-                      <option value="long-text">Long Text</option>
-                      <option value="date">Date</option>
-                      <option value="datetime">DateTime</option>
-                      <option value="image">Image</option>
-                      <option value="bool">Boolean</option>
+                      {fieldTypes.map((t) => (
+                        <option key={t} value={t}>
+                          {startCase(t)}
+                        </option>
+                      ))}
                     </Input>
                   </Col>
                 </FormGroup>

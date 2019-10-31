@@ -16,6 +16,7 @@
     "lodash.camelcase": "^4.3.0",
     "lodash.find": "^4.6.0",
     "lodash.kebabcase": "^4.1.1",
+    "lodash.startcase": "^4.4.0",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
