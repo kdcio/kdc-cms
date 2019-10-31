@@ -1,3 +1,3 @@
 export default {
-  pk: 'Slug'
+  pk: 'id'
 };

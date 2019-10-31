@@ -2,15 +2,15 @@ import { DDB } from 'kdc-cms-dynamodb';
 import { successDEL, failure } from '../../../lib/response';
 import inc from '../../define/contents/lib/inc';
 
-export default async ({ id, slug }) => {
+export default async ({ typeId, contentId }) => {
   const params = {
-    Key: { pk: slug, sk: `content#${id}` }
+    Key: { pk: contentId, sk: `content#${typeId}` }
   };
 
   try {
     await DDB('delete', params);
     // decrement count in definition
-    await inc({ id, inc: -1 });
+    await inc({ id: typeId, inc: -1 });
 
     return successDEL();
   } catch (e) {

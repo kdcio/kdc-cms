@@ -15,40 +15,40 @@ const handler = async event => {
     queryStringParameters,
     requestContext: { authorizer }
   } = event;
-  const params = parseParams(pathParameters, ['id', 'slug']);
+  const params = parseParams(pathParameters, ['typeId', 'contentId']);
 
-  if (!params || !params.id) {
+  if (!params || !params.typeId) {
     return failure(400, { error: 'Invalid request' });
   }
 
-  const { id } = params;
-  if (params.slug) {
-    const { slug } = params;
+  const { typeId } = params;
+  if (params.contentId) {
+    const { contentId } = params;
     if (httpMethod === 'GET') {
-      return get({ id, slug });
+      return get({ typeId, contentId });
     }
 
     if (httpMethod === 'PUT' && body) {
       const attr = JSON.parse(body);
-      return update({ id, slug, attr });
+      return update({ typeId, contentId, attr });
     }
 
     if (httpMethod === 'DELETE') {
-      return del({ id, slug });
+      return del({ typeId, contentId });
     }
   }
 
   if (httpMethod === 'GET') {
     const { role } = authorizer;
     if (role === ROLE_APP) {
-      return list(id, { ...queryStringParameters, allFields: true });
+      return list(typeId, { ...queryStringParameters, allFields: true });
     }
-    return list(id, queryStringParameters || {});
+    return list(typeId, queryStringParameters || {});
   }
 
   if (httpMethod === 'POST' && body) {
     const attr = JSON.parse(body);
-    return create({ id, ...attr });
+    return create({ typeId, ...attr });
   }
 
   return failure(400, { error: 'Invalid request' });

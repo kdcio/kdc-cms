@@ -1,29 +1,30 @@
 import { DDB } from 'kdc-cms-dynamodb';
 import { successPUT, failure } from '../../../lib/response';
 import get from './get';
-import del from './delete';
-import create from './create';
+// import del from './delete';
+// import create from './create';
 import defGet from '../../define/contents/lib/get';
 
-export default async ({ id, slug, attr }) => {
+export default async ({ typeId, contentId, attr }) => {
   const updatedAt = new Date().valueOf();
-  const current = await get({ id, slug }, { raw: true });
-  if (attr.Slug && slug !== attr.Slug) {
-    await del({ id, slug });
-    return create({
-      id,
-      ...current,
-      ...attr,
-      updatedAt
-    });
-  }
+  const current = await get({ typeId, contentId }, { raw: true });
+  // TODO: make slug unique
+  // if (attr.Slug && slug !== attr.Slug) {
+  //   await del({ typeId, id: contentId });
+  //   return create({
+  //     typeId,
+  //     ...current,
+  //     ...attr,
+  //     updatedAt
+  //   });
+  // }
 
-  const definition = await defGet({ id }, { raw: true });
+  const definition = await defGet({ id: typeId }, { raw: true });
   if (!definition) {
     return failure(400, {
       error: 'ContentDefinitionNotFound',
       message: 'Content definition not found',
-      id
+      typeId
     });
   }
 
@@ -43,9 +44,9 @@ export default async ({ id, slug, attr }) => {
   }
 
   const Item = {
-    pk: slug,
-    sk: `content#${id}`,
-    gs1pk: `content#${id}`,
+    pk: contentId,
+    sk: `content#${typeId}`,
+    gs1pk: `content#${typeId}`,
     gs1sk: sortKey,
     createdAt: current.createdAt,
     sortKeyUsed: definition.sortKey,

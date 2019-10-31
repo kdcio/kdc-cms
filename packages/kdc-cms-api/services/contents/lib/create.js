@@ -1,35 +1,26 @@
 import { DDB } from 'kdc-cms-dynamodb';
+import uuid from 'uuid';
 import { successPOST, failure } from '../../../lib/response';
 import defGet from '../../define/contents/lib/get';
-import get from './get';
 import inc from '../../define/contents/lib/inc';
 
-export default async ({ Slug, id, ...attr }) => {
-  const current = await get({ slug: Slug, id }, { raw: true });
-  if (current) {
-    if (current.statusCode) return current;
-    return failure(409, {
-      error: 'ContentExists',
-      message: 'Content already exists',
-      Slug
-    });
-  }
-
-  const definition = await defGet({ id }, { raw: true });
+export default async ({ typeId, ...attr }) => {
+  const definition = await defGet({ id: typeId }, { raw: true });
   if (!definition) {
     return failure(400, {
       error: 'ContentDefinitionNotFound',
       message: 'Content definition not found',
-      id
+      typeId
     });
   }
 
   const validAttr = {};
   definition.fields.forEach(f => {
-    if (attr[f.name]) {
+    if (attr[f.name] !== undefined) {
       validAttr[f.name] = attr[f.name];
     }
   });
+
   if (attr.createdAt) {
     validAttr.createdAt = attr.createdAt;
   }
@@ -47,9 +38,9 @@ export default async ({ Slug, id, ...attr }) => {
 
   const createdAt = new Date().valueOf();
   const Item = {
-    pk: Slug,
-    sk: `content#${id}`,
-    gs1pk: `content#${id}`,
+    pk: uuid.v4(),
+    sk: `content#${typeId}`,
+    gs1pk: `content#${typeId}`,
     gs1sk: sortKey,
     sortKeyUsed: definition.sortKey,
     createdAt,
@@ -61,7 +52,7 @@ export default async ({ Slug, id, ...attr }) => {
   try {
     await DDB('put', params);
     // increment count in definition
-    await inc({ id, inc: 1 });
+    await inc({ id: typeId, inc: 1 });
 
     return successPOST({ id: Item.pk });
   } catch (e) {

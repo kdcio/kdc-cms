@@ -12,7 +12,10 @@ class Request {
     const response = await this.handler({
       pathParameters: proxy ? { proxy } : null,
       httpMethod: method,
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      requestContext: {
+        authorizer: 'dev'
+      }
     });
     if (response.body) {
       response.body = JSON.parse(response.body);

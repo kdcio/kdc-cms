@@ -4,13 +4,13 @@ import remap from '../../../lib/remap';
 import fieldMap from './map';
 import defGet from '../../define/contents/lib/get';
 
-export default async (id, { limit, start, allFields }) => {
-  const definition = await defGet({ id }, { raw: true });
+export default async (typeId, { limit, start, allFields }) => {
+  const definition = await defGet({ id: typeId }, { raw: true });
   const { sortKey } = definition;
   const ExpressionAttributeNames = { '#Name': 'Name' };
   let ProjectionExpression = 'pk, gs1sk, #Name, createdAt, updatedAt';
   let KeyConditionExpression = 'gs1pk = :pk';
-  const ExpressionAttributeValues = { ':pk': `content#${id}` };
+  const ExpressionAttributeValues = { ':pk': `content#${typeId}` };
 
   if (sortKey !== 'Name') {
     ExpressionAttributeNames['#sort'] = sortKey;

@@ -3,9 +3,9 @@ import { success, failure } from '../../../lib/response';
 import remap from '../../../lib/remap';
 import fieldMap from './map';
 
-export default async ({ id, slug }, opts = {}) => {
+export default async ({ typeId, contentId }, opts = {}) => {
   const params = {
-    Key: { pk: slug, sk: `content#${id}` }
+    Key: { pk: contentId, sk: `content#${typeId}` }
   };
   const { raw } = opts;
 
