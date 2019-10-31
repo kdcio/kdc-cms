@@ -23,6 +23,7 @@ const newsDef = {
   sortKey: 'date',
   sk: 'content',
   pk: 'news',
+  nameKey: 'name',
   fields: [
     {
       label: 'Name',
@@ -100,7 +101,7 @@ describe('Contents', () => {
     expect(body.next).toBe(null);
     expect(body.list.length).toEqual(1);
     // TODO: make slug unique
-    // expect(body.list[0].name).toEqual(news.name);
+    expect(body.list[0].name).toEqual(news.name);
     // expect(body.list[0].slug).toEqual(news.slug);
     expect(body.list[0].id).toBeDefined();
     expect(body.list[0].date).toEqual(news.date);

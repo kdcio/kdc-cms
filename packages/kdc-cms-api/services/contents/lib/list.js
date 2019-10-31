@@ -14,7 +14,7 @@ export default async (typeId, { limit, start, allFields }) => {
   }
 
   const { sortKey } = definition;
-  const ExpressionAttributeNames = { '#Name': 'Name' };
+  const ExpressionAttributeNames = { '#Name': definition.nameKey };
   let ProjectionExpression = 'pk, gs1sk, #Name, createdAt, updatedAt';
   let KeyConditionExpression = 'gs1pk = :pk';
   const ExpressionAttributeValues = { ':pk': `content#${typeId}` };

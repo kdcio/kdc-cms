@@ -36,6 +36,14 @@ export default async ({ typeId, ...attr }) => {
     });
   }
 
+  const nameKey = validAttr[definition.nameKey];
+  if (!nameKey) {
+    return failure(400, {
+      error: 'NameKeyInvalid',
+      message: 'Name key cannot be blank'
+    });
+  }
+
   const createdAt = new Date().valueOf();
   const Item = {
     pk: uuid.v4(),

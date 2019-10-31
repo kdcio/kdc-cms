@@ -45,6 +45,7 @@ describe('Content Definition', () => {
     expect(body.sk).toEqual(undefined);
     expect(body.gs1pk).toEqual(undefined);
     expect(body.name).toEqual(blogs.name);
+    expect(body.nameKey).toEqual('title');
     expect(body.fieldCount).toEqual(3);
     expect(body.fields[0].name).toEqual('title');
     expect(body.fields[0].type).toEqual('text');
@@ -82,6 +83,7 @@ describe('Content Definition', () => {
     expect(body.sk).toEqual(undefined);
     expect(body.gs1pk).toEqual(undefined);
     expect(body.name).toEqual('New home page');
+    expect(body.nameKey).toEqual('title');
     expect(body.fieldCount).toEqual(3);
     expect(body.fields[0].name).toEqual('title');
     expect(body.fields[0].type).toEqual('text');

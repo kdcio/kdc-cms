@@ -13,6 +13,7 @@ export default async ({ id, attr }) => {
     gs1pk: 'content',
     gs1sk: name || content.gs1sk,
     createdAt: content.createdAt,
+    nameKey: content.nameKey,
     ...otherAttr,
     docCount: content.docCount,
     updatedAt

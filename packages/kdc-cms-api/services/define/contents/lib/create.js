@@ -13,12 +13,24 @@ export default async ({ name, id, ...attr }) => {
     });
   }
 
+  let nameKey = '';
+  attr.fields.forEach(f => {
+    if (f.type === 'text' && nameKey === '') {
+      nameKey = f.name;
+    }
+  });
+
+  if (nameKey === '') {
+    nameKey = 'id';
+  }
+
   const createdAt = new Date().valueOf();
   const Item = {
     pk: id,
     sk: 'content',
     gs1pk: 'content',
     gs1sk: name,
+    nameKey,
     ...attr,
     createdAt
   };
