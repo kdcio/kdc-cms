@@ -135,7 +135,7 @@ const ContentsForm = ({ typeId, contentId }) => {
 };
 
 ContentsForm.propTypes = {
-  typeId: PropTypes.string.isRequired,
+  typeId: PropTypes.string,
   contentId: PropTypes.string,
 };
 
