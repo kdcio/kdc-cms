@@ -6,6 +6,13 @@ import defGet from '../../define/contents/lib/get';
 
 export default async (typeId, { limit, start, allFields }) => {
   const definition = await defGet({ id: typeId }, { raw: true });
+  if (!definition) {
+    return failure(404, {
+      error: 'ContentDefinitionNotFound',
+      message: 'Content definition not found'
+    });
+  }
+
   const { sortKey } = definition;
   const ExpressionAttributeNames = { '#Name': 'Name' };
   let ProjectionExpression = 'pk, gs1sk, #Name, createdAt, updatedAt';

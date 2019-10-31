@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import { Card, CardBody, CardHeader, Button } from 'reactstrap';
 import moment from 'moment';
 import { useContentTypeList } from '../../../context/contentTypeList';
@@ -38,13 +38,15 @@ const ContentsList = ({ typeId }) => {
     if (start) {
       url += `&start=${start}`;
     }
-    return api(url).then((data) => {
-      setList(data.list);
-      setIsLoading(false);
-      setNext(data.next);
-      setNextStack((oldStack) => [...oldStack, data.next]);
-      return data.next;
-    });
+    return api(url)
+      .then((data) => {
+        setList(data.list);
+        setIsLoading(false);
+        setNext(data.next);
+        setNextStack((oldStack) => [...oldStack, data.next]);
+        return data.next;
+      })
+      .catch(() => navigate('/404'));
   };
 
   const nextPage = () => {
