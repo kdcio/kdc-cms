@@ -22,7 +22,19 @@ const client = new AWS.DynamoDB.DocumentClient();
 const TableName = process.env.DDB_TABLE || "kdc-cms-database-test";
 
 const DDB = (action, params) => {
-  return client[action]({ TableName, ...params }).promise();
+  let actualParams = { TableName, ...params };
+  if (action === "transactWrite") {
+    actualParams = { TransactItems: [] };
+    params.TransactItems.forEach(p => {
+      Object.keys(p).map(act => {
+        const req = {
+          [act]: { TableName, ...p[act] }
+        };
+        actualParams.TransactItems.push(req);
+      });
+    });
+  }
+  return client[action](actualParams).promise();
 };
 
 module.exports = DDB;

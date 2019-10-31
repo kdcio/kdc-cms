@@ -33,7 +33,8 @@ const newsDef = {
     {
       label: 'Slug',
       name: 'slug',
-      type: 'text'
+      type: 'text',
+      unique: true
     },
     {
       label: 'Date',
@@ -66,12 +67,17 @@ describe('Contents', () => {
     news.id = body.id;
   });
 
-  // TODO: make slug unique
-  // it('should not create', async () => {
-  //   const { statusCode, body } = await req.post(`/${newsDef.pk}`, news);
-  //   expect(statusCode).toBe(409);
-  //   expect(body.error).toBe('ContentExists');
-  // });
+  it('should update docCount to 1', async () => {
+    const { Item: def } = await DDB('get', { Key: { pk: newsDef.pk, sk: 'content' } });
+    expect(def.docCount).toEqual(1);
+  });
+
+  it('should not create', async () => {
+    const { statusCode, body } = await req.post(`/${newsDef.pk}`, news);
+    expect(statusCode).toBe(409);
+    expect(body.error).toBe('UniqueExists');
+    expect(body.uniqueKey).toBe('slug');
+  });
 
   it('should not create without a sortkey', async () => {
     const { statusCode, body } = await req.post(`/${newsDef.pk}`, newsNoSortKey);
@@ -100,9 +106,7 @@ describe('Contents', () => {
     expect(statusCode).toBe(200);
     expect(body.next).toBe(null);
     expect(body.list.length).toEqual(1);
-    // TODO: make slug unique
     expect(body.list[0].name).toEqual(news.name);
-    // expect(body.list[0].slug).toEqual(news.slug);
     expect(body.list[0].id).toBeDefined();
     expect(body.list[0].date).toEqual(news.date);
     expect(body.list[0].body).toEqual(undefined);
@@ -119,18 +123,7 @@ describe('Contents', () => {
     expect(body).toBe(null);
   });
 
-  it('it should Not update with out SortKey', async () => {
-    const { statusCode, body } = await req.put(`/${newsDef.pk}/${news.id}`, {
-      ...news,
-      title: 'My Updated Post',
-      body: 'Updated body',
-      date: undefined
-    });
-    expect(statusCode).toBe(400);
-    expect(body.error).toBe('SortKeyInvalid');
-  });
-
-  it('should update intro', async () => {
+  it('should update body', async () => {
     const { statusCode, body } = await req.get(`/${newsDef.pk}/${news.id}`);
     expect(statusCode).toBe(200);
     expect(body.pk).toEqual(undefined);
@@ -146,9 +139,50 @@ describe('Contents', () => {
     expect(body.updatedAt).toBeGreaterThan(0);
   });
 
+  it('it should Not update with out SortKey', async () => {
+    const { statusCode, body } = await req.put(`/${newsDef.pk}/${news.id}`, {
+      ...news,
+      title: 'My Updated Post',
+      body: 'Updated body',
+      date: undefined
+    });
+    expect(statusCode).toBe(400);
+    expect(body.error).toBe('SortKeyInvalid');
+  });
+
+  it('it should update new slug', async () => {
+    const { statusCode, body } = await req.put(`/${newsDef.pk}/${news.id}`, {
+      ...news,
+      slug: 'my-updated-post'
+    });
+    expect(statusCode).toBe(204);
+    expect(body).toBe(null);
+  });
+
+  it('should update body', async () => {
+    const { statusCode, body } = await req.get(`/${newsDef.pk}/${news.id}`);
+    expect(statusCode).toBe(200);
+    expect(body.pk).toEqual(undefined);
+    expect(body.sk).toEqual(undefined);
+    expect(body.gs1pk).toEqual(undefined);
+    expect(body.gs1sk).toEqual(undefined);
+    expect(body.id).toBeDefined();
+    expect(body.name).toEqual(news.name);
+    expect(body.slug).toEqual('my-updated-post');
+    expect(body.date).toEqual(news.date);
+    expect(body.body).toEqual(news.body);
+    expect(body.createdAt).toEqual(news.createdAt);
+    expect(body.updatedAt).toBeGreaterThan(0);
+  });
+
   it('should delete', async () => {
     const { statusCode, body } = await req.delete(`/${newsDef.pk}/${news.id}`);
     expect(statusCode).toBe(204);
     expect(body).toBe(null);
+  });
+
+  it('should update docCount to 0', async () => {
+    const { Item: def } = await DDB('get', { Key: { pk: newsDef.pk, sk: 'content' } });
+    expect(def.docCount).toEqual(0);
   });
 });
