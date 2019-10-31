@@ -8,43 +8,52 @@ export default async count => {
     name: 'Blogs',
     id: 'blogs',
     description: 'Seeding CMS with blogs',
-    sortKey: 'Publish Date',
+    sortKey: 'publishDate',
     fieldCount: 9,
     fields: [
       {
-        name: 'Name',
+        label: 'Name',
+        name: 'name',
         type: 'text'
       },
       {
-        name: 'Slug',
+        label: 'Slug',
+        name: 'slug',
         type: 'text'
       },
       {
-        name: 'Image',
+        label: 'Image',
+        name: 'image',
         type: 'image'
       },
       {
-        name: 'Publish Date',
+        label: 'Publish Date',
+        name: 'publishDate',
         type: 'date'
       },
       {
-        name: 'Author',
+        label: 'Author',
+        name: 'author',
         type: 'text'
       },
       {
-        name: 'Category',
+        label: 'Category',
+        name: 'category',
         type: 'text'
       },
       {
-        name: 'Tags',
+        label: 'Tags',
+        name: 'tags',
         type: 'text'
       },
       {
-        name: 'Body',
+        label: 'Body',
+        name: 'body',
         type: 'long-text'
       },
       {
-        name: 'Enabled',
+        label: 'Enabled',
+        name: 'enabled',
         type: 'bool'
       }
     ]
@@ -53,33 +62,34 @@ export default async count => {
   const promises = [];
   const max = count || 5;
   for (let ctr = 0; ctr < max; ctr += 1) {
-    const Name = faker.company.catchPhrase();
+    const name = faker.company.catchPhrase();
     const pub = faker.date.past(5, new Date());
     const yr = pub.getFullYear();
     const mn = String(pub.getMonth() + 1).padStart(2, 0);
     const dy = String(pub.getDate()).padStart(2, 0);
 
     const maxParagraph = faker.random.number({ min: 3, max: 8 });
-    let Body = '';
+    let body = '';
     for (let y = 0; y < maxParagraph; y += 1) {
-      Body += `<p>${faker.lorem.paragraph()}</p>`;
+      body += `<p>${faker.lorem.paragraph()}</p>`;
     }
+    const data = {
+      typeId: 'blogs',
+      name,
+      slug: faker.helpers.slugify(name),
+      image: faker.image.business(),
+      publishDate: `${yr}-${mn}-${dy}`,
+      author: faker.name.findName(),
+      category: faker.hacker.noun(),
+      tags: faker.hacker.verb(),
+      body,
+      enabled: true
+    };
 
-    promises.push(
-      blogs.create({
-        id: 'blogs',
-        Name,
-        Slug: faker.helpers.slugify(Name),
-        Image: faker.image.business(),
-        'Publish Date': `${yr}-${mn}-${dy}`,
-        Author: faker.name.findName(),
-        Category: faker.hacker.noun(),
-        Tags: faker.hacker.verb(),
-        Body,
-        Enabled: true
-      })
-    );
+    promises.push(blogs.create(data));
   }
 
-  return Promise.all(promises).then(() => max);
+  return Promise.all(promises)
+    .then(() => max)
+    .catch(e => console.log(e));
 };
