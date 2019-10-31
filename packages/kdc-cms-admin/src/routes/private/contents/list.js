@@ -86,7 +86,7 @@ const ContentsList = ({ typeId }) => {
   }, [typeId]);
 
   if (!type) return null;
-  const { sortKey, docCount } = type;
+  const { sortKey, nameKey, docCount } = type;
   const totalPages = Math.ceil(docCount / ITEMS_PER_PAGE) || 1;
   const curPage = nextStack.length;
 
@@ -114,7 +114,7 @@ const ContentsList = ({ typeId }) => {
             ) : (
               list.map((content) => (
                 <tr key={content.id}>
-                  <th>{content.Name}</th>
+                  <th>{content[nameKey]}</th>
                   <td>{content[sortKey]}</td>
                   <td>{formatDate(content)}</td>
                   <td className="text-center">
