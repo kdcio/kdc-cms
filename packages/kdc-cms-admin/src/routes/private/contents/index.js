@@ -7,9 +7,9 @@ import Form from './form';
 const Pages = () => (
   <Layout title="Content">
     <Router>
-      <Form path=":id/add" />
-      <Form path=":id/edit/:slug" />
-      <List path=":id" />
+      <Form path=":typeId/add" />
+      <Form path=":typeId/edit/:contentId" />
+      <List path=":typeId" />
     </Router>
   </Layout>
 );

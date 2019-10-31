@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
-import slugify from 'slugify';
+import kebabCase from 'lodash.kebabcase';
 import { Card, CardBody, CardHeader, Form, Button } from 'reactstrap';
 import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
@@ -10,12 +10,12 @@ import LoadingOverlay from '../../../components/loadingOverlay';
 import FormError from '../../../components/formError';
 import RenderField from '../../../components/RenderField';
 
-const ContentsForm = ({ id, slug }) => {
+const ContentsForm = ({ typeId, contentId }) => {
   const { getType, fetchList: fetchTypeList } = useContentTypeList();
   const { register, handleSubmit, setValue, errors, setError } = useForm();
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const type = getType(id);
+  const type = getType(typeId);
 
   const onSubmit = (data) => {
     const body = {};
@@ -31,28 +31,16 @@ const ContentsForm = ({ id, slug }) => {
       body[name] = value;
     });
 
-    if (!body.Name) {
-      setError('Name', 'required');
-      setIsLoading(false);
-      return;
-    }
-
-    if (!body.Slug) {
-      setError('Slug', 'required');
-      setIsLoading(false);
-      return;
-    }
-
     if (!body[sortKey]) {
       setError(sortKey, 'required');
       setIsLoading(false);
       return;
     }
 
-    if (id && slug) {
-      api(`contents/${id}/${slug}`, { body, method: 'PUT' })
+    if (typeId && contentId) {
+      api(`contents/${typeId}/${contentId}`, { body, method: 'PUT' })
         .then(() => {
-          navigate(`/contents/${id}`);
+          navigate(`/contents/${typeId}`);
         })
         .catch((e) => {
           if (e.error === 'SortKeyInvalid') {
@@ -64,10 +52,10 @@ const ContentsForm = ({ id, slug }) => {
           setIsLoading(false);
         });
     } else {
-      api(`contents/${id}`, { body })
+      api(`contents/${typeId}`, { body })
         .then(async () => {
           await fetchTypeList();
-          navigate(`/contents/${id}`);
+          navigate(`/contents/${typeId}`);
         })
         .catch((e) => {
           setError('api', e.error, e.message);
@@ -77,10 +65,10 @@ const ContentsForm = ({ id, slug }) => {
   };
 
   useEffect(() => {
-    if (!id || !slug) return;
+    if (!typeId || !contentId) return;
     setIsLoading(true);
 
-    api(`contents/${id}/${slug}`)
+    api(`contents/${typeId}/${contentId}`)
       .then((data) => {
         setInitialValues(data);
       })
@@ -90,7 +78,7 @@ const ContentsForm = ({ id, slug }) => {
         setIsLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, slug]);
+  }, [typeId, contentId]);
 
   if (!type) return null;
   const { fields } = type;
@@ -98,7 +86,7 @@ const ContentsForm = ({ id, slug }) => {
   const onNameChange = (e) => {
     const Name = e.target.value;
     if (Name && Name.length > 0) {
-      const Slug = slugify(Name, { lower: true });
+      const Slug = kebabCase(Name);
       setValue('Slug', Slug);
     }
   };
@@ -109,6 +97,7 @@ const ContentsForm = ({ id, slug }) => {
       <RenderField
         key={f.name}
         name={f.name}
+        label={f.label}
         type={f.type}
         register={register}
         initialValue={initialValues[f.name]}
@@ -124,8 +113,8 @@ const ContentsForm = ({ id, slug }) => {
     <LoadingOverlay isLoading={isLoading}>
       <Card>
         <CardHeader className="d-flex justify-content-between">
-          <h3 className="m-0">{id && slug ? `Edit ${type.name}` : `Add ${type.name}`}</h3>
-          <Link className="btn btn-sm btn-danger" to={`/contents/${id}`}>
+          <h3 className="m-0">{typeId && contentId ? `Edit ${type.name}` : `Add ${type.name}`}</h3>
+          <Link className="btn btn-sm btn-danger" to={`/contents/${typeId}`}>
             Cancel
           </Link>
         </CardHeader>
@@ -146,8 +135,8 @@ const ContentsForm = ({ id, slug }) => {
 };
 
 ContentsForm.propTypes = {
-  id: PropTypes.string,
-  slug: PropTypes.string,
+  typeId: PropTypes.string.isRequired,
+  contentId: PropTypes.string,
 };
 
 export default ContentsForm;

@@ -24,17 +24,17 @@ const formatDate = (page) => {
   return moment(ts).format('MMM D, YYYY h:mma');
 };
 
-const ContentsList = ({ id }) => {
+const ContentsList = ({ typeId }) => {
   const { getType, fetchList: fetchTypeList } = useContentTypeList();
   const [list, setList] = useState([]);
   const [next, setNext] = useState(null);
   const [nextStack, setNextStack] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const type = getType(id);
+  const type = getType(typeId);
 
   const fetchList = (start) => {
     setIsLoading(true);
-    let url = `contents/${id}?limit=${ITEMS_PER_PAGE}`;
+    let url = `contents/${typeId}?limit=${ITEMS_PER_PAGE}`;
     if (start) {
       url += `&start=${start}`;
     }
@@ -64,11 +64,11 @@ const ContentsList = ({ id }) => {
     }
   };
 
-  const deleteContent = (slug) => {
+  const deleteContent = (contentId) => {
     const r = confirm('Are you sure you want to delete this content?\n\nTHIS CANNOT BE UNDONE!');
     if (r === true) {
       setIsLoading(true);
-      api(`contents/${id}/${slug}`, { method: 'DELETE' })
+      api(`contents/${typeId}/${contentId}`, { method: 'DELETE' })
         .then(async () => {
           setNextStack([]);
           await fetchTypeList();
@@ -81,18 +81,18 @@ const ContentsList = ({ id }) => {
   useEffect(() => {
     fetchList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [typeId]);
 
   if (!type) return null;
   const { sortKey, docCount } = type;
-  const totalPages = Math.ceil(docCount / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(docCount / ITEMS_PER_PAGE) || 1;
   const curPage = nextStack.length;
 
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between">
         <h3 className="m-0">List {type.name}</h3>
-        <Link to={`/contents/${type.id}/add`} className="btn btn-sm btn-primary">
+        <Link to={`/contents/${typeId}/add`} className="btn btn-sm btn-primary">
           Add {type.name}
         </Link>
       </CardHeader>
@@ -111,19 +111,19 @@ const ContentsList = ({ id }) => {
               <RowSpinner colSpan={4} />
             ) : (
               list.map((content) => (
-                <tr key={content.Slug}>
+                <tr key={content.id}>
                   <th>{content.Name}</th>
                   <td>{content[sortKey]}</td>
                   <td>{formatDate(content)}</td>
                   <td className="text-center">
-                    <Link to={`edit/${content.Slug}`} className="btn btn-sm btn-secondary mr-2">
+                    <Link to={`edit/${content.id}`} className="btn btn-sm btn-secondary mr-2">
                       Edit
                     </Link>
                     <Button
                       type="button"
                       size="sm"
                       color="danger"
-                      onClick={() => deleteContent(content.Slug)}
+                      onClick={() => deleteContent(content.id)}
                     >
                       Delete
                     </Button>
@@ -150,7 +150,7 @@ const ContentsList = ({ id }) => {
 };
 
 ContentsList.propTypes = {
-  id: PropTypes.string,
+  typeId: PropTypes.string,
 };
 
 export default ContentsList;

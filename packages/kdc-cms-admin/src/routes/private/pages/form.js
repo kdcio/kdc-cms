@@ -56,6 +56,7 @@ const PagesForm = ({ id }) => {
       <RenderField
         key={f.name}
         name={f.name}
+        label={f.label}
         type={f.type}
         register={register}
         initialValue={initialValues[f.name]}

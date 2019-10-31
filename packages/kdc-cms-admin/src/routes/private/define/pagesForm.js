@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
-import slugify from 'slugify';
+import kebabCase from 'lodash.kebabcase';
+import camelCase from 'lodash.camelcase';
 import { Col, Card, CardBody, CardHeader, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import api from '../../../utils/api';
 import LoadingOverlay from '../../../components/loadingOverlay';
@@ -12,14 +13,14 @@ const createArrayWithNumbers = (length) => Array.from({ length }, (_, k) => k);
 
 const PagesForm = ({ id }) => {
   const { register, handleSubmit, errors, setError } = useForm();
-  const [size, setSize] = useState(1);
+  const [size, setSize] = useState(0);
   const [initialValues, setInitialValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = ({ name, description, field, type }) => {
     const body = {
       name: name.trim(),
-      id: id || slugify(name, { lower: true }),
+      id: id || kebabCase(name),
       fields: [],
       fieldCount: 0,
     };
@@ -32,7 +33,8 @@ const PagesForm = ({ id }) => {
     field.forEach((v, k) => {
       if (v.trim() === '') return;
       body.fields.push({
-        name: v.trim(),
+        label: v.trim(),
+        name: camelCase(v),
         type: type[k],
       });
       body.fieldCount += 1;
@@ -64,7 +66,10 @@ const PagesForm = ({ id }) => {
   };
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      setSize(1);
+      return;
+    }
     setIsLoading(true);
     api(`define/pages/${id}`)
       .then((data) => {

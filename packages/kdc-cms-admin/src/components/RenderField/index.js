@@ -10,7 +10,7 @@ import RenderBoolean from './RenderBoolean';
 import FormError from '../formError';
 
 const RenderField = (f) => {
-  const { type, name, errors } = f;
+  const { type, name, label, errors } = f;
   let field = null;
   if (type === 'text') field = RenderText(f);
   if (type === 'long-text') field = RenderLongText(f);
@@ -21,7 +21,7 @@ const RenderField = (f) => {
 
   return (
     <FormGroup row key={name}>
-      <Label sm={2}>{name}</Label>
+      <Label sm={2}>{label}</Label>
       <Col sm={10}>
         {field}
         <FormError errors={errors} name={name} />
