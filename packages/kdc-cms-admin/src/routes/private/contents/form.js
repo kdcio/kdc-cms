@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, navigate } from '@reach/router';
 import useForm from 'react-hook-form';
-import kebabCase from 'lodash.kebabcase';
 import { Card, CardBody, CardHeader, Form, Button } from 'reactstrap';
 import { useContentTypeList } from '../../../context/contentTypeList';
 import api from '../../../utils/api';
@@ -34,6 +33,12 @@ const ContentsForm = ({ typeId, contentId }) => {
           src: value,
           type: 'image',
         };
+
+        if (data[`${name}-changed`] === 'true') {
+          body[name].updatedAt = new Date().getTime();
+        } else {
+          body[name].updatedAt = initialValues[name].updatedAt;
+        }
       } else {
         body[name] = value;
       }
@@ -92,14 +97,6 @@ const ContentsForm = ({ typeId, contentId }) => {
   if (!type) return null;
   const { fields } = type;
 
-  const onNameChange = (e) => {
-    const Name = e.target.value;
-    if (Name && Name.length > 0) {
-      const Slug = kebabCase(Name);
-      setValue('Slug', Slug);
-    }
-  };
-
   let fieldInputs = null;
   if (fields) {
     fieldInputs = fields.map((f) => (
@@ -110,7 +107,6 @@ const ContentsForm = ({ typeId, contentId }) => {
         type={f.type}
         register={register}
         initialValue={initialValues[f.name]}
-        onChange={f.name === 'Name' ? onNameChange : null}
         setValue={setValue}
         setIsLoading={setIsLoading}
         errors={errors}

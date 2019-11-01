@@ -7,6 +7,8 @@ import api from '../../utils/api';
 const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) => {
   const [image, setImage] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [isUpdated, setIsUpdated] = useState(false);
+  const changedName = `${name}-changed`;
 
   const getSignedUrl = (file, callback) => {
     api(`upload/sign?filename=${file.name}&type=${file.type}&acl=public-read`)
@@ -21,6 +23,7 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
 
   useEffect(() => {
     register({ name });
+    setIsUpdated(false);
     if (initialValue && initialValue.src) {
       setImage(initialValue.src);
       setValue(name, initialValue.src);
@@ -53,6 +56,8 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
           }}
           onFinish={(e) => {
             setValue(name, e.url);
+            setValue(changedName, true);
+            setIsUpdated(true);
             setImage(e.url);
             setIsLoading(false);
           }}
@@ -70,6 +75,7 @@ const RenderImage = ({ name, register, initialValue, setValue, setIsLoading }) =
         ) : (
           <p className="small mt-2">Selecting a file will trigger auto upload.</p>
         )}
+        <input type="hidden" name={changedName} ref={register} defaultValue={isUpdated} />
       </Media>
     </Media>
   );

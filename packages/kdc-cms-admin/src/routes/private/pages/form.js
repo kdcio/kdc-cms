@@ -30,6 +30,12 @@ const PagesForm = ({ id }) => {
           src: value,
           type: 'image',
         };
+
+        if (data[`${name}-changed`] === 'true') {
+          body[name].updatedAt = new Date().getTime();
+        } else {
+          body[name].updatedAt = initialValues[name].updatedAt;
+        }
       } else {
         body[name] = value;
       }
