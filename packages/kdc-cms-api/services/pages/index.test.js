@@ -66,7 +66,7 @@ describe('Pages', () => {
   it('should list', async () => {
     const { statusCode, body } = await req.get(`/`);
     expect(statusCode).toBe(200);
-    expect(body.length).toEqual(1);
+    expect(body.list.length).toEqual(1);
   });
 
   it('it should update', async () => {

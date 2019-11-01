@@ -27,7 +27,7 @@ const PagesList = () => {
     const fetchList = () => {
       setIsLoading(true);
       api('pages').then((data) => {
-        setList(data);
+        setList(data.list);
         setIsLoading(false);
       });
     };

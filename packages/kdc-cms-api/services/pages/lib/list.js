@@ -20,7 +20,8 @@ export default async ({ limit, allFields }) => {
 
   try {
     const data = await DDB('query', params);
-    return success(data.Items.map(i => remap(i, fieldMap)));
+    const list = data.Items.map(i => remap(i, fieldMap));
+    return success({ list });
   } catch (e) {
     return failure(500, e);
   }
