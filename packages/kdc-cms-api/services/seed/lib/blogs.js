@@ -77,7 +77,11 @@ export default async count => {
       typeId: 'blogs',
       name,
       slug: faker.helpers.slugify(name),
-      image: faker.image.business(),
+      image: {
+        src: faker.image.business(),
+        type: 'image',
+        updatedAt: new Date().getTime()
+      },
       publishDate: `${yr}-${mn}-${dy}`,
       author: faker.name.findName(),
       category: faker.hacker.noun(),
