@@ -1,0 +1,112 @@
+{
+  "blogs": [
+    {
+      "gs1pk": "content#blog",
+      "author": "Gatsby",
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/post-bg.jpg",
+        "updatedAt": 1572587611185
+      },
+      "publishDate": "2019-09-19",
+      "sortKeyUsed": "publishDate",
+      "title": "Science has not yet mastered prophecy",
+      "body": "<h4>Quisque id feugiat nibh, vel vestibulum massa.</h4><p>&nbsp;Proin sit amet faucibus eros, in vulputate nulla. Duis pulvinar vitae erat suscipit luctus. Ut augue velit, tincidunt vitae turpis vitae, congue pretium nulla. Morbi ut tempus tellus, eget feugiat nulla. Aliquam ac rhoncus lectus. Phasellus ultrices lacus nec nisl pharetra interdum. Nunc eget erat id ipsum hendrerit scelerisque vitae varius dolor. Suspendisse sodales lectus eu tellus maximus cursus. Nunc sapien turpis, rhoncus sit amet neque vel, accumsan consequat libero. Etiam quis ante viverra, gravida nibh id, pharetra magna. Fusce accumsan posuere nunc ac aliquam.</p><p>Pellentesque ac posuere erat. Praesent faucibus et velit ut consectetur. Morbi tincidunt erat ut eros porttitor iaculis. Nullam consectetur turpis nec urna vehicula lobortis. Suspendisse id commodo massa. Fusce sodales lacinia ex et egestas. Integer sed faucibus urna, a viverra justo.</p><p>Pellentesque erat lectus, suscipit nec dui ac, scelerisque convallis elit. Donec efficitur quam vel enim malesuada, a ultricies urna hendrerit. Praesent mollis venenatis turpis, vel ornare ex ultrices in. Mauris accumsan dictum dui, eu pretium odio tempor vel. Nam rhoncus, tellus vitae auctor sollicitudin, tortor felis finibus eros, id ultricies mi mauris a quam. Praesent in magna vestibulum, bibendum justo nec, sollicitudin nibh. Mauris purus velit, lacinia et magna at, maximus venenatis magna. Duis sagittis non arcu ac fringilla. Etiam fermentum sem sed elementum sollicitudin. Pellentesque pellentesque velit porta, tincidunt ex ut, sodales mi. Quisque pulvinar arcu a diam semper, at fermentum lectus volutpat. Morbi et scelerisque justo, eget porttitor eros. Donec in est dolor. Vivamus molestie sollicitudin elit eget aliquam. Fusce varius ante vitae eleifend cursus.</p><h4>Morbi tempus auctor rhoncus. Nullam ac rutrum quam.&nbsp;</h4><p>Donec porta porttitor tempor. Mauris eleifend ex quis mi ornare, in tincidunt est scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam ullamcorper magna ut urna aliquam lobortis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum vel vestibulum orci, ut porttitor nunc. Nullam sagittis ut sem sed mattis. Vestibulum elementum ultrices magna, vel finibus felis aliquet eu. Pellentesque eget tincidunt est, in consequat tortor. Donec id rutrum ipsum, vitae facilisis est. Proin sed nunc arcu.</p><p>Proin malesuada velit nulla, et pharetra neque sodales a. Cras id convallis purus. Vivamus euismod risus eget erat iaculis tristique. Nunc eu varius lectus. Phasellus condimentum lobortis sapien ut vulputate. Phasellus tempor metus vitae purus auctor, nec porttitor quam vulputate. Cras tempor sapien nec dapibus pharetra. Donec gravida elit ut urna rhoncus gravida. In nec scelerisque nisl. Pellentesque consequat, nisi sed malesuada lacinia, nisl lorem dignissim quam, egestas feugiat neque lacus id risus. Mauris egestas dui nec nisl cursus congue. In vitae iaculis est. Suspendisse id viverra urna. Proin luctus enim in sapien congue porttitor.</p>",
+      "createdAt": 1572587611231,
+      "subtitle": "We predict too much for the next year and yet far too little for the next ten.",
+      "sk": "content#blog",
+      "pk": "ecdeb748-7b34-46ec-83df-ed65f2e4c87e",
+      "gs1sk": "2019-09-19",
+      "slug": "science-has-not-yet-mastered-prophecy",
+      "updatedAt": 1572589715973
+    },
+    {
+      "gs1pk": "content#blog",
+      "author": "KDC CMS",
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/post-bg.jpg",
+        "updatedAt": 1572587721889
+      },
+      "publishDate": "2019-10-01",
+      "sortKeyUsed": "publishDate",
+      "title": "Failure is not an option",
+      "body": "<p>Duis a ultrices est. Sed laoreet felis nec feugiat semper. Mauris auctor erat suscipit lectus vehicula, eget interdum ante commodo. Etiam varius eros quis nibh rutrum pulvinar. Aenean porta tortor quis nisl accumsan egestas. Sed at dapibus ex. Donec placerat suscipit lectus sodales imperdiet. Sed vel vulputate dolor, vel convallis nisl. Vestibulum bibendum tincidunt fermentum. Nulla non blandit quam.</p><h4>Nulla commodo nibh ac scelerisque ultrices</h4><p>Aenean sit amet lectus dapibus, porttitor augue et, tristique turpis. Nulla sit amet ultricies erat. Praesent ac hendrerit risus. Duis pellentesque, ipsum ac hendrerit scelerisque, lacus turpis vulputate lorem, sed vestibulum est nisi ac diam. Ut rutrum vehicula lacinia. Quisque velit ligula, fermentum eget faucibus sit amet, scelerisque ut tortor. Etiam at sem congue, porttitor risus sit amet, posuere nulla. Pellentesque bibendum, diam at hendrerit convallis, nisi nulla ultrices lacus, sit amet tincidunt risus turpis in nisi. Proin malesuada mauris et dapibus viverra. Praesent id consectetur felis. Suspendisse a sem non purus volutpat molestie.</p><h4>Sed et arcu vitae nisl commodo scelerisque nec in dolor.&nbsp;</h4><p>Morbi pulvinar tempor lorem, vel ultrices ante blandit at. Praesent gravida tellus facilisis pharetra lacinia. Integer egestas mi vitae velit condimentum, non vulputate justo porta. Etiam faucibus libero at feugiat laoreet. Mauris pretium nisi ut dui tincidunt, non hendrerit mauris vulputate. Nullam malesuada sapien sed justo aliquet, nec placerat elit consectetur. Integer egestas auctor commodo. Aenean semper mi a erat consequat, sed semper nisi facilisis. Duis in auctor augue. Sed sem lectus, viverra in orci sed, ullamcorper semper neque. Aenean rutrum odio eu fermentum volutpat. Mauris rutrum iaculis porta. Nam gravida dui ut est tincidunt, sit amet aliquam massa molestie. Nulla metus ex, eleifend a feugiat in, maximus non felis. Nunc eu ante eget quam feugiat pharetra.</p><p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam non turpis lorem. Suspendisse potenti. Fusce mollis, velit a egestas semper, nisi felis imperdiet neque, non tempus nulla magna vel eros. Ut quis ex commodo, lacinia velit quis, eleifend lectus. Donec sed dolor egestas, lacinia velit eleifend, efficitur dui. Cras vehicula a dolor vel auctor. Duis vestibulum purus lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus tempus fermentum tempus. Morbi blandit nisi eu vestibulum venenatis. Praesent efficitur tellus blandit, pulvinar mi venenatis, faucibus nisi. Aliquam ullamcorper, ex eu luctus eleifend, turpis elit maximus lacus, ut sollicitudin nisi mauris ut lectus.</p><p>Mauris semper suscipit aliquet. Suspendisse rutrum suscipit justo, at auctor diam molestie eu. Donec id ornare diam, et feugiat dui. Phasellus ac lorem ornare, bibendum justo eu, accumsan nibh. Etiam et luctus enim. Praesent tempus convallis dui ac fermentum. Nam sit amet odio ut dui feugiat porttitor. Maecenas nec hendrerit quam. Mauris eu est ac ipsum sollicitudin suscipit et vitae nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>",
+      "createdAt": 1572587721929,
+      "subtitle": "Many say exploration is part of our destiny, but it’s actually our duty to future generations.",
+      "sk": "content#blog",
+      "pk": "d12a0556-9f29-4f7b-af8c-218a8e48c15e",
+      "gs1sk": "2019-10-01",
+      "slug": "failure-is-not-an-option",
+      "updatedAt": 1572589707455
+    },
+    {
+      "gs1pk": "content#blog",
+      "author": "Ian Dela Cruz",
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/post-bg.jpg",
+        "updatedAt": 1572587509069
+      },
+      "publishDate": "2019-10-06",
+      "sortKeyUsed": "publishDate",
+      "title": "I believe every human has a finite number of heartbeats",
+      "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut lectus mattis, finibus turpis nec, feugiat ex. Nullam finibus euismod rutrum. Donec et ex ultricies, blandit dolor sit amet, egestas neque. In dignissim ligula nec nisi congue, et viverra lorem lacinia. Morbi arcu est, malesuada quis mollis vel, luctus rhoncus mi. Maecenas ut elit fermentum, tincidunt quam eu, viverra ante. Etiam ornare feugiat lorem, et luctus diam faucibus eu.</p><h4>Morbi sodales metus tellus, vitae lacinia est scelerisque vel</h4><p>Duis at justo vitae odio sagittis dapibus eget eget nunc. Donec non ante molestie elit fringilla imperdiet a vel odio. Nulla at faucibus dolor, quis hendrerit ipsum. Nam libero augue, accumsan vel ipsum malesuada, gravida facilisis elit. Nullam in congue nisl. Aliquam condimentum eros vitae lacinia euismod. Morbi lorem enim, pulvinar at nisi at, tincidunt suscipit tellus. Aenean a quam bibendum, feugiat neque sed, blandit erat. Quisque eu magna quis tortor auctor imperdiet vitae mollis risus. In lobortis eleifend felis, sed scelerisque augue consectetur a. Curabitur pretium erat nibh, in ullamcorper nisl vestibulum eu. Morbi ac libero urna. Praesent tristique molestie maximus. Quisque erat nisl, mattis et suscipit ac, rhoncus mattis ligula.</p><p>Vestibulum vel elit ligula. Aliquam ac porttitor urna. Vivamus facilisis imperdiet nibh eget rutrum. Suspendisse eu est sit amet nunc iaculis ornare quis pretium turpis. Morbi suscipit risus sit amet sem mattis viverra. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus sit amet bibendum diam, auctor pharetra odio. Nunc varius risus felis, vel iaculis est pretium at. Curabitur ut tincidunt ligula. Praesent eget lorem nec nunc iaculis gravida vel id risus. Donec facilisis sem a ipsum rhoncus laoreet. Praesent eros mauris, ultrices nec orci ac, ultrices feugiat mi. Vivamus sagittis lorem purus, at eleifend lorem sagittis at. Phasellus iaculis risus risus, rhoncus accumsan mi scelerisque eget. Donec tristique nec ex a sollicitudin. Vestibulum luctus nec sapien in lobortis.</p><h4>Quisque tincidunt ligula lacus, ut condimentum risus rutrum ut.&nbsp;</h4><p>Donec ut sapien quis augue feugiat mattis sed non leo. Duis eu pulvinar dui. Duis nec dolor quam. Vivamus viverra dui arcu, tincidunt pellentesque velit laoreet non. Curabitur eget ligula lacus. Praesent dapibus neque gravida interdum hendrerit. Vestibulum non enim tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas turpis nisi, convallis in magna et, luctus sagittis arcu. Etiam libero lorem, luctus vitae eleifend quis, pretium eu massa. Cras fermentum eros ex, sit amet ullamcorper est luctus eget.</p><p>Nulla ac sem sed tortor euismod dapibus. Fusce vitae mauris id ante sagittis finibus sed ut odio. Nullam et quam semper, varius mauris pharetra, posuere justo. Donec nisi libero, dignissim ac euismod at, pellentesque vel diam. Aenean id purus pulvinar, cursus elit non, rhoncus eros. Etiam venenatis, lorem eu aliquet sodales, nisi dui imperdiet nisi, id malesuada dolor purus id neque. Etiam semper condimentum erat. Suspendisse efficitur leo elit, eu maximus metus porttitor in. Sed at varius mi, sed mollis tellus. Cras dapibus elit ut orci sollicitudin elementum. Ut justo turpis, ultrices sit amet dapibus in, bibendum quis felis. Mauris et tristique enim. Praesent ullamcorper eros sit amet enim posuere tincidunt. Morbi accumsan neque vel ex sollicitudin cursus. Praesent in ultricies nunc.</p>",
+      "createdAt": 1572587509109,
+      "subtitle": "I don't intend to waste any of mine.",
+      "sk": "content#blog",
+      "pk": "efca0a3b-17dd-4ddd-b50e-b4c35a9cfc98",
+      "gs1sk": "2019-10-06",
+      "slug": "i-believe-every-human-has-a-finite-number-of-heartbeats",
+      "updatedAt": 1572589699896
+    },
+    {
+      "gs1pk": "content#blog",
+      "author": "Start Bootstrap",
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/post-bg.jpg",
+        "updatedAt": 1572587212735
+      },
+      "publishDate": "2019-11-01",
+      "sortKeyUsed": "publishDate",
+      "title": "Man must explore, and this is exploration at its greatest",
+      "body": "<p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p><p>Science cuts two ways, of course; its products can be used for both good and evil. But there's no turning back from science. The early warnings about technological dangers also come from science.</p><p>What was most significant about the lunar voyage was not that man set foot on the Moon but that they set eye on the earth.</p><p>A Chinese tale tells of some men sent to harm a young girl who, upon seeing her beauty, become her protectors rather than her violators. That's how I felt seeing the Earth for the first time. I could not help but love and cherish her.</p><p>For those who have seen the Earth from space, and for the hundreds and perhaps thousands more who will, the experience most certainly changes your perspective. The things that we share in our world are far more valuable than those which divide us.</p><h2>The Final Frontier</h2><p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p><p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p><blockquote><p><i>The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</i></p></blockquote><p>Spaceflights cannot be stopped. This is not the work of any one man or even a group of men. It is a historical process which mankind is carrying out in accordance with the natural laws of human development.</p><h2>Reaching for the Stars</h2><p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p><figure class=\"image\"><img src=\"https://blackrockdigital.github.io/startbootstrap-clean-blog/img/post-sample-image.jpg\" alt=\"\"></figure><p><i>To go places and do things that have never been done before – that’s what living is all about.</i></p><p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</p><p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p><p>Placeholder text by <a href=\"http://spaceipsum.com/\">Space Ipsum</a>. Photographs by <a href=\"https://www.flickr.com/photos/nasacommons/\">NASA on The Commons</a>.</p>",
+      "createdAt": 1572587212780,
+      "subtitle": "Problems look mighty small from 150 miles up",
+      "sk": "content#blog",
+      "pk": "3676068e-61b2-4bb4-a487-d00ce307f513",
+      "gs1sk": "2019-11-01",
+      "slug": "man-must-explore-and-this-is-exploration-at-its-greatest",
+      "updatedAt": 1572589743170
+    },
+    {
+      "sk": "content#blog#slug",
+      "gs1pk": "content#blog#slug",
+      "name": "slug",
+      "pk": "content#blog#slug#i-believe-every-human-has-a-finite-number-of-heartbeats",
+      "gs1sk": "slug"
+    },
+    {
+      "sk": "content#blog#slug",
+      "gs1pk": "content#blog#slug",
+      "name": "slug",
+      "pk": "content#blog#slug#science-has-not-yet-mastered-prophecy",
+      "gs1sk": "slug"
+    },
+    {
+      "sk": "content#blog#slug",
+      "gs1pk": "content#blog#slug",
+      "name": "slug",
+      "pk": "content#blog#slug#man-must-explore-and-this-is-exploration-at-its-greatest",
+      "gs1sk": "slug"
+    },
+    {
+      "sk": "content#blog#slug",
+      "gs1pk": "content#blog#slug",
+      "name": "slug",
+      "pk": "content#blog#slug#failure-is-not-an-option",
+      "gs1sk": "slug"
+    }
+  ]
+}

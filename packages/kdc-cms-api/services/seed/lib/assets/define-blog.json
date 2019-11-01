@@ -1,0 +1,52 @@
+{
+  "gs1pk": "content",
+  "fieldCount": 7,
+  "description": "Gatsby starter blog",
+  "docCount": 4,
+  "createdAt": 1572587033801,
+  "sortKey": "publishDate",
+  "nameKey": "title",
+  "sk": "content",
+  "pk": "blog",
+  "id": "blog",
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "label": "Title"
+    },
+    {
+      "name": "subtitle",
+      "type": "text",
+      "label": "Subtitle"
+    },
+    {
+      "name": "author",
+      "type": "text",
+      "label": "Author"
+    },
+    {
+      "name": "publishDate",
+      "type": "date",
+      "label": "Publish Date"
+    },
+    {
+      "name": "backgroundImage",
+      "type": "image",
+      "label": "Background Image"
+    },
+    {
+      "name": "body",
+      "type": "long-text",
+      "label": "Body"
+    },
+    {
+      "name": "slug",
+      "label": "Slug",
+      "type": "slug",
+      "unique": true
+    }
+  ],
+  "gs1sk": "Blog",
+  "updatedAt": 1572589686117
+}

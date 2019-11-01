@@ -1,0 +1,51 @@
+{
+  "pages": [
+    {
+      "gs1pk": "page#data",
+      "createdAt": 1572585386909,
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/home-bg.jpg",
+        "updatedAt": 1572585694108
+      },
+      "subtitle": "Feel Free to browse around",
+      "sk": "page#data",
+      "pk": "home-page",
+      "title": "Gatsby Blog",
+      "gs1sk": "Home Page",
+      "updatedAt": 1572585694162
+    },
+    {
+      "gs1pk": "page#data",
+      "createdAt": 1572585439622,
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/about-bg.jpg",
+        "updatedAt": 1572585757921
+      },
+      "subtitle": "A Blog Theme by Start Bootstrap",
+      "sk": "page#data",
+      "pk": "about-page",
+      "title": "Clean Blog",
+      "body": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur?</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!</p>",
+      "gs1sk": "About Page",
+      "updatedAt": 1572585757973
+    },
+    {
+      "gs1pk": "page#data",
+      "createdAt": 1572585544436,
+      "backgroundImage": {
+        "type": "image",
+        "src": "https://raw.githubusercontent.com/ianpogi5/gatsby-blog-kdc-cms/master/src/images/contact-bg.jpg",
+        "updatedAt": 1572585830415
+      },
+      "subtitle": "Data source of this website is from KDC CMS",
+      "formMessage": "<p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!</p>",
+      "sk": "page#data",
+      "pk": "contact-page",
+      "title": "KDC CMS",
+      "gs1sk": "Contact Page",
+      "updatedAt": 1572591119283
+    }
+  ]
+}

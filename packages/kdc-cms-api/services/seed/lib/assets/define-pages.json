@@ -1,0 +1,89 @@
+{
+  "pages": [
+    {
+      "gs1pk": "page",
+      "fieldCount": 3,
+      "createdAt": 1572585386847,
+      "sk": "page",
+      "pk": "home-page",
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "name": "subtitle",
+          "type": "text",
+          "label": "Subtitle"
+        },
+        {
+          "name": "backgroundImage",
+          "type": "image",
+          "label": "Background Image"
+        }
+      ],
+      "gs1sk": "Home Page"
+    },
+    {
+      "gs1pk": "page",
+      "fieldCount": 4,
+      "createdAt": 1572585439565,
+      "sk": "page",
+      "pk": "about-page",
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "name": "subtitle",
+          "type": "text",
+          "label": "Subtitle"
+        },
+        {
+          "name": "backgroundImage",
+          "type": "image",
+          "label": "Background Image"
+        },
+        {
+          "name": "body",
+          "type": "long-text",
+          "label": "Body"
+        }
+      ],
+      "gs1sk": "About Page"
+    },
+    {
+      "gs1pk": "page",
+      "fieldCount": 4,
+      "createdAt": 1572585544379,
+      "sk": "page",
+      "pk": "contact-page",
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "name": "subtitle",
+          "type": "text",
+          "label": "Subtitle"
+        },
+        {
+          "name": "backgroundImage",
+          "type": "image",
+          "label": "Background Image"
+        },
+        {
+          "name": "formMessage",
+          "type": "long-text",
+          "label": "Form Message"
+        }
+      ],
+      "gs1sk": "Contact Page"
+    }
+  ]
+}
