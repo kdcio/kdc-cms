@@ -21,7 +21,19 @@ const sign = async ({ region, bucket, filename, type, acl }) => {
     });
   }
 
-  const S3 = new AWS.S3({ signatureVersion: 'v4', region });
+  let S3 = null;
+  if (process.env.IS_OFFLINE === true || process.env.IS_OFFLINE === 'true') {
+    S3 = new AWS.S3({
+      signatureVersion: 'v4',
+      region,
+      s3ForcePathStyle: true,
+      accessKeyId: 'S3RVER', // This specific key is required when working offline
+      secretAccessKey: 'S3RVER',
+      endpoint: new AWS.Endpoint('http://localhost:8104')
+    });
+  } else if (process.env.DDB_REGION) {
+    S3 = new AWS.S3({ signatureVersion: 'v4', region });
+  }
 
   const params = {
     Bucket: bucket,
@@ -33,14 +45,12 @@ const sign = async ({ region, bucket, filename, type, acl }) => {
 
   try {
     const signedUrl = await S3.getSignedUrl('putObject', params);
-
-    return success({
-      signedUrl,
-      url: `http://${bucket}.s3.amazonaws.com/${params.Key}`
-    });
+    const [url] = signedUrl.split('?');
+    return success({ signedUrl, url });
   } catch (error) {
     return failure(401, error);
   }
 };
 
+// 1572575649849
 export default sign;

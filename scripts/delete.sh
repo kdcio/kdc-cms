@@ -11,6 +11,7 @@ if [ "$STAGE" == "local" ]; then
     yarn workspace kdc-cms-resource-database ddb:rm
     rm -fR resources/database/.dbdata
     rm -f config.local.yml
+    rm -fR packages/kdc-cms-api/.s3-local
 else
     if [ ! -f "config.$STAGE.yml" ]; then
         echo "You have not run setup for stage: $STAGE."

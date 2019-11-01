@@ -46,6 +46,7 @@
     "serverless-bundle": "^1.2.5",
     "serverless-offline": "^5.12.0",
     "serverless-plugin-monorepo": "^0.8.0",
+    "serverless-s3-local": "^0.5.3",
     "serverless-s3-remover": "^0.6.0"
   }
 }

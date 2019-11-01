@@ -135,6 +135,7 @@ build
 config.*.yml
 user.*.yml
 .webpack
+.s3-local
 
 # project only works with npm
 package-lock.json

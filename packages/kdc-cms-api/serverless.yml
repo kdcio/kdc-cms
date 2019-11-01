@@ -4,6 +4,7 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
   - serverless-plugin-monorepo
+  - serverless-s3-local
   - serverless-offline
   - serverless-bundle
   - serverless-s3-remover
@@ -13,6 +14,11 @@ custom:
     prompt: true
     buckets:
       - ${self:provider.environment.S3_UPLOAD}
+  s3:
+    port: 8104
+    directory: ./.s3-local
+    allowMismatchedSignatures: true
+    cors: services/upload/cors.xml
 
 package:
   individually: true
