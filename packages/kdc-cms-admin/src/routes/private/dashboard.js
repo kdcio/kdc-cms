@@ -41,6 +41,13 @@ const Dashboard = () => {
                 consider giving a star on our{' '}
                 <a href="https://github.com/ianpogi5/kdc-cms">GitHub repository</a>.
               </p>
+              <p>
+                <strong>API Base Endpoint:</strong> {process.env.REACT_APP_API_URL}
+              </p>
+              <p>
+                Looking for an example website that consumes data from this CMS? Checkout{' '}
+                <a href="https://github.com/ianpogi5/gatsby-blog-kdc-cms">gatsby-blog-kdc-cms</a>.
+              </p>
               {/* TODO: List new releases here */}
               {/* TODO: Add documentation and tutorials */}
             </CardBody>
