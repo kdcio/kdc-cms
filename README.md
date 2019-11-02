@@ -62,10 +62,14 @@ So my solution is to use serverless technology. Except for API Gateway, all of t
   yarn start
   ```
 
-* Browser will open KDC CMS at [http://localhost:8100](http://localhost:8100).
-* API endpoint is [http://localhost:8101](http://localhost:8101)
-* [Dynamodb manager](https://hub.docker.com/r/taydy/dynamodb-manager/) is [http://localhost:8102](http://localhost:8102)
-* [Dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local) endpoint is [http://localhost:8103](http://localhost:8103)
+  Endpoints:
+
+  * [http://localhost:8100](http://localhost:8100) - KDC CMS
+  * [http://localhost:8101](http://localhost:8101) - API endpoint
+  * [http://localhost:8102](http://localhost:8102) - [Dynamodb manager](https://hub.docker.com/r/taydy/dynamodb-manager/)
+  * [http://localhost:8103](http://localhost:8103) - [Dynamodb-local](https://hub.docker.com/r/amazon/dynamodb-local)
+  * [http://localhost:8104](http://localhost:8104) - [S3 local](https://github.com/ar90n/serverless-s3-local)
+
 * Run API tests
 
   ```bash
