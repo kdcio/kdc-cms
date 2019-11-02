@@ -1,14 +1,16 @@
 # KDC CMS
 
-A simple headless CMS for AWS serverless infrastructure.
+A simple headless CMS for AWS serverless infrastructure. API uses [API Gateway](https://aws.amazon.com/api-gateway/), [Lambda](https://aws.amazon.com/lambda/) and [DynamoDB](https://aws.amazon.com/dynamodb/) while Admin interface uses [S3](https://aws.amazon.com/s3/).
 
 **Note: THIS PROJECT IS UNDER HEAVY DEVELOPMENT!**
 
-## Reason
+## Why
 
-* Cheapest way to run CMS for small to medium websites. Might even cost you nothing if you stay within [AWS Free Tier](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
-* Boilerplate CMS for new projects
-* Learn something new - [monorepo](https://en.wikipedia.org/wiki/Monorepo), [serverless](https://serverless.com), [cypress](https://www.cypress.io/), [jwt](https://jwt.io/) and [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
+I needed a CMS to manage my web/app projects but I wanted it to be as cheap as possible (if not free) since most of them are websites that doesn't change too much. I also want to have full control over the source code so that I can use it as a starting point for my larger projects.
+
+I looked at [strapi](https://strapi.io/) but unfortunately it needs a server to work which means it cost money to run more than I am willing to spend.
+
+So my solution is to use serverless technology. Except for API Gateway, all of the other services the CMS will use have an ["Always free"](https://aws.amazon.com/free/?nc2=h_ql_pr_ft&all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=tier%23always-free) tier in AWS. API Gateway has a  [1 million request per month](https://aws.amazon.com/api-gateway/pricing/) **free** for 12 months. So this means as long as you do not exceed the free tier limits, the CMS will be free for 1 year then on the second year on wards you'll just be paying a few cents.
 
 ## Installation
 
@@ -72,6 +74,8 @@ A simple headless CMS for AWS serverless infrastructure.
 
 * Run Admin [Cypress](https://www.cypress.io/) tests
   
+  Before running admin test, edit the file [`packages/kdc-cms-admin/cypress.json`](packages/kdc-cms-admin/cypress.json) and change the email and password to match what entered in the setup.
+  
   Terminal 1:
 
   ```bash
@@ -83,8 +87,6 @@ A simple headless CMS for AWS serverless infrastructure.
   ```bash
   yarn test:admin
   ```
-
-  Before running admin test, edit the file [`packages/kdc-cms-admin/cypress.json`](packages/kdc-cms-admin/cypress.json) and change the email and password to match what entered in the setup.
 
 ## Deployment to AWS
 
@@ -121,6 +123,14 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
 ## Other
 
 * [Software Design](docs/DESIGN.md)
+
+## Links and Other Open Source Projects Used
+
+* [monorepo](https://en.wikipedia.org/wiki/Monorepo)
+* [serverless](https://serverless.com)
+* [cypress](https://www.cypress.io/)
+* [jwt](https://jwt.io/)
+* [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
 
 ## License
 
