@@ -12,6 +12,7 @@ export const ContentTypeListProvider = ({ children }) => {
   const [typeList, setTypeList] = useState([]);
 
   const getType = (id) => find(typeList, { id });
+  const getTypes = () => typeList;
 
   const fetchList = () =>
     api('define/contents').then((data) => {
@@ -23,7 +24,9 @@ export const ContentTypeListProvider = ({ children }) => {
   }, []);
 
   return (
-    <ContentTypeListContext.Provider value={{ typeList, setTypeList, fetchList, getType }}>
+    <ContentTypeListContext.Provider
+      value={{ typeList, setTypeList, fetchList, getType, getTypes }}
+    >
       {children}
     </ContentTypeListContext.Provider>
   );
