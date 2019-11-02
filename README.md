@@ -124,6 +124,10 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
 
   **Note that this cannot be undone. Please be careful!**
 
+## Integration
+
+* [gatsby-source-kdc-cms](https://www.npmjs.com/package/gatsby-source-kdc-cms) - Full working example using this plugin, see [gatsby-blog-kdc-cms](https://github.com/ianpogi5/gatsby-blog-kdc-cms)
+
 ## Other
 
 * [Software Design](docs/DESIGN.md)
