@@ -23,8 +23,8 @@ GlobalSecondaryIndexes:
     Projection:
       ProjectionType: "ALL"
     ProvisionedThroughput:
-      ReadCapacityUnits: 3
-      WriteCapacityUnits: 3
+      ReadCapacityUnits: 10
+      WriteCapacityUnits: 10
 ProvisionedThroughput:
-  ReadCapacityUnits: 3
-  WriteCapacityUnits: 3
+  ReadCapacityUnits: 10
+  WriteCapacityUnits: 10
