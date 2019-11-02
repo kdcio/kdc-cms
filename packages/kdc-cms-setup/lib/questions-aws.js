@@ -3,6 +3,7 @@ const path = require("path");
 const chalk = require("chalk");
 const inquirer = require("inquirer");
 const validator = require("validator");
+const kebabCase = require("lodash.kebabcase");
 const {
   regions: awsRegions,
   regionNames: awsRegionNames
@@ -84,58 +85,59 @@ const start = async ctx => {
           return "Please enter a valid domain name";
         }
       }
-    },
+    }
+  ]);
+
+  let aws = { ...ans };
+  console.log(
+    "For S3 buckets, it will only accept letters, numbers and dash to avoid SSL errors when uploading files via CMS."
+  );
+  ans = await inquirer.prompt([
     {
       type: "input",
       message: "Enter your CMS S3 Bucket:",
       name: "cmsBucket",
-      default: function(answers) {
-        if (stage === "prod" || stage === "production") {
-          return `admin.${answers.domain}`;
-        } else {
-          return `admin-${stage}.${answers.domain}`;
-        }
+      default: function() {
+        return kebabCase(`admin-${stage}.${aws.domain}`);
       },
-      validate: function(value, answers) {
-        if (validator.isFQDN(value)) {
+      validate: function(value) {
+        if (validator.matches(value, /^[a-zA-Z0-9-]+$/)) {
           return true;
         } else {
-          return `Please enter a valid endpoint. Example: admin-${stage}.${answers.domain}`;
+          return `Only letters, numbers and dash are accepted to avoid SSL error in S3. Example: ${kebabCase(
+            `admin-${stage}.${aws.domain}`
+          )}`;
         }
       },
-      when: function(answers) {
-        // Only run if user set a name
-        return !!answers.domain;
+      when: function() {
+        return !!aws.domain;
       }
     },
     {
       type: "input",
       message: "Enter your Image Upload S3 bucket:",
       name: "uploadBucket",
-      default: function(answers) {
-        if (stage === "prod" || stage === "production") {
-          return `uploads.${answers.domain}`;
-        } else {
-          return `uploads-${stage}.${answers.domain}`;
-        }
+      default: function() {
+        return kebabCase(`uploads-${stage}.${aws.domain}`);
       },
-      validate: function(value, answers) {
-        if (validator.isFQDN(value)) {
+      validate: function(value) {
+        if (validator.matches(value, /^[a-zA-Z0-9-]+$/)) {
           return true;
         } else {
-          return `Please enter a valid endpoint. Example: uploads-${stage}.${answers.domain}`;
+          return `Only letters, numbers and dash are accepted to avoid SSL error in S3. Example: ${kebabCase(
+            `uploads-${stage}.${aws.domain}`
+          )}`;
         }
       },
-      when: function(answers) {
-        // Only run if user set a name
-        return !!answers.domain;
+      when: function() {
+        return !!aws.domain;
       }
     }
   ]);
 
   return {
     ...ctx,
-    aws: { ...ans }
+    aws: { ...aws, ...ans }
   };
 };
 
