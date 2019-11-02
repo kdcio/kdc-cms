@@ -6,9 +6,9 @@ A simple headless CMS for AWS serverless infrastructure. API uses [API Gateway](
 
 ## Why
 
-I needed a CMS to manage my web/app projects but I wanted it to be as cheap as possible (if not free) since most of them are websites that doesn't change too much. I also want to have full control over the source code so that I can use it as a starting point for my larger projects.
+I needed a CMS to manage my web/app projects but I wanted it to be as cheap as possible (if not free) since most of them are websites that doesn't change too much. In addition to that, I also wanted to have full control over the source code so that I can use it as a starting point for my larger projects.
 
-I looked at [strapi](https://strapi.io/) but unfortunately it needs a server to work which means it cost money to run more than I am willing to spend.
+I looked at [strapi](https://strapi.io/) but unfortunately it needs a server to work. And having a server means that it will cost money to run.  A cost which is more than what I am willing to spend.
 
 So my solution is to use serverless technology. Except for API Gateway, all of the other services the CMS will use have an ["Always free"](https://aws.amazon.com/free/?nc2=h_ql_pr_ft&all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc&awsf.Free%20Tier%20Types=tier%23always-free) tier in AWS. API Gateway has a  [1 million request per month](https://aws.amazon.com/api-gateway/pricing/) **free** for 12 months. So this means as long as you do not exceed the free tier limits, the CMS will be free for 1 year then on the second year on wards you'll just be paying a few cents.
 
