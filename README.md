@@ -124,6 +124,10 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
 
 * [Software Design](docs/DESIGN.md)
 
+## Limitations
+
+* Does not work on MS Windows. I am open to contributions.
+
 ## Links and Other Open Source Projects Used
 
 * [monorepo](https://en.wikipedia.org/wiki/Monorepo)
@@ -131,6 +135,10 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
 * [cypress](https://www.cypress.io/)
 * [jwt](https://jwt.io/)
 * [DynamoDB single table design](https://youtu.be/HaEPXoXVf2k?t=2844).
+
+## Star Me
+
+If you find this project useful, please consider giving a star. I would really appreciate it.
 
 ## License
 
