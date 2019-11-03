@@ -116,6 +116,9 @@ const ContentsList = ({ typeId }) => {
         </Link>
       </CardHeader>
       <CardBody>
+        <p>
+          <strong>API Endpoint:</strong> {process.env.REACT_APP_API_URL}/contents/{typeId}
+        </p>
         <Table hover striped responsive>
           <thead>
             <tr>
