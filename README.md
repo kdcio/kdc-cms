@@ -148,6 +148,10 @@ Make sure you replace ```$stage``` with ```dev```, ```staging``` or ```prod``` t
 
 If you find this project useful, please consider giving a star. I would really appreciate it.
 
+You can also:
+
+<a href="https://www.buymeacoffee.com/o4f0WYV" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" style="height: 25px !important;width: 106px !important;" ></a>
+
 ## License
 
 [MIT](LICENSE)
