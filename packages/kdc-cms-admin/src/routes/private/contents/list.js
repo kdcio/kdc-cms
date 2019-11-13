@@ -28,11 +28,33 @@ const ContentsList = ({ typeId }) => {
   const { getType, fetchList: fetchTypeList } = useContentTypeList();
   const [list, setList] = useState([]);
   const [next, setNext] = useState(null);
+  const [prev, setPrev] = useState(null);
+  const [, setStack] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [curPage, setCurPage] = useState(1);
-  const [nextStack, setNextStack] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const type = getType(typeId);
+
+  const pushStack = (item) => {
+    if (curPage === 1) {
+      setStack([item]);
+    } else {
+      setStack((oldStack) => {
+        oldStack.push(item);
+        setPrev(oldStack[oldStack.length - 2]);
+        return [...oldStack];
+      });
+    }
+  };
+
+  const popStack = (ctr) => {
+    setStack((oldStack) => {
+      if (ctr === 2) oldStack.pop();
+      oldStack.pop();
+      setPrev(oldStack[oldStack.length - 2]);
+      return [...oldStack];
+    });
+  };
 
   const fetchList = (start) => {
     setIsLoading(true);
@@ -45,35 +67,28 @@ const ContentsList = ({ typeId }) => {
         setList(data.list);
         if (data.next) {
           setNext(data.next);
-          setNextStack((oldStack) => {
-            if (oldStack.indexOf(data.next) >= 0) {
-              return oldStack;
-            }
-            const newStack = [...oldStack, data.next];
-            setCurPage(newStack.length);
-            return newStack;
-          });
+        } else {
+          setNext(null);
         }
         setIsLoading(false);
-        return data.next;
+        return start || null;
       })
       .catch(() => navigate('/404'));
   };
 
   const nextPage = () => {
-    fetchList(next);
+    pushStack(next);
+    fetchList(next).then(() => {
+      setCurPage((oldPage) => oldPage + 1);
+    });
   };
 
   const prevPage = () => {
-    if (nextStack.length === 2) {
-      setNextStack([]);
-      fetchList();
-    } else if (nextStack.length > 2) {
-      nextStack.pop();
-      nextStack.pop();
-      const prev = nextStack[nextStack.length - 1];
-      setNextStack([...nextStack]);
-      fetchList(prev);
+    popStack(1);
+    if (curPage === 2) {
+      fetchList().then(() => setCurPage((oldPage) => oldPage - 1));
+    } else {
+      fetchList(prev).then(() => setCurPage((oldPage) => oldPage - 1));
     }
   };
 
@@ -83,7 +98,6 @@ const ContentsList = ({ typeId }) => {
       setIsLoading(true);
       api(`contents/${typeId}/${contentId}`, { method: 'DELETE' })
         .then(async () => {
-          setNextStack([]);
           await fetchTypeList();
           await fetchList();
         })
@@ -94,12 +108,12 @@ const ContentsList = ({ typeId }) => {
   useEffect(() => {
     setCurPage(1);
     setNext(null);
-    setNextStack([]);
     setList([]);
     setTotalPages(1);
     fetchList();
     if (!type) return;
     const { docCount } = type;
+
     setTotalPages(Math.ceil(docCount / ITEMS_PER_PAGE) || 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeId, type]);
@@ -156,13 +170,18 @@ const ContentsList = ({ typeId }) => {
           </tbody>
         </Table>
         <div className="d-flex justify-content-between">
-          <Button size="sm" outline disabled={nextStack.length <= 1} onClick={prevPage}>
+          <Button size="sm" outline disabled={curPage === 1} onClick={prevPage}>
             <FontAwesomeIcon icon="chevron-left" /> Prev
           </Button>
           <div className="muted">
             {curPage} of {totalPages}
           </div>
-          <Button size="sm" outline disabled={curPage >= totalPages} onClick={nextPage}>
+          <Button
+            size="sm"
+            outline
+            disabled={next === null || curPage === totalPages}
+            onClick={nextPage}
+          >
             Next <FontAwesomeIcon icon="chevron-right" />
           </Button>
         </div>
