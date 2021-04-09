@@ -2,7 +2,7 @@
 
 A simple headless CMS for AWS serverless infrastructure. API uses [API Gateway](https://aws.amazon.com/api-gateway/), [Lambda](https://aws.amazon.com/lambda/) and [DynamoDB](https://aws.amazon.com/dynamodb/) while Admin interface uses [S3](https://aws.amazon.com/s3/).
 
-**Note: THIS PROJECT IS UNDER HEAVY DEVELOPMENT!**
+**Note: THIS PROJECT IS NOW DISCONTINUTED IN FAVOR OF [Abu CMS](https://github.com/kdcio/abu)!**
 
 ## Why
 
